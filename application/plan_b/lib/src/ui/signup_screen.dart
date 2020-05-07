@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 
+import 'constants/constants.dart';
+
 class SignupScreen extends StatefulWidget {
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -21,7 +23,22 @@ class _SignupScreenState extends State<SignupScreen> {
     'خواجه نصیر',
   ];
 
-  List<Chip> _chips = <Chip>[];
+  List<String> _chipsData = <String>[];
+
+  Iterable<Widget> get _chipWidgets sync* {
+    for(final String item in _chipsData ) {
+      yield Chip(
+        label: Text(item),
+        onDeleted: () {
+          setState(() {
+            _chipsData.removeWhere((data) {
+              return item == data;
+            });
+          });
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +172,19 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: AutoCompleteTextField<String>(
                       controller: _searchInputController,
                       itemSubmitted: (data) {
-                        print('submited');
+                        setState(() {
+                          if(!_chipsData.contains(data))
+                            _chipsData.add(data);
+                          else {
+                            // fixme : this part throw an error when i want to show alert snackbar
+//                            Scaffold.of(context).showSnackBar(SnackBar(
+//                              content: Text('این مهارت قبلا اضافه شده'),
+//                              action: SnackBarAction(
+//                                label: 'باشه',
+//                              ),
+//                            ));
+                          }
+                        });
                       },
                       suggestions: _getSearchFieldSuggestion(
                           _searchInputController.text),
@@ -177,7 +206,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: Wrap(
-                      children: _chips,
+                      children: _chipWidgets.toList(),
                       spacing: 10.0,
                     ),
                   ),
