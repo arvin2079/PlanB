@@ -1,7 +1,7 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:planb/src/ui/uiComponents/autoCompleteTextView.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -18,15 +18,10 @@ class _SignupScreenState extends State<SignupScreen> {
     'خوارزمی',
     'شریف',
     'مشهد',
-    'خواجه نصیر'
+    'خواجه نصیر',
   ];
 
-  List<Chip> _chips = <Chip>[
-    Chip(
-      label: Text('sdf'),
-      onDeleted: () {},
-    )
-  ];
+  List<Chip> _chips = <Chip>[];
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ],
                   ),
-                  customtextField(labeltext: 'نام دانشگاه'),
+                  CustomtextField(labeltext: 'نام دانشگاه'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -109,22 +104,22 @@ class _SignupScreenState extends State<SignupScreen> {
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.right,
                   ),
-                  customtextField(
+                  CustomtextField(
                     labeltext: 'موبایل',
                     inputType: TextInputType.phone,
                   ),
-                  customtextField(
+                  CustomtextField(
                     labeltext: 'ایمیل',
                     inputType: TextInputType.emailAddress,
                   ),
-                  customtextField(
+                  CustomtextField(
                     labeltext: 'وبسایت',
                     inputType: TextInputType.url,
                   ),
-                  customtextField(labeltext: 'اینستاگرام'),
-                  customtextField(labeltext: 'تلگرام'),
-                  customtextField(labeltext: 'گیت'),
-                  customtextField(labeltext: 'لینکدین'),
+                  CustomtextField(labeltext: 'اینستاگرام'),
+                  CustomtextField(labeltext: 'تلگرام'),
+                  CustomtextField(labeltext: 'گیت'),
+                  CustomtextField(labeltext: 'لینکدین'),
                   SizedBox(
                     height: 25,
                   ),
@@ -157,25 +152,28 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: AutoCompleteTextView(
+                    child: AutoCompleteTextField<String>(
                       controller: _searchInputController,
-                      getSuggestionsMethod: _getSuggestionMethod,
+                      itemSubmitted: (data) {
+                        print('submited');
+                      },
+                      suggestions: _getSearchFieldSuggestion(
+                          _searchInputController.text),
+                      key: GlobalKey(),
+                      itemFilter: (String suggestion, String query) {
+                        // FIXME : implement itemFilter for search
+                        return true;
+                      },
+                      itemSorter: (String a, String b) {
+                        // FIXME : implement comparator for search
+                        return 1;
+                      },
+                      itemBuilder: (BuildContext context, String suggestion) {
+                        // FIXME : make style for list item Texts
+                        return Text(suggestion);
+                      },
                     ),
                   ),
-//                  Padding(
-//                    padding: EdgeInsets.symmetric(vertical: 10),
-//                    child: TextField(
-//                     onEditingComplete: () {
-//                       // todo : add chips to the _chips by the search
-//                     },
-//                      textDirection: TextDirection.rtl,
-//                      controller: _searchInputController,
-//                      decoration: InputDecoration(
-//                        hintText: 'جستجوی مهارت ها',
-//                        icon: Icon(Icons.search),
-//                      ),
-//                    ),
-//                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: Wrap(
@@ -188,7 +186,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   RaisedButton(
                     child: Text('ادامه و تکمیل حساب'),
-                    onPressed: (){},
+                    onPressed: () {},
                   )
                 ],
               ),
@@ -199,20 +197,21 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  List<String> _getSuggestionMethod(String data) {
-    return [
-      'hello1',
-      'hello2',
-      'hello3',
-      'hello4',
-      'hello5',
-      'hello6',
+  List<String> _getSearchFieldSuggestion(String data) {
+    return <String>[
+      'hello',
+      'this is apple',
+      'fuck',
+      'yellow',
+      'arvin',
+      'container',
+      'flutter',
     ];
   }
 }
 
-class customtextField extends StatelessWidget {
-  const customtextField({this.inputType, @required this.labeltext});
+class CustomtextField extends StatelessWidget {
+  const CustomtextField({this.inputType, @required this.labeltext});
 
   final String labeltext;
   final TextInputType inputType;
