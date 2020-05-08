@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
+import 'package:planb/src/ui/uiComponents/titleText.dart';
 
 import 'constants/constants.dart';
 
