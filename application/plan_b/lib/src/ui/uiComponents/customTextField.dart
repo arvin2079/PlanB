@@ -18,9 +18,11 @@ class CustomtextField extends StatelessWidget {
         focusNode: focusNode,
         textDirection: TextDirection.rtl,
         keyboardType: inputType,
+        style: Theme.of(context).textTheme.display2,
         decoration: InputDecoration(
           // TODO : style for text and inputdecoration
           labelText: labeltext,
+          labelStyle: Theme.of(context).textTheme.display2,
         ),
       ),
     );

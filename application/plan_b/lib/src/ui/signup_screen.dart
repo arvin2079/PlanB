@@ -51,7 +51,10 @@ class _SignupScreenState extends State<SignupScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('تکمیل اطلاعات'),
+          title: Text(
+            'تکمیل اطلاعات',
+            style: Theme.of(context).textTheme.title,
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.clear),
@@ -62,119 +65,135 @@ class _SignupScreenState extends State<SignupScreen> {
           ],
         ),
         body: Builder(
-          builder: (context) =>
-              LimitedBox(
-                maxHeight: double.maxFinite,
-                maxWidth: double.maxFinite,
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+          builder: (context) => LimitedBox(
+            maxHeight: double.maxFinite,
+            maxWidth: double.maxFinite,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Row(
+                        Avatar(
+                          icon: Icons.add,
+                          iconSize: 30,
+                        ),
+                        SizedBox(width: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Avatar(
-                              icon: Icons.add,
-                              iconSize: 30,
+                            // fixme : style for these texts
+                            Text(
+                              'نام',
+                              style: Theme.of(context).textTheme.display1,
                             ),
-                            SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // fixme : style for these texts
-                                Text('نام'),
-                                Text('نام خوانوادگی'),
-                              ],
+                            SizedBox(height: 10),
+                            Text(
+                              'نام خوانوادگی',
+                              style: Theme.of(context).textTheme.display1,
                             ),
                           ],
                         ),
-                        CustomtextField(labeltext: 'نام دانشگاه'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            DropdownButton(
-                              hint: Text('جنسیت'),
-                              onChanged: (value) {
-                                print(value);
-                              },
-                              items: sexItems.map((value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                            DropdownButton(
-                              hint: Text('دانشگاه'),
-                              onChanged: (value) {
-                                print(value);
-                              },
-                              items: _uniItems.map((value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 25),
-                        TitleText(text: 'اطلاعات تماس'),
-                        CustomtextField(
-                          labeltext: 'موبایل',
-                          inputType: TextInputType.phone,
-                        ),
-                        CustomtextField(
-                          labeltext: 'ایمیل',
-                          inputType: TextInputType.emailAddress,
-                        ),
-                        CustomtextField(
-                          labeltext: 'وبسایت',
-                          inputType: TextInputType.url,
-                        ),
-                        CustomtextField(labeltext: 'اینستاگرام'),
-                        CustomtextField(labeltext: 'تلگرام'),
-                        CustomtextField(labeltext: 'گیت'),
-                        CustomtextField(labeltext: 'لینکدین'),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        TitleText(text: 'اطلاعات تماس'),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: TextField(
-                            textDirection: TextDirection.rtl,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
-                              labelText: 'خلاصه ای از سوابغ خود بنویسید',
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 25),
-                        TitleText(text: 'مهارت های شما'),
-                        _buildSearchTextField(context),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Wrap(
-                            children: _chipWidgets.toList(),
-                            spacing: 10.0,
-                          ),
-                        ),
-                        SizedBox(height: 200),
-                        RaisedButton(
-                          child: Text('ادامه و تکمیل حساب'),
-                          onPressed: () {},
-                        )
                       ],
                     ),
-                  ),
+                    CustomtextField(labeltext: 'نام دانشگاه'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        DropdownButton(
+                          hint: Text(
+                            'جنسیت',
+                            style: Theme.of(context).textTheme.display2,
+                          ),
+                          onChanged: (value) {
+                            print(value);
+                          },
+                          items: sexItems.map((value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: Theme.of(context).textTheme.display2,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        DropdownButton(
+                          hint: Text('دانشگاه'),
+                          style: Theme.of(context).textTheme.display2,
+                          onChanged: (value) {
+                            print(value);
+                          },
+                          items: _uniItems.map((value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: Theme.of(context).textTheme.display2,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    TitleText(text: 'اطلاعات تماس'),
+                    CustomtextField(
+                      labeltext: 'موبایل',
+                      inputType: TextInputType.phone,
+                    ),
+                    CustomtextField(
+                      labeltext: 'ایمیل',
+                      inputType: TextInputType.emailAddress,
+                    ),
+                    CustomtextField(
+                      labeltext: 'وبسایت',
+                      inputType: TextInputType.url,
+                    ),
+                    CustomtextField(labeltext: 'اینستاگرام'),
+                    CustomtextField(labeltext: 'تلگرام'),
+                    CustomtextField(labeltext: 'گیت'),
+                    CustomtextField(labeltext: 'لینکدین'),
+                    SizedBox(height: 30),
+                    TitleText(text: 'اطلاعات تماس'),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: TextField(
+                        textDirection: TextDirection.rtl,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          labelStyle: Theme.of(context).textTheme.display2,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(2.0),
+                          ),
+                          labelText: 'خلاصه ای از سوابغ خود بنویسید',
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    TitleText(text: 'مهارت های شما'),
+                    _buildSearchTextField(context),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Wrap(
+                        children: _chipWidgets.toList(),
+                        spacing: 10.0,
+                      ),
+                    ),
+                    SizedBox(height: 150),
+                    RaisedButton(
+                      child: Text('ادامه و تکمیل حساب',
+                          style: Theme.of(context).textTheme.button),
+                      onPressed: () {},
+                    )
+                  ],
                 ),
               ),
+            ),
+          ),
         ),
       ),
     );
@@ -185,6 +204,7 @@ class _SignupScreenState extends State<SignupScreen> {
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: AutoCompleteTextField<String>(
         controller: _searchInputController,
+        style: Theme.of(context).textTheme.display3,
         itemSubmitted: (data) {
           setState(() {
             if (!_chipsData.contains(data))
@@ -197,10 +217,13 @@ class _SignupScreenState extends State<SignupScreen> {
               // _scaffoldKey.currentState.showSnackBar(snackbar);
 
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('این مهارت قبلا اضافه شده'),
-                action: SnackBarAction(
-                  label: 'باشه',
-                  onPressed: () {},
+                content: Text(
+                  'این مهارت قبلا اضافه شده',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: 'yekan',
+                  ),
                 ),
               ));
             }
@@ -222,7 +245,10 @@ class _SignupScreenState extends State<SignupScreen> {
         },
         itemBuilder: (BuildContext context, String suggestion) {
           // FIXME : make style for list item Texts
-          return Text(suggestion);
+          return Text(
+            suggestion,
+            style: Theme.of(context).textTheme.display4,
+          );
         },
       ),
     );
@@ -244,3 +270,4 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
+// fixme : search field item font ROBOTO download
