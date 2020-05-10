@@ -6,8 +6,6 @@ import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 
-import 'constants/constants.dart';
-
 class SignupScreen extends StatefulWidget {
   @override
   _SignupScreenState createState() => _SignupScreenState();

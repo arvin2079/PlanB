@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 //color pallet
 final Color primaryColor = Color(0xFF1A237E);

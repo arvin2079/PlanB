@@ -5,56 +5,18 @@ const Duration _kExpand = Duration(milliseconds: 200);
 
 class ProjectCard extends StatefulWidget {
   const ProjectCard({
-    Key key,
-    this.leading,
-    @required this.title,
-    this.subtitle,
-    this.backgroundColor,
     this.onExpansionChanged,
+    @required this.item,
     this.children = const <Widget>[],
-    this.trailing,
     @required this.buttonOpenText,
     this.initiallyExpanded = false,
   })  : assert(initiallyExpanded != null),
-        assert(buttonOpenText != null),
-        super(key: key);
+        assert(buttonOpenText != null);
 
   final String buttonOpenText;
-
-  /// A widget to display before the title.
-  ///
-  /// Typically a [CircleAvatar] widget.
-  final Widget leading;
-
-  /// The primary content of the list item.
-  ///
-  /// Typically a [Text] widget.
-  final Widget title;
-
-  /// Additional content displayed below the title.
-  ///
-  /// Typically a [Text] widget.
-  final Widget subtitle;
-
-  /// Called when the tile expands or collapses.
-  ///
-  /// When the tile starts expanding, this function is called with the value
-  /// true. When the tile starts collapsing, this function is called with
-  /// the value false.
+  final ProjectItem item;
   final ValueChanged<bool> onExpansionChanged;
-
-  /// The widgets that are displayed when the tile expands.
-  ///
-  /// Typically [ListTile] widgets.
   final List<Widget> children;
-
-  /// The color to display behind the sublist when expanded.
-  final Color backgroundColor;
-
-  /// A widget to display instead of a rotating arrow icon.
-  final Widget trailing;
-
-  /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
 
   @override
@@ -65,11 +27,8 @@ class _ProjectCardState extends State<ProjectCard>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
-  static final Animatable<double> _halfTween =
-      Tween<double>(begin: 0.0, end: 0.5);
 
   AnimationController _controller;
-  Animation<double> _iconTurns;
   Animation<double> _heightFactor;
 
   bool _isExpanded = false;
@@ -79,7 +38,6 @@ class _ProjectCardState extends State<ProjectCard>
     super.initState();
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
-    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
 
     _isExpanded =
         PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
@@ -119,9 +77,20 @@ class _ProjectCardState extends State<ProjectCard>
         children: <Widget>[
           ListTileTheme.merge(
             child: ListTile(
-              leading: widget.leading,
-              title: widget.title,
-              subtitle: widget.subtitle,
+              title: Text(
+                widget.item.name,
+                style: TextStyle(
+                    color: Colors.black, fontFamily: 'yekan', fontSize: 20),
+              ),
+              subtitle: Text(
+                widget.item.caption,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'yekan',
+                  fontSize: 15,
+                  height: 1.3,
+                ),
+              ),
             ),
           ),
           ClipRect(
@@ -178,4 +147,17 @@ class _ProjectCardState extends State<ProjectCard>
       ),
     );
   }
+}
+
+
+//project card item model
+class ProjectItem {
+  ProjectItem({@required this.name, @required this.caption, @required this.skills});
+  final String name;
+  final String caption;
+  final List<String> skills;
+
+//  final List<User> team;
+//  final List<User> requests;
+//  final User creator;
 }
