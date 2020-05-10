@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 //color pallet
 final Color primaryColor = Color(0xFF1A237E);
-final Color secondaryColor = Color(0xFFb71c1c);
+final Color secondaryColor = Color(0xFFC2185B);
 final Color backgroundColor = Color(0xFFeeeeee);
 final Color button1Color = Color(0xFF3A9BBF);
 final Color dangerColor = Color(0xFFCD1C1C);
@@ -22,6 +22,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       borderRadius: BorderRadius.circular(20.0),
     ),
   ),
+
   textTheme: TextTheme(
 
     // simple text style
@@ -75,7 +76,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
     caption: TextStyle(
       color: Colors.black,
       fontFamily: 'yekan',
-      fontSize: 13,
+      fontSize: 15,
     ),
 
   ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planb/src/ui/constants/constants.dart';
-import 'package:planb/src/ui/signup_screen.dart';
-import 'ui/splash_screen.dart';
+import 'package:planb/src/ui/home_screen.dart';
 
 class PlanBApp extends StatefulWidget {
   @override
@@ -17,8 +16,7 @@ class _PlanBAppState extends State<PlanBApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: isDarkMode? ThemeData.dark() : lightTheme,
-      color: Colors.indigo,
-      home: SignupScreen()
+      home: HomeScreen()
     );
   }
 }
