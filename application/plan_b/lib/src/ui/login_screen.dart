@@ -1,15 +1,57 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:planb/src/ui/constants/constants.dart';
+
+import 'uiComponents/customTextField.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: ClipRRect(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          ClipRRect(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
+              child: Image.asset("images/loginBackground.jpg")),
+          SizedBox(height:80,),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/8,),
+              child:SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    CustomtextField(
+                      labeltext: 'نام کاربری',
+                    ),
+                    SizedBox(height: 10,),
+                    CustomtextField(
+                      labeltext: 'رمز عبور',
+                      inputType: TextInputType.text,
+                    ),
+                    SizedBox(height: 20,),
+                    RaisedButton(
+                      child: Text("ورود", style: Theme.of(context).textTheme.button,),
+                      onPressed: (){},
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
 
-        )
-      ),
-      body: Center(
+                        FlatButton(
+                          child: Text("ایجاد حساب  ", style: Theme.of(context).textTheme.display2.copyWith(color: secondaryColor)),
+                        ),
+                        Text("اکانت ندارید؟", style: Theme.of(context).textTheme.display2,),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
