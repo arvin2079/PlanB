@@ -22,6 +22,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
     ),
   ),
 
+
   textTheme: TextTheme(
 
     // simple text style

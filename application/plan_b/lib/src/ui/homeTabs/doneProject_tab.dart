@@ -55,7 +55,10 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
               return Padding(
                 padding: EdgeInsets.all(3),
                 child: Chip(
-                  label: Text(skill, style: Theme.of(context).textTheme.caption,),
+                  label: Text(
+                    skill,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               );
             }).toList(),
@@ -76,7 +79,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
                 rightColor: primaryColor,
                 name: item.team[index].name,
                 lastname: item.team[index].lastname,
-                trailingIcon: Icon(Icons.group,color: Colors.white, size: 150),
+                trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
                 showArrow: true,
               );
             },
@@ -94,7 +97,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
             rightColor: primaryColor,
             name: item.creator.name,
             lastname: item.creator.lastname,
-            trailingIcon: Icon(Icons.group,color: Colors.white, size: 150),
+            trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
             showArrow: true,
           ),
         ],
@@ -102,4 +105,3 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
     }
   }
 }
-
