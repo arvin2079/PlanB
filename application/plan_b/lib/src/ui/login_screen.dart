@@ -23,12 +23,12 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    CustomtextField(
-                      labeltext: 'نام کاربری',
+                    CustomTextField(
+                      labelText: 'نام کاربری',
                     ),
                     SizedBox(height: 10,),
-                    CustomtextField(
-                      labeltext: 'رمز عبور',
+                    CustomTextField(
+                      labelText: 'رمز عبور',
                       inputType: TextInputType.text,
                     ),
                     SizedBox(height: 20,),
@@ -42,6 +42,7 @@ class LoginScreen extends StatelessWidget {
 
                         FlatButton(
                           child: Text("ایجاد حساب  ", style: Theme.of(context).textTheme.display2.copyWith(color: secondaryColor)),
+                          onPressed: (){},
                         ),
                         Text("اکانت ندارید؟", style: Theme.of(context).textTheme.display2,),
                       ],
