@@ -8,7 +8,7 @@ final Color backgroundColor = Color(0xFFeeeeee);
 final Color button1Color = Color(0xFF3A9BBF);
 final Color dangerColor = Color(0xFFCD1C1C);
 final Color green1Color = Color(0xFF05A719);
-final Color green2Color = Color(0xFFCD1C1C);
+final Color green2Color = Color(0xFFCFF82A);
 
 //themes light
 final ThemeData lightTheme = ThemeData.light().copyWith(

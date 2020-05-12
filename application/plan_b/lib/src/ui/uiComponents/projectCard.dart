@@ -6,15 +6,20 @@ const Duration _kExpand = Duration(milliseconds: 200);
 class ProjectCard extends StatefulWidget {
   const ProjectCard({
     this.onExpansionChanged,
-    @required this.item,
-    this.children = const <Widget>[],
-    @required this.buttonOpenText,
     this.initiallyExpanded = false,
-  })  : assert(initiallyExpanded != null),
+    this.children = const <Widget>[],
+    @required this.title,
+    @required this.caption,
+    @required this.buttonOpenText,
+  })
+      : assert(initiallyExpanded != null),
         assert(buttonOpenText != null);
 
   final String buttonOpenText;
-  final ProjectItem item;
+
+//  final ProjectItem item;
+  final String title;
+  final String caption;
   final ValueChanged<bool> onExpansionChanged;
   final List<Widget> children;
   final bool initiallyExpanded;
@@ -26,7 +31,7 @@ class ProjectCard extends StatefulWidget {
 class _ProjectCardState extends State<ProjectCard>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween =
-      CurveTween(curve: Curves.easeIn);
+  CurveTween(curve: Curves.easeIn);
 
   AnimationController _controller;
   Animation<double> _heightFactor;
@@ -71,19 +76,19 @@ class _ProjectCardState extends State<ProjectCard>
 
   Widget _buildChildren(BuildContext context, Widget child) {
     return Container(
-      margin: EdgeInsets.all(7),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTileTheme.merge(
             child: ListTile(
               title: Text(
-                widget.item.name,
-                style: TextStyle(
-                    color: Colors.black, fontFamily: 'yekan', fontSize: 20),
+                widget.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle,
               ),
               subtitle: Text(
-                widget.item.caption,
+                widget.caption,
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'yekan',
@@ -122,7 +127,15 @@ class _ProjectCardState extends State<ProjectCard>
               AnimatedBuilder(
                 animation: _controller.view,
                 builder: _buildChildren,
-                child: closed ? null : Column(children: widget.children),
+                child: closed
+                    ? null
+                    : Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: widget.children,
+                  ),
+                ),
               ),
               _buildBottomButton(closed, context),
             ],
@@ -141,7 +154,10 @@ class _ProjectCardState extends State<ProjectCard>
         ),
         child: Text(
           closed ? widget.buttonOpenText : 'بستن',
-          style: Theme.of(context).textTheme.button,
+          style: Theme
+              .of(context)
+              .textTheme
+              .button,
         ),
         onPressed: _handleTap,
       ),
@@ -149,15 +165,16 @@ class _ProjectCardState extends State<ProjectCard>
   }
 }
 
-
 //project card item model
 class ProjectItem {
-  ProjectItem({@required this.name, @required this.caption, @required this.skills});
-  final String name;
+  ProjectItem({this.team, this.requests, this.creator,
+    @required this.title, @required this.caption, @required this.skills});
+
+  // fixme : team and request and creator are type of USER not STRING
+  final String title;
   final String caption;
   final List<String> skills;
-
-//  final List<User> team;
-//  final List<User> requests;
-//  final User creator;
+  final List<User> team;
+  final List<User> requests;
+  final User creator;
 }
