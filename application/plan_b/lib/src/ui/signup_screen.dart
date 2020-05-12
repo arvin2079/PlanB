@@ -8,13 +8,15 @@ import 'package:planb/src/ui/uiComponents/titleText.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignUpScreenState extends State<SignupScreen> {
   TextEditingController _searchInputController = TextEditingController();
+  String _genderTitle = 'جنسیت';
+  String _universityTitle = 'دانشگاه';
 
-  List<String> sexItems = <String>['پسر', 'دختر'];
+  List<String> sexItems = <String>['مرد', 'زن'];
 
   List<String> _chipsData = <String>[];
 
@@ -83,6 +85,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             // fixme : style for these texts
+                            //fixme: user must enter his name, its a static text!
                             Text(
                               'نام',
                               style: Theme.of(context).textTheme.display1,
@@ -96,17 +99,21 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ],
                     ),
-                    CustomtextField(labeltext: 'نام دانشگاه'),
+                    //fixme: university has a dropBox for choose and its useless
+                    CustomTextField(labelText: 'نام دانشگاه'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         DropdownButton(
                           hint: Text(
-                            'جنسیت',
+                            _genderTitle,
                             style: Theme.of(context).textTheme.display2,
                           ),
                           onChanged: (value) {
                             print(value);
+                            setState(() {
+                              _genderTitle = value;
+                            });
                           },
                           items: sexItems.map((value) {
                             return DropdownMenuItem<String>(
@@ -119,10 +126,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           }).toList(),
                         ),
                         DropdownButton(
-                          hint: Text('دانشگاه'),
+                          hint: Text(_universityTitle),
                           style: Theme.of(context).textTheme.display2,
                           onChanged: (value) {
                             print(value);
+                            setState(() {
+                              _universityTitle = value;
+                            });
                           },
                           items: _uniItems.map((value) {
                             return DropdownMenuItem<String>(
@@ -138,27 +148,32 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(height: 30),
                     TitleText(text: 'اطلاعات تماس'),
-                    CustomtextField(
-                      labeltext: 'موبایل',
+                    CustomTextField(
+                      labelText: 'موبایل',
                       inputType: TextInputType.phone,
+                      maxLength: 11,
+                      hintText: "09123456789",
                     ),
-                    CustomtextField(
-                      labeltext: 'ایمیل',
+                    CustomTextField(
+                      labelText: 'ایمیل',
                       inputType: TextInputType.emailAddress,
+                      hintText: "example@gmail.com",
                     ),
-                    CustomtextField(
-                      labeltext: 'وبسایت',
+                    CustomTextField(
+                      labelText: 'وبسایت',
                       inputType: TextInputType.url,
+                      hintText: "www.example.com",
                     ),
-                    CustomtextField(labeltext: 'اینستاگرام'),
-                    CustomtextField(labeltext: 'تلگرام'),
-                    CustomtextField(labeltext: 'گیت'),
-                    CustomtextField(labeltext: 'لینکدین'),
+                    CustomTextField(labelText: 'اینستاگرام',hintText: "yourID",),
+                    CustomTextField(labelText: 'تلگرام',hintText: "yourID",),
+                    CustomTextField(labelText: 'گیت',hintText: "yourID",),
+                    CustomTextField(labelText: 'لینکدین',hintText: "yourID",),
                     SizedBox(height: 30),
                     TitleText(text: 'اطلاعات تماس'),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
+                        style: Theme.of(context).textTheme.display2,
                         textDirection: TextDirection.rtl,
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
@@ -181,7 +196,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         spacing: 10.0,
                       ),
                     ),
-                    SizedBox(height: 150),
                     RaisedButton(
                       child: Text('ادامه و تکمیل حساب',
                           style: Theme.of(context).textTheme.button),

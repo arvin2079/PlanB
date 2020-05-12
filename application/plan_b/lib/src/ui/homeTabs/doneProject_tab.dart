@@ -29,7 +29,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
     return SingleChildScrollView(
       child: Column(
         // todo : create itrable to create a list of widgets for children (using project items)
-        children: _doneProjectsTabList,
+//        children: _doneProjectsTabList,
       ),
     );
   }
