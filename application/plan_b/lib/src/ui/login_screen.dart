@@ -17,18 +17,18 @@ class LoginScreen extends StatelessWidget {
               child: Image.asset("images/loginBackground.jpg")),
           SizedBox(height:80,),
           Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/8,),
-              child:SingleChildScrollView(
-                child: Column(
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/8,),
+                child:Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     CustomTextField(
-                      labelText: 'نام کاربری',
+                      hintText: 'نام کاربری',
                     ),
                     SizedBox(height: 10,),
                     CustomTextField(
-                      labelText: 'رمز عبور',
+                      hintText: 'رمز عبور',
                       inputType: TextInputType.text,
                     ),
                     SizedBox(height: 20,),
