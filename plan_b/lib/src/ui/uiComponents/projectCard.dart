@@ -178,3 +178,8 @@ class ProjectItem {
   final List<User> requests;
   final User creator;
 }
+
+class User {
+  var name;
+  var lastname;
+}
