@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
+import 'package:planb/src/utility/imageCompressor.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -15,6 +19,7 @@ class _SignUpScreenState extends State<SignupScreen> {
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
+  ImageProvider _image;
 
   List<String> sexItems = <String>['مرد', 'زن'];
 
@@ -76,9 +81,17 @@ class _SignUpScreenState extends State<SignupScreen> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Avatar(
-                          icon: Icons.add,
-                          iconSize: 30,
+                        GestureDetector(
+                          child: CircleAvatar(
+                            backgroundImage: _image,
+                            child: _image == null
+                                ? Icon(Icons.photo_camera,
+                                    color: Colors.black45, size: 30)
+                                : null,
+                            backgroundColor: Colors.grey[200],
+                            radius: 35,
+                          ),
+                          onTap: () => _pickImage(),
                         ),
                         SizedBox(width: 20),
                         Column(
@@ -100,7 +113,7 @@ class _SignUpScreenState extends State<SignupScreen> {
                       ],
                     ),
                     //fixme: university has a dropBox for choose and its useless
-                    CustomTextField(labelText: 'نام دانشگاه'),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
@@ -164,10 +177,22 @@ class _SignUpScreenState extends State<SignupScreen> {
                       inputType: TextInputType.url,
                       hintText: "www.example.com",
                     ),
-                    CustomTextField(labelText: 'اینستاگرام',hintText: "yourID",),
-                    CustomTextField(labelText: 'تلگرام',hintText: "yourID",),
-                    CustomTextField(labelText: 'گیت',hintText: "yourID",),
-                    CustomTextField(labelText: 'لینکدین',hintText: "yourID",),
+                    CustomTextField(
+                      labelText: 'اینستاگرام',
+                      hintText: "yourID",
+                    ),
+                    CustomTextField(
+                      labelText: 'تلگرام',
+                      hintText: "yourID",
+                    ),
+                    CustomTextField(
+                      labelText: 'گیت',
+                      hintText: "yourID",
+                    ),
+                    CustomTextField(
+                      labelText: 'لینکدین',
+                      hintText: "yourID",
+                    ),
                     SizedBox(height: 30),
                     TitleText(text: 'اطلاعات تماس'),
                     Padding(
@@ -279,6 +304,43 @@ class _SignUpScreenState extends State<SignupScreen> {
         },
       );
     }
+  }
+
+  Future<void> _getImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: source);
+    File file = File(pickedFile.path);
+    File finalFile = await ImageCompressor.compressAndGetFile(file);
+//    _image = Image.file(finalFile, fit: BoxFit.cover);
+    var bytes = await finalFile.readAsBytes();
+    _image = MemoryImage(bytes);
+    setState(() {});
+  }
+
+  void _pickImage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('انتخاب نمایید'),
+            actions: <Widget>[
+              RaisedButton(
+                child: Text('دوربین'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  return _getImage(ImageSource.camera);
+                },
+              ),
+              RaisedButton(
+                child: Text('گالری'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  return _getImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          );
+        });
   }
 }
 

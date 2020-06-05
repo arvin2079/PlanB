@@ -182,4 +182,6 @@ class ProjectItem {
 class User {
   var name;
   var lastname;
+
+  User(this.name, this.lastname);
 }
