@@ -9,13 +9,14 @@ import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
+import 'package:planb/src/utility/languageDetector.dart';
 
-class SignupScreen extends StatefulWidget{
+class SignupScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignupScreen> with ImageCompressor{
+class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
@@ -138,7 +139,8 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor{
                           }).toList(),
                         ),
                         DropdownButton(
-                          hint: Text(_universityTitle,
+                          hint: Text(
+                            _universityTitle,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
                           onChanged: (value) {
@@ -194,25 +196,7 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor{
                       hintText: "yourID",
                     ),
                     SizedBox(height: 30),
-                    TitleText(text: 'اطلاعات تماس'),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: TextField(
-                        style: Theme.of(context).textTheme.subtitle,
-                        textDirection: TextDirection.rtl,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          labelStyle: Theme.of(context).textTheme.overline,
-                          errorStyle: Theme.of(context).textTheme.overline,
-                          helperStyle: Theme.of(context).textTheme.overline,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2.0),
-                          ),
-                          labelText: 'خلاصه ای از سوابغ خود بنویسید',
-                        ),
-                      ),
-                    ),
+                    TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
                     SizedBox(height: 30),
                     TitleText(text: 'مهارت های شما'),
                     _buildSearchTextField(context),
@@ -341,6 +325,63 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor{
             ],
           );
         });
+  }
+}
+
+class TextArea extends StatefulWidget {
+  const TextArea({this.labelText});
+
+  final String labelText;
+
+  @override
+  _TextAreaState createState() => _TextAreaState();
+}
+
+class _TextAreaState extends State<TextArea> with LanguageDetector {
+  bool _isPersian = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: TextFormField(
+        style: _isPersian
+            ? Theme.of(context).textTheme.display1
+            : Theme.of(context).textTheme.display2,
+        textDirection: TextDirection.rtl,
+        keyboardType: TextInputType.multiline,
+        maxLines: 5,
+        validator: (value) {
+          if(_isPersian)
+            return null;
+          else
+            return 'در این قیمت تنها مجاز به استفاده از حروف فارسی میباشید.';
+        },
+        onChanged: (value) {
+          if (!hasEnglishChar(value)) {
+            setState(() {
+              _isPersian = true;
+            });
+          } else {
+            setState(() {
+              _isPersian = false;
+            });
+          }
+        },
+        decoration: InputDecoration(
+          labelStyle: Theme.of(context).textTheme.overline,
+          errorStyle: Theme.of(context).textTheme.overline,
+          helperStyle: Theme.of(context).textTheme.overline,
+          errorText: _isPersian
+              ? null
+              : 'در این قیمت تنها مجاز به استفاده از حروف فارسی میباشید.',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2.0),
+          ),
+          labelText: widget.labelText,
+        ),
+      ),
+    );
   }
 }
 
