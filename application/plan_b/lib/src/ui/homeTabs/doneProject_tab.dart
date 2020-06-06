@@ -77,7 +77,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
               return CustomButton(
                 leftColor: button1Color,
                 rightColor: primaryColor,
-                name: item.team[index].name,
+                name: item.team[index].firstName,
                 lastName: item.team[index].lastName,
                 trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
                 showArrow: true,
@@ -95,7 +95,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
           CustomButton(
             leftColor: button1Color,
             rightColor: primaryColor,
-            name: item.creator.name,
+            name: item.creator.firstName,
             lastName: item.creator.lastName,
             trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
             showArrow: true,
