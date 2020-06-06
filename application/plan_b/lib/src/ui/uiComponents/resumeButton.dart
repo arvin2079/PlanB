@@ -12,14 +12,14 @@ class CustomButton extends StatelessWidget {
       this.arrowColor = Colors.white,
       this.trailingIcon,
       @required this.name,
-      @required this.lastname,
+      @required this.lastName,
       @required this.rightColor,
       @required this.leftColor});
 
   final Icon trailingIcon;
   final Image image;
   final String name;
-  final String lastname;
+  final String lastName;
   final Color fontColor;
   final Color arrowColor;
   final Color rightColor;
@@ -79,7 +79,7 @@ class CustomButton extends StatelessWidget {
                         style: Theme.of(context).textTheme.button,
                       ),
                       Text(
-                        lastname,
+                        lastName,
                         style: Theme.of(context).textTheme.button,
                       ),
                     ],

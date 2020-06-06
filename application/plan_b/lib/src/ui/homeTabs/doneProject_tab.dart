@@ -78,7 +78,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
                 leftColor: button1Color,
                 rightColor: primaryColor,
                 name: item.team[index].name,
-                lastname: item.team[index].lastname,
+                lastName: item.team[index].lastName,
                 trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
                 showArrow: true,
               );
@@ -96,7 +96,7 @@ class _DoneProjectsTabState extends State<DoneProjectsTab> {
             leftColor: button1Color,
             rightColor: primaryColor,
             name: item.creator.name,
-            lastname: item.creator.lastname,
+            lastName: item.creator.lastName,
             trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
             showArrow: true,
           ),
