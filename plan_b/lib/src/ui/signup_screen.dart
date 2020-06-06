@@ -58,7 +58,6 @@ class _SignUpScreenState extends State<SignupScreen> {
         appBar: AppBar(
           title: Text(
             'تکمیل اطلاعات',
-            style: Theme.of(context).textTheme.title,
           ),
           actions: <Widget>[
             IconButton(
@@ -83,12 +82,12 @@ class _SignUpScreenState extends State<SignupScreen> {
                       children: <Widget>[
                         GestureDetector(
                           child: CircleAvatar(
+                            backgroundColor: Colors.grey[300],
                             backgroundImage: _image,
                             child: _image == null
                                 ? Icon(Icons.photo_camera,
                                     color: Colors.black45, size: 30)
                                 : null,
-                            backgroundColor: Colors.grey[200],
                             radius: 35,
                           ),
                           onTap: () => _pickImage(),
@@ -101,12 +100,12 @@ class _SignUpScreenState extends State<SignupScreen> {
                             //fixme: user must enter his name, its a static text!
                             Text(
                               'نام',
-                              style: Theme.of(context).textTheme.display1,
+                              style: Theme.of(context).textTheme.subtitle,
                             ),
                             SizedBox(height: 10),
                             Text(
                               'نام خوانوادگی',
-                              style: Theme.of(context).textTheme.display1,
+                              style: Theme.of(context).textTheme.subtitle,
                             ),
                           ],
                         ),
@@ -120,7 +119,7 @@ class _SignUpScreenState extends State<SignupScreen> {
                         DropdownButton(
                           hint: Text(
                             _genderTitle,
-                            style: Theme.of(context).textTheme.display2,
+                            style: Theme.of(context).textTheme.subtitle,
                           ),
                           onChanged: (value) {
                             print(value);
@@ -133,14 +132,15 @@ class _SignUpScreenState extends State<SignupScreen> {
                               value: value,
                               child: Text(
                                 value,
-                                style: Theme.of(context).textTheme.display2,
+                                style: Theme.of(context).textTheme.subtitle,
                               ),
                             );
                           }).toList(),
                         ),
                         DropdownButton(
-                          hint: Text(_universityTitle),
-                          style: Theme.of(context).textTheme.display2,
+                          hint: Text(_universityTitle,
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
                           onChanged: (value) {
                             print(value);
                             setState(() {
@@ -152,7 +152,7 @@ class _SignUpScreenState extends State<SignupScreen> {
                               value: value,
                               child: Text(
                                 value,
-                                style: Theme.of(context).textTheme.display2,
+                                style: Theme.of(context).textTheme.subtitle,
                               ),
                             );
                           }).toList(),
@@ -198,12 +198,14 @@ class _SignUpScreenState extends State<SignupScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
-                        style: Theme.of(context).textTheme.display2,
+                        style: Theme.of(context).textTheme.subtitle,
                         textDirection: TextDirection.rtl,
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                         decoration: InputDecoration(
-                          labelStyle: Theme.of(context).textTheme.display2,
+                          labelStyle: Theme.of(context).textTheme.overline,
+                          errorStyle: Theme.of(context).textTheme.overline,
+                          helperStyle: Theme.of(context).textTheme.overline,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(2.0),
                           ),
@@ -222,10 +224,11 @@ class _SignUpScreenState extends State<SignupScreen> {
                       ),
                     ),
                     RaisedButton(
-                      child: Text('ادامه و تکمیل حساب',
-                          style: Theme.of(context).textTheme.button),
+                      child: Text(
+                        'ادامه و تکمیل حساب',
+                      ),
                       onPressed: () {},
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -241,7 +244,6 @@ class _SignUpScreenState extends State<SignupScreen> {
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: AutoCompleteTextField<String>(
         controller: _searchInputController,
-        style: Theme.of(context).textTheme.display3,
         itemSubmitted: (data) {
           setState(() {
             if (!_chipsData.contains(data))
@@ -284,7 +286,6 @@ class _SignUpScreenState extends State<SignupScreen> {
           // FIXME : make style for list item Texts
           return Text(
             suggestion,
-            style: Theme.of(context).textTheme.display4,
           );
         },
       ),

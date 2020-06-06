@@ -1,11 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({this.focusNode, this.controller, this.inputType, @required this.labelText, this.hintText, this.maxLength});
+  const CustomTextField(
+      {this.errorText,
+      this.helperText,
+      this.focusNode,
+      this.controller,
+      this.inputType,
+      @required this.labelText,
+      this.hintText,
+      this.maxLength});
 
   final String labelText;
   final String hintText;
+  final String errorText;
+  final String helperText;
   final TextInputType inputType;
   final FocusNode focusNode;
   final TextEditingController controller;
@@ -15,20 +26,19 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         maxLength: maxLength,
         focusNode: focusNode,
+        style: Theme.of(context).textTheme.display1,
         textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
         keyboardType: inputType,
-        style: Theme.of(context).textTheme.display2,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.display2,
-          // TODO : style for text and inputdecoration
+          helperText: helperText,
+          errorText: errorText,
           labelText: labelText,
-          labelStyle: Theme.of(context).textTheme.display2,
         ),
       ),
     );

@@ -10,7 +10,7 @@ class TitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.subtitle,
+      style: Theme.of(context).textTheme.title,
       textDirection: TextDirection.rtl,
       textAlign: TextAlign.right,
     );

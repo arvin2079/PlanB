@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 40, horizontal:20),
+                    margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       mainAxisSize: MainAxisSize.max,
@@ -33,22 +33,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Text("نام", textDirection: TextDirection.rtl, textAlign: TextAlign.right, style: Theme.of(context).textTheme.display1.copyWith(color: Colors.white),),
-                            SizedBox(height: 10,),
-                            Text("نام خانوادگی", textDirection: TextDirection.rtl, textAlign: TextAlign.right, style: Theme.of(context).textTheme.display1.copyWith(color: Colors.white),)
+                            Text(
+                              "نام",
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "نام خانوادگی",
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                            ),
                           ],
                         ),
-                        SizedBox(width: 20,),
+                        SizedBox(
+                          width: 20,
+                        ),
                         CircleAvatar(
                           radius: 50,
                           child: ClipOval(
                               child: Image.asset(
-                                "images/noImage.png",
-                                fit: BoxFit.cover,
-                                width: 95.0,
-                                height: 95.0,
-                              )
-                          ),
+                            "images/noImage.png",
+                            fit: BoxFit.cover,
+                            width: 95.0,
+                            height: 95.0,
+                          )),
                         ),
                       ],
                     ),
@@ -92,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: EdgeInsets.only(bottom: 10),
       child: Text(
         name,
-        style: Theme.of(context).textTheme.button,
       ),
     );
   }
@@ -100,21 +110,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSolidCircle(double radius, Color color) {
     return ClipOval(
       child: Container(
-        width: radius*2,
-        height: radius*2,
+        width: radius * 2,
+        height: radius * 2,
         color: color,
       ),
     );
   }
-  Widget _buildListTile(String title, IconData iconData){
+
+  Widget _buildListTile(String title, IconData iconData) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         child: ListTile(
-          onTap: (){},
+          onTap: () {},
           contentPadding: EdgeInsets.symmetric(horizontal: 20),
-          title: Text(title, textDirection: TextDirection.rtl, textAlign: TextAlign.right, style: Theme.of(context).textTheme.display1.copyWith(color: Colors.white),),
-          trailing: Icon(iconData, color: Colors.white,),
+          title: Text(
+            title,
+            textDirection: TextDirection.rtl,
+            textAlign: TextAlign.right,
+          ),
+          trailing: Icon(
+            iconData,
+            color: Colors.white,
+          ),
         ),
       ),
     );

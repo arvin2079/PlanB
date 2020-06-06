@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20,),
                     RaisedButton(
-                      child: Text("ورود", style: Theme.of(context).textTheme.button,),
+                      child: Text("ورود"),
                       onPressed: (){},
                     ),
                     Row(
@@ -41,10 +41,10 @@ class LoginScreen extends StatelessWidget {
                       children: <Widget>[
 
                         FlatButton(
-                          child: Text("ایجاد حساب  ", style: Theme.of(context).textTheme.display2.copyWith(color: secondaryColor)),
+                          child: Text("ایجاد حساب  "),
                           onPressed: (){},
                         ),
-                        Text("اکانت ندارید؟", style: Theme.of(context).textTheme.display2,),
+                        Text("اکانت ندارید؟"),
                       ],
                     )
                   ],
