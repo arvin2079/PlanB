@@ -63,6 +63,13 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       color: Colors.black87
     ),
 
+    //textfield editable text style
+    display2: TextStyle(
+//        fontFamily: 'yekan',
+        fontSize: 16,
+        color: Colors.black87
+    ),
+
     title: TextStyle(
       fontFamily: 'yekan',
       fontSize: 22,

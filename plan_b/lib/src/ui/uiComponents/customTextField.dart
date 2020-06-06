@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
       {this.errorText,
-      this.helperText,
       this.focusNode,
       this.controller,
       this.inputType,
@@ -16,7 +15,6 @@ class CustomTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
   final String errorText;
-  final String helperText;
   final TextInputType inputType;
   final FocusNode focusNode;
   final TextEditingController controller;
@@ -30,13 +28,13 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         maxLength: maxLength,
         focusNode: focusNode,
-        style: Theme.of(context).textTheme.display1,
+        style: Theme.of(context).textTheme.display2,
         textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
         keyboardType: inputType,
         decoration: InputDecoration(
+          labelStyle: Theme.of(context).textTheme.display1,
           hintText: hintText,
-          helperText: helperText,
           errorText: errorText,
           labelText: labelText,
         ),
