@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:planb/src/utility/languageDetector.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   const CustomTextField(
       {this.errorText,
       this.focusNode,
@@ -21,22 +23,42 @@ class CustomTextField extends StatelessWidget {
   final int maxLength;
 
   @override
+  _CustomTextFieldState createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField>
+    with LanguageDetector {
+  bool _isPersian = false;
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-        controller: controller,
-        maxLength: maxLength,
-        focusNode: focusNode,
-        style: Theme.of(context).textTheme.display2,
+        controller: widget.controller,
+        maxLength: widget.maxLength,
+        focusNode: widget.focusNode,
+        style: _isPersian
+            ? Theme.of(context).textTheme.display1
+            : Theme.of(context).textTheme.display2,
+        onChanged: (value) {
+          print(value);
+          setState(() {
+            if (hasEnglishChar(value) || value.isEmpty) {
+              _isPersian = false;
+            } else {
+              _isPersian = true;
+            }
+          });
+        },
         textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
-        keyboardType: inputType,
+        keyboardType: widget.inputType,
         decoration: InputDecoration(
           labelStyle: Theme.of(context).textTheme.display1,
-          hintText: hintText,
-          errorText: errorText,
-          labelText: labelText,
+          hintText: widget.hintText,
+          errorText: widget.errorText,
+          labelText: widget.labelText,
         ),
       ),
     );
