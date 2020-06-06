@@ -16,10 +16,13 @@ class SignupScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
+class _SignUpScreenState extends State<SignupScreen>
+    with ImageCompressor, LanguageDetector {
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
+  final GlobalKey _fromKey = GlobalKey<FormState>();
+
   ImageProvider _image;
 
   List<String> sexItems = <String>['مرد', 'زن'];
@@ -43,6 +46,11 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
       'art',
       'python',
       'front-end',
+      'fuck',
+      'film',
+      'fish',
+      'foster',
+      'felamingo',
       'back-end',
       'yellow',
       'arvin',
@@ -73,147 +81,151 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
           builder: (context) => LimitedBox(
             maxHeight: double.maxFinite,
             maxWidth: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        GestureDetector(
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey[300],
-                            backgroundImage: _image,
-                            child: _image == null
-                                ? Icon(Icons.photo_camera,
-                                    color: Colors.black45, size: 30)
-                                : null,
-                            radius: 35,
-                          ),
-                          onTap: () => _pickImage(),
-                        ),
-                        SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // fixme : style for these texts
-                            //fixme: user must enter his name, its a static text!
-                            Text(
-                              'نام',
-                              style: Theme.of(context).textTheme.subtitle,
+            child: Form(
+              key: _fromKey,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          GestureDetector(
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey[300],
+                              backgroundImage: _image,
+                              child: _image == null
+                                  ? Icon(Icons.photo_camera,
+                                      color: Colors.black45, size: 30)
+                                  : null,
+                              radius: 35,
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              'نام خوانوادگی',
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    //fixme: university has a dropBox for choose and its useless
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        DropdownButton(
-                          hint: Text(
-                            _genderTitle,
-                            style: Theme.of(context).textTheme.subtitle,
+                            onTap: () => _pickImage(),
                           ),
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              _genderTitle = value;
-                            });
-                          },
-                          items: sexItems.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
+                          SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // fixme : style for these texts
+                              //fixme: user must enter his name, its a static text!
+                              Text(
+                                'نام',
                                 style: Theme.of(context).textTheme.subtitle,
                               ),
-                            );
-                          }).toList(),
-                        ),
-                        DropdownButton(
-                          hint: Text(
-                            _universityTitle,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              _universityTitle = value;
-                            });
-                          },
-                          items: _uniItems.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
+                              SizedBox(height: 10),
+                              Text(
+                                'نام خوانوادگی',
                                 style: Theme.of(context).textTheme.subtitle,
                               ),
-                            );
-                          }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      //fixme: university has a dropBox for choose and its useless
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          DropdownButton(
+                            hint: Text(
+                              _genderTitle,
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                            onChanged: (value) {
+                              print(value);
+                              setState(() {
+                                _genderTitle = value;
+                              });
+                            },
+                            items: sexItems.map((value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: Theme.of(context).textTheme.subtitle,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          DropdownButton(
+                            hint: Text(
+                              _universityTitle,
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                            onChanged: (value) {
+                              print(value);
+                              setState(() {
+                                _universityTitle = value;
+                              });
+                            },
+                            items: _uniItems.map((value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: Theme.of(context).textTheme.subtitle,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 30),
+                      TitleText(text: 'اطلاعات تماس'),
+                      CustomTextField(
+                        labelText: 'موبایل',
+                        inputType: TextInputType.phone,
+                        maxLength: 11,
+                        hintText: "09123456789",
+                      ),
+                      CustomTextField(
+                        labelText: 'ایمیل',
+                        inputType: TextInputType.emailAddress,
+                        hintText: "example@gmail.com",
+                      ),
+                      CustomTextField(
+                        labelText: 'وبسایت',
+                        inputType: TextInputType.url,
+                        hintText: "www.example.com",
+                      ),
+                      CustomTextField(
+                        labelText: 'اینستاگرام',
+                        hintText: "yourID",
+                      ),
+                      CustomTextField(
+                        labelText: 'تلگرام',
+                        hintText: "yourID",
+                      ),
+                      CustomTextField(
+                        labelText: 'گیت',
+                        hintText: "yourID",
+                      ),
+                      CustomTextField(
+                        labelText: 'لینکدین',
+                        hintText: "yourID",
+                      ),
+                      SizedBox(height: 30),
+                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      SizedBox(height: 30),
+                      TitleText(text: 'مهارت های شما'),
+                      _buildSearchTextField(context),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Wrap(
+                          children: _chipWidgets.toList(),
+                          spacing: 10.0,
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    TitleText(text: 'اطلاعات تماس'),
-                    CustomTextField(
-                      labelText: 'موبایل',
-                      inputType: TextInputType.phone,
-                      maxLength: 11,
-                      hintText: "09123456789",
-                    ),
-                    CustomTextField(
-                      labelText: 'ایمیل',
-                      inputType: TextInputType.emailAddress,
-                      hintText: "example@gmail.com",
-                    ),
-                    CustomTextField(
-                      labelText: 'وبسایت',
-                      inputType: TextInputType.url,
-                      hintText: "www.example.com",
-                    ),
-                    CustomTextField(
-                      labelText: 'اینستاگرام',
-                      hintText: "yourID",
-                    ),
-                    CustomTextField(
-                      labelText: 'تلگرام',
-                      hintText: "yourID",
-                    ),
-                    CustomTextField(
-                      labelText: 'گیت',
-                      hintText: "yourID",
-                    ),
-                    CustomTextField(
-                      labelText: 'لینکدین',
-                      hintText: "yourID",
-                    ),
-                    SizedBox(height: 30),
-                    TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
-                    SizedBox(height: 30),
-                    TitleText(text: 'مهارت های شما'),
-                    _buildSearchTextField(context),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Wrap(
-                        children: _chipWidgets.toList(),
-                        spacing: 10.0,
                       ),
-                    ),
-                    RaisedButton(
-                      child: Text(
-                        'ادامه و تکمیل حساب',
+                      SizedBox(height: 100),
+                      RaisedButton(
+                        child: Text(
+                          'ادامه و تکمیل حساب',
+                        ),
+                        onPressed: () {},
                       ),
-                      onPressed: () {},
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -224,10 +236,17 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
   }
 
   Padding _buildSearchTextField(BuildContext context) {
+    bool _isPersian = true;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: AutoCompleteTextField<String>(
+        style: _isPersian ? Theme.of(context).textTheme.display1 : Theme.of(context).textTheme.display2,
         controller: _searchInputController,
+        clearOnSubmit: true,
+        textSubmitted: (value) {
+
+        },
         itemSubmitted: (data) {
           setState(() {
             if (!_chipsData.contains(data))
@@ -255,12 +274,9 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
         suggestions: _getSearchFieldSuggestion(_searchInputController.text),
         key: GlobalKey(),
         itemFilter: (String suggestion, String query) {
-          // FIXME : implement itemFilter for search (fixed)
-          // using RegExp
           return suggestion.contains(RegExp(r'\b' + '${query.toLowerCase()}'));
         },
         itemSorter: (String a, String b) {
-          // FIXME : implement comparator for search
           if (a.length < b.length)
             return -1;
           else
@@ -268,8 +284,14 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
         },
         itemBuilder: (BuildContext context, String suggestion) {
           // FIXME : make style for list item Texts
-          return Text(
-            suggestion,
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Text(
+              suggestion,
+              style: hasEnglishChar(suggestion)
+                  ? Theme.of(context).textTheme.display4
+                  : Theme.of(context).textTheme.display3,
+            ),
           );
         },
       ),
@@ -328,61 +350,5 @@ class _SignUpScreenState extends State<SignupScreen> with ImageCompressor {
   }
 }
 
-class TextArea extends StatefulWidget {
-  const TextArea({this.labelText});
-
-  final String labelText;
-
-  @override
-  _TextAreaState createState() => _TextAreaState();
-}
-
-class _TextAreaState extends State<TextArea> with LanguageDetector {
-  bool _isPersian = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: TextFormField(
-        style: _isPersian
-            ? Theme.of(context).textTheme.display1
-            : Theme.of(context).textTheme.display2,
-        textDirection: TextDirection.rtl,
-        keyboardType: TextInputType.multiline,
-        maxLines: 5,
-        validator: (value) {
-          if(_isPersian)
-            return null;
-          else
-            return 'در این قیمت تنها مجاز به استفاده از حروف فارسی میباشید.';
-        },
-        onChanged: (value) {
-          if (!hasEnglishChar(value)) {
-            setState(() {
-              _isPersian = true;
-            });
-          } else {
-            setState(() {
-              _isPersian = false;
-            });
-          }
-        },
-        decoration: InputDecoration(
-          labelStyle: Theme.of(context).textTheme.overline,
-          errorStyle: Theme.of(context).textTheme.overline,
-          helperStyle: Theme.of(context).textTheme.overline,
-          errorText: _isPersian
-              ? null
-              : 'در این قیمت تنها مجاز به استفاده از حروف فارسی میباشید.',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-          ),
-          labelText: widget.labelText,
-        ),
-      ),
-    );
-  }
-}
-
 // fixme : search field item font ROBOTO download
+// todo : create validator for each textfield

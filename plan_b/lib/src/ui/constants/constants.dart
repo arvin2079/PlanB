@@ -69,6 +69,20 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
         color: Colors.black87
     ),
 
+    //autocomplete list persian item style
+    display3: TextStyle(
+        fontFamily: 'yekan',
+        fontSize: 19,
+        color: Colors.black87
+    ),
+
+    //autocomplete list english item style
+    display4: TextStyle(
+        fontSize: 19,
+        fontWeight: FontWeight.w300,
+        color: Colors.black87,
+    ),
+
     title: TextStyle(
       fontFamily: 'yekan',
       fontSize: 22,
