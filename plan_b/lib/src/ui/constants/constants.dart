@@ -54,18 +54,24 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
   primaryTextTheme: TextTheme(
 
   ),
-  textTheme: TextTheme(
 
-    //textfield style
+  textTheme: TextTheme(
+    //textField style
     display1: TextStyle(
       fontFamily: 'yekan',
       fontSize: 16,
       color: Colors.black87
     ),
 
-    //textfield editable text style
+    //textField english editable text style
     display2: TextStyle(
-//        fontFamily: 'yekan',
+        fontSize: 16,
+        color: Colors.black87
+    ),
+
+    //textField persian editable text style
+    display3: TextStyle(
+        fontFamily: 'yekan',
         fontSize: 16,
         color: Colors.black87
     ),

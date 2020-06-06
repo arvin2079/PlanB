@@ -10,12 +10,12 @@ import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget{
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignupScreen> {
+class _SignUpScreenState extends State<SignupScreen> with ImageCompressor{
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
@@ -311,8 +311,7 @@ class _SignUpScreenState extends State<SignupScreen> {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: source);
     File file = File(pickedFile.path);
-    File finalFile = await ImageCompressor.compressAndGetFile(file);
-//    _image = Image.file(finalFile, fit: BoxFit.cover);
+    File finalFile = await compressAndGetFile(file);
     var bytes = await finalFile.readAsBytes();
     _image = MemoryImage(bytes);
     setState(() {});
