@@ -7,10 +7,10 @@ class User {
     bool gender;
     String lastName;
     String phoneNumber;
-    List<Object> projects;
+    List<String> grades;
     String username;
 
-    User({this.avatar, this.city, this.email, this.firstName, this.gender, this.lastName, this.phoneNumber, this.projects, this.username});
+    User({this.avatar, this.city, this.email, this.firstName, this.gender, this.lastName, this.phoneNumber, this.grades, this.username});
 
     factory User.fromJson(Map<String, dynamic> json) {
         return User(
@@ -22,7 +22,7 @@ class User {
             lastName: json['last_name'],
             phoneNumber: json['phone_number'],
 //            projects: json['projects'] != null ? (json['projects'] as List).map((i) => Object.fromJson(i)).toList() : null,
-            projects: null,
+            grades: null,
             username: json['username'],
         );
     }
@@ -37,8 +37,8 @@ class User {
         data['last_name'] = this.lastName;
         data['phone_number'] = this.phoneNumber;
         data['username'] = this.username;
-        if (this.projects != null) {
-//            data['projects'] = this.projects.map((v) => v.toJson()).toList();
+        if (this.grades != null) {
+            data['grades'] = this.grades.map((v) => v.toString()).toList();
         }
         return data;
     }

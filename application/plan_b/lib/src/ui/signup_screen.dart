@@ -2,6 +2,8 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
@@ -12,9 +14,12 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignupScreen> {
+  TextEditingController _controller = TextEditingController();
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
+  UserBloc bloc = UserBloc();
+  User user = User();
 
   List<String> sexItems = <String>['مرد', 'زن'];
 
@@ -44,6 +49,7 @@ class _SignUpScreenState extends State<SignupScreen> {
       'flutter',
     ];
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +159,7 @@ class _SignUpScreenState extends State<SignupScreen> {
                       inputType: TextInputType.phone,
                       maxLength: 11,
                       hintText: "09123456789",
+                      controller: _controller,
                     ),
                     CustomTextField(
                       labelText: 'ایمیل',
@@ -200,7 +207,15 @@ class _SignUpScreenState extends State<SignupScreen> {
                       child: Text('ادامه و تکمیل حساب',
                           style: Theme.of(context).textTheme.button),
                       onPressed: () {
+                        // get inputs instead of 6 lines below
+                        /*user.firstName = "firstName";
+                        user.lastName = "lastName";
+                        user.username = "username";
+                        user.phoneNumber = "9382883937";
+                        user.grades = ["1"];
+                        user.gender = true;*/
 
+                        bloc.signUpNewUser(user);
                       },
                     )
                   ],
