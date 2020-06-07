@@ -6,14 +6,33 @@ import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/login_screen.dart';
 
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
 
-class SignUpScreen extends StatelessWidget {
-  UserBloc bloc = UserBloc();
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  User user = User();
+class _SignUpScreenState extends State<SignUpScreen> {
+  UserBloc bloc;
+  TextEditingController _firstNameController;
+  TextEditingController _lastNameController;
+  TextEditingController _usernameController;
+  TextEditingController _passwordController;
+  String passwordError;
+  String usernameError;
+  bool isInputsValid;
+  User user;
+
+  @override
+  void initState() {
+    bloc = UserBloc();
+    user = User();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    isInputsValid = true;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +93,9 @@ class SignUpScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.display2,
                       decoration: InputDecoration(
                         hintText: "نام کاربری",
-                        labelStyle: Theme.of(context).textTheme.button,
+                        errorText: usernameError,
                       ),
+                      maxLength: 10,
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.right,
                       controller: _usernameController,
@@ -91,8 +111,7 @@ class SignUpScreen extends StatelessWidget {
                     TextField(
                       style: Theme.of(context).textTheme.display2,
                       decoration: InputDecoration(
-                        hintText: "رمز عبور",
-                      ),
+                          hintText: "رمز عبور", errorText: passwordError),
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.right,
                       obscureText: true,
@@ -111,8 +130,12 @@ class SignUpScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.button,
                       ),
                       onPressed: () {
-                        user.phoneNumber = "9382883937";
-                        bloc.signUpNewUser(user);
+                        validateInputs(
+                            _usernameController.text, _passwordController.text);
+                        if (isInputsValid) {
+                          user.phoneNumber = "9382883937";
+                          bloc.signUpNewUser(user);
+                        }
                       },
                     ),
                     Row(
@@ -125,7 +148,8 @@ class SignUpScreen extends StatelessWidget {
                                   .display2
                                   .copyWith(color: secondaryColor)),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
                           },
                         ),
                         Text(
@@ -143,11 +167,29 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
-  void dispose(){
+
+  void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
     bloc.dispose();
+    super.dispose();
+  }
+
+  validateInputs(String username, String password) {
+    passwordError = usernameError = null;
+    setState(() => isInputsValid = true);
+    if (password.length < 6)
+      setState(() {
+        passwordError = "رمز عبور نامعتبر میباشد";
+        isInputsValid = false;
+      });
+    if (username.length < 6) {
+      setState(() {
+        usernameError = "نام کاربری نامعتبر میباشد";
+        isInputsValid = false;
+      });
+    }
   }
 }
