@@ -54,13 +54,13 @@ class LoginScreen extends StatelessWidget {
                           child: Text("ایجاد حساب  ",
                               style: Theme.of(context)
                                   .textTheme
-                                  .display2
+                                  .button
                                   .copyWith(color: secondaryColor)),
                           onPressed: () {},
                         ),
                         Text(
                           "اکانت ندارید؟",
-                          style: Theme.of(context).textTheme.display2,
+                          style: Theme.of(context).textTheme.display1,
                         ),
                       ],
                     )

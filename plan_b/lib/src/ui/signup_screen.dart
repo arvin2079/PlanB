@@ -119,12 +119,12 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         height: 15,
                       ),
                       TextFormField(
-                        style: Theme.of(context).textTheme.display2,
+                        style: Theme.of(context).textTheme.display1,
                         validator: (value) {
                           return emailValidator.isValid(value) ? null : notValidEmailMessage;
                         },
                         decoration: InputDecoration(
-                          hintText: "email",
+                          hintText: "ایمیل",
                         ),
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
@@ -139,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         height: 15,
                       ),
                       TextFormField(
-                        style: Theme.of(context).textTheme.display2,
+                        style: Theme.of(context).textTheme.display1,
                         validator: (value) {
                           return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
                         },
@@ -221,7 +221,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                             child: Text("وارد شوید  ",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .display2
+                                    .button
                                     .copyWith(color: secondaryColor)),
                             onPressed: () {
                               Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -230,7 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                           ),
                           Text(
                             "اکانت ندارید؟",
-                            style: Theme.of(context).textTheme.display2,
+                            style: Theme.of(context).textTheme.display1,
                           ),
                         ],
                       )
