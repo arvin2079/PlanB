@@ -1,47 +1,89 @@
+import 'package:planb/src/model/city_model.dart';
+import 'package:planb/src/model/project_model.dart';
+import 'package:planb/src/model/skill_model.dart';
+import 'package:planb/src/model/university_model.dart';
 
 class User {
-    String avatar;
-    String city;
-    String email;
-    String firstName;
-    bool gender;
-    String lastName;
-    String phoneNumber;
-    List<String> grades;
-    String username;
-    String password;
+  String username;
+  String password;
+  String email;
+  String firstName;
+  String lastName;
+  DateTime dateJoined;
+  String avatar;
+  bool gender;
+  List<Skill> skills;
+  List<Project> projects;
+  University university;
+  City city;
+  String phoneNumber;
+  bool isSuperUser;
+  bool isStaff;
 
-    User({this.avatar, this.city, this.email, this.firstName, this.gender, this.lastName, this.phoneNumber, this.grades, this.username});
+  User(
+      {this.username,
+      this.password,
+      this.email,
+      this.firstName,
+      this.lastName,
+      this.dateJoined,
+      this.avatar,
+      this.gender,
+      this.skills,
+      this.projects,
+      this.university,
+      this.city,
+      this.phoneNumber,
+      this.isSuperUser,
+      this.isStaff});
 
-    factory User.fromJson(Map<String, dynamic> json) {
-        return User(
-            avatar: json['avatar'],
-            city: json['city'],
-            email: json['email'],
-            firstName: json['first_name'],
-            gender: json['gender'],
-            lastName: json['last_name'],
-            phoneNumber: json['phone_number'],
-//            projects: json['projects'] != null ? (json['projects'] as List).map((i) => Object.fromJson(i)).toList() : null,
-            grades: null,
-            username: json['username'],
-        );
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+        username: json['username'],
+        password: json['password'],
+        email: json['email'],
+        firstName: json['first_name'],
+        lastName: json['last_name'],
+        dateJoined: json['date_joined'],
+        avatar: json['avatar'],
+        gender: json['gender'],
+        skills: json['skills'] != null
+            ? (json['skills'] as List).map((i) => Skill.fromJson(i)).toList()
+            : null,
+        projects: json['projects'] != null
+            ? (json['projects'] as List)
+                .map((i) => Project.fromJson(i))
+                .toList()
+            : null,
+        university: University.fromJson(json['university']),
+        city: City.fromJson(json['city']),
+        phoneNumber: json['phone_number'],
+        isSuperUser: json['is_super_user'],
+        isStaff: json['is_staff']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['username'] = this.username;
+    data['password'] = this.password;
+    data['email'] = this.email;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['date_joined'] = this.dateJoined;
+    data['avatar'] = this.avatar;
+    data['gender'] = this.gender;
+    if (this.skills != null) {
+      data['skills'] = this.skills.map((v) => v.toJson()).toList();
     }
-
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = new Map<String, dynamic>();
-        data['avatar'] = this.avatar;
-        data['city'] = this.city;
-        data['email'] = this.email;
-        data['first_name'] = this.firstName;
-        data['gender'] = this.gender;
-        data['last_name'] = this.lastName;
-        data['phone_number'] = this.phoneNumber;
-        data['username'] = this.username;
-        data['password'] = this.password;
-        if (this.grades != null) {
-            data['grades'] = this.grades.map((v) => v.toString()).toList();
-        }
-        return data;
+    if (this.projects != null) {
+      data['projects'] = this.projects.map((v) => v.toJson()).toList();
     }
+    data['university'] = this.university.toJson();
+    data['city'] = this.city.toJson();
+    data['phone_number'] = this.phoneNumber;
+    data['is_super_user'] = this.isSuperUser;
+    data['is_staff'] = this.isStaff;
+
+    return data;
+  }
 }
