@@ -43,7 +43,7 @@ class PhoneNumberStringValidator implements StringValidator {
 class SignUpValidator {
   final StringValidator firstnameValidator = NonEmptyStringValidator();
   final StringValidator lastnameValidator = NonEmptyStringValidator();
-  final StringValidator uniId = NonEmptyStringValidator();
+  final StringValidator uniIdValidator = NonEmptyStringValidator();
   final StringValidator usernameValidator = UsernameValidator();
   final StringValidator passwordValidator = NonEmptyStringValidator();
   final StringValidator emailValidator = EmailValidator();
