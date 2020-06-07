@@ -12,7 +12,6 @@ class UserBloc extends Bloc{
   signUpNewUser(User user) async{
 
     String token = await repository.getNewToken(user);
-    print(token);
     tokenStreamController.sink.add(token);
 
   }

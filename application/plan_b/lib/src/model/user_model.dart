@@ -9,6 +9,7 @@ class User {
     String phoneNumber;
     List<String> grades;
     String username;
+    String password;
 
     User({this.avatar, this.city, this.email, this.firstName, this.gender, this.lastName, this.phoneNumber, this.grades, this.username});
 
@@ -37,6 +38,7 @@ class User {
         data['last_name'] = this.lastName;
         data['phone_number'] = this.phoneNumber;
         data['username'] = this.username;
+        data['password'] = this.password;
         if (this.grades != null) {
             data['grades'] = this.grades.map((v) => v.toString()).toList();
         }

@@ -9,21 +9,17 @@ class APIProvider{
 
 
   Future<String> signUpNewUser(User user) async{
-    String url = _baseUrl + "signup/";
+    String url = _baseUrl + "api/token/";
     Map<String, String> headers = {"Content-type" : "application/json"};
-    print(user.toJson());
     String json = jsonEncode(user.toJson());
 
-    print(url);
     final response = await client.post(url, headers: headers, body: json);
 
     if (response.statusCode == 200){
       return response.body;
     }
     else{
-      print(response.statusCode);
-      print(response.headers);
-      throw Exception("Invalid request");
+      throw Exception("Something went wrong!");
     }
 
   }

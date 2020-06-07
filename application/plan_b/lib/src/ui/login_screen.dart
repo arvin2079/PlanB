@@ -15,36 +15,53 @@ class LoginScreen extends StatelessWidget {
           ClipRRect(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
               child: Image.asset("images/loginBackground.jpg")),
-          SizedBox(height:80,),
+          SizedBox(
+            height: 80,
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/8,),
-                child:Column(
+                margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 8,
+                ),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     CustomTextField(
                       hintText: 'نام کاربری',
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     CustomTextField(
                       hintText: 'رمز عبور',
                       inputType: TextInputType.text,
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     RaisedButton(
-                      child: Text("ورود", style: Theme.of(context).textTheme.button,),
-                      onPressed: (){},
+                      child: Text(
+                        "ورود",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {},
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-
                         FlatButton(
-                          child: Text("ایجاد حساب  ", style: Theme.of(context).textTheme.display2.copyWith(color: secondaryColor)),
-                          onPressed: (){},
+                          child: Text("ایجاد حساب  ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .display2
+                                  .copyWith(color: secondaryColor)),
+                          onPressed: () {},
                         ),
-                        Text("اکانت ندارید؟", style: Theme.of(context).textTheme.display2,),
+                        Text(
+                          "اکانت ندارید؟",
+                          style: Theme.of(context).textTheme.display2,
+                        ),
                       ],
                     )
                   ],
