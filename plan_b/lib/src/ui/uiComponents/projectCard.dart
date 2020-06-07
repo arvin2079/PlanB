@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:planb/src/model/user_model.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 

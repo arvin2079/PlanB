@@ -1,348 +1,195 @@
-import 'dart:io';
+import 'dart:ui';
 
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:planb/src/ui/uiComponents/customTextField.dart';
-import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
-import 'package:planb/src/ui/uiComponents/titleText.dart';
-import 'package:planb/src/utility/imageCompressor.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/user_model.dart';
+import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/login_screen.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignupScreen> {
-  TextEditingController _searchInputController = TextEditingController();
-  String _genderTitle = 'جنسیت';
-  String _universityTitle = 'دانشگاه';
-  ImageProvider _image;
+class _SignUpScreenState extends State<SignUpScreen> {
+  UserBloc bloc;
+  TextEditingController _firstNameController;
+  TextEditingController _lastNameController;
+  TextEditingController _usernameController;
+  TextEditingController _passwordController;
+  String passwordError;
+  String usernameError;
+  bool isInputsValid;
+  User user;
 
-  List<String> sexItems = <String>['مرد', 'زن'];
-
-  List<String> _chipsData = <String>[];
-
-  List<String> _uniItems = <String>[
-    'امیرکبیر',
-    'خوارزمی',
-    'شریف',
-    'مشهد',
-    'خواجه نصیر',
-  ];
-
-  List<String> _getSearchFieldSuggestion(String data) {
-    return <String>[
-      'hello',
-      'this is apple',
-      'android',
-      'ios',
-      'art',
-      'python',
-      'front-end',
-      'back-end',
-      'yellow',
-      'arvin',
-      'container',
-      'flutter',
-    ];
+  @override
+  void initState() {
+    bloc = UserBloc();
+    user = User();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    isInputsValid = true;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'تکمیل اطلاعات',
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          ClipRRect(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
+              child: Image.asset("images/loginBackground.jpg")),
+          SizedBox(
+            height: 80,
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-        body: Builder(
-          builder: (context) => LimitedBox(
-            maxHeight: double.maxFinite,
-            maxWidth: double.maxFinite,
+          Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(25),
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 8,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        GestureDetector(
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey[300],
-                            backgroundImage: _image,
-                            child: _image == null
-                                ? Icon(Icons.photo_camera,
-                                    color: Colors.black45, size: 30)
-                                : null,
-                            radius: 35,
-                          ),
-                          onTap: () => _pickImage(),
-                        ),
-                        SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // fixme : style for these texts
-                            //fixme: user must enter his name, its a static text!
-                            Text(
-                              'نام',
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'نام خوانوادگی',
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    //fixme: university has a dropBox for choose and its useless
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        DropdownButton(
-                          hint: Text(
-                            _genderTitle,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              _genderTitle = value;
-                            });
-                          },
-                          items: sexItems.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        DropdownButton(
-                          hint: Text(_universityTitle,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              _universityTitle = value;
-                            });
-                          },
-                          items: _uniItems.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    TitleText(text: 'اطلاعات تماس'),
-                    CustomTextField(
-                      labelText: 'موبایل',
-                      inputType: TextInputType.phone,
-                      maxLength: 11,
-                      hintText: "09123456789",
-                    ),
-                    CustomTextField(
-                      labelText: 'ایمیل',
-                      inputType: TextInputType.emailAddress,
-                      hintText: "example@gmail.com",
-                    ),
-                    CustomTextField(
-                      labelText: 'وبسایت',
-                      inputType: TextInputType.url,
-                      hintText: "www.example.com",
-                    ),
-                    CustomTextField(
-                      labelText: 'اینستاگرام',
-                      hintText: "yourID",
-                    ),
-                    CustomTextField(
-                      labelText: 'تلگرام',
-                      hintText: "yourID",
-                    ),
-                    CustomTextField(
-                      labelText: 'گیت',
-                      hintText: "yourID",
-                    ),
-                    CustomTextField(
-                      labelText: 'لینکدین',
-                      hintText: "yourID",
-                    ),
-                    SizedBox(height: 30),
-                    TitleText(text: 'اطلاعات تماس'),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: TextField(
-                        style: Theme.of(context).textTheme.subtitle,
-                        textDirection: TextDirection.rtl,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
+                    TextField(
+                        autofocus: true,
+                        style: Theme.of(context).textTheme.display2,
                         decoration: InputDecoration(
-                          labelStyle: Theme.of(context).textTheme.overline,
-                          errorStyle: Theme.of(context).textTheme.overline,
-                          helperStyle: Theme.of(context).textTheme.overline,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2.0),
-                          ),
-                          labelText: 'خلاصه ای از سوابغ خود بنویسید',
+                          hintText: "نام",
                         ),
-                      ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                        controller: _firstNameController,
+                        onChanged: (text) {
+                          user.firstName = text;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onSubmitted: (_) => FocusScope.of(context).nextFocus()),
+                    SizedBox(
+                      height: 15,
                     ),
-                    SizedBox(height: 30),
-                    TitleText(text: 'مهارت های شما'),
-                    _buildSearchTextField(context),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Wrap(
-                        children: _chipWidgets.toList(),
-                        spacing: 10.0,
+                    TextField(
+                      style: Theme.of(context).textTheme.display2,
+                      decoration: InputDecoration(
+                          hintText: "نام خانوادگی",
+                          labelStyle: Theme.of(context).textTheme.display2),
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.right,
+                      controller: _lastNameController,
+                      onChanged: (text) {
+                        user.lastName = text;
+                      },
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextField(
+                      style: Theme.of(context).textTheme.display2,
+                      decoration: InputDecoration(
+                        hintText: "نام کاربری",
+                        errorText: usernameError,
                       ),
+                      maxLength: 10,
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.right,
+                      controller: _usernameController,
+                      onChanged: (text) {
+                        user.username = text;
+                      },
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextField(
+                      style: Theme.of(context).textTheme.display2,
+                      decoration: InputDecoration(
+                          hintText: "رمز عبور", errorText: passwordError),
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.right,
+                      obscureText: true,
+                      controller: _passwordController,
+                      onChanged: (text) {
+                        user.password = text;
+                      },
+                      textInputAction: TextInputAction.done,
+                    ),
+                    SizedBox(
+                      height: 40,
                     ),
                     RaisedButton(
                       child: Text(
-                        'ادامه و تکمیل حساب',
+                        "ادامه و تکمیل اطلاعات",
+                        style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        validateInputs(
+                            _usernameController.text, _passwordController.text);
+                        if (isInputsValid) {
+                          user.phoneNumber = "9382883937";
+                          bloc.signUpNewUser(user);
+                        }
+                      },
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          child: Text("وارد شوید  ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .display2
+                                  .copyWith(color: secondaryColor)),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                          },
+                        ),
+                        Text(
+                          "اکانت ندارید؟",
+                          style: Theme.of(context).textTheme.display2,
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  Padding _buildSearchTextField(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: AutoCompleteTextField<String>(
-        controller: _searchInputController,
-        itemSubmitted: (data) {
-          setState(() {
-            if (!_chipsData.contains(data))
-              _chipsData.add(data);
-            else {
-              // fixme : this part throw an error when i want to show alert snackbar (fixed)
-              // solution : This exception happens because you are using the context of the widget that instantiated Scaffold. Not the context of a child of Scaffold.
-              // for this we add builder to the Scaffold body so builder parent is scaffold and can be userd via ther context.
-              // solution : using globaleKey for the scaffold :
-              // _scaffoldKey.currentState.showSnackBar(snackbar);
-
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  'این مهارت قبلا اضافه شده',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontFamily: 'yekan',
-                  ),
-                ),
-              ));
-            }
-          });
-        },
-        suggestions: _getSearchFieldSuggestion(_searchInputController.text),
-        key: GlobalKey(),
-        itemFilter: (String suggestion, String query) {
-          // FIXME : implement itemFilter for search (fixed)
-          // using RegExp
-          return suggestion.contains(RegExp(r'\b' + '${query.toLowerCase()}'));
-        },
-        itemSorter: (String a, String b) {
-          // FIXME : implement comparator for search
-          if (a.length < b.length)
-            return -1;
-          else
-            return 1;
-        },
-        itemBuilder: (BuildContext context, String suggestion) {
-          // FIXME : make style for list item Texts
-          return Text(
-            suggestion,
-          );
-        },
-      ),
-    );
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    bloc.dispose();
+    super.dispose();
   }
 
-  Iterable<Widget> get _chipWidgets sync* {
-    for (final String item in _chipsData) {
-      yield Chip(
-        label: Text(item),
-        onDeleted: () {
-          setState(() {
-            _chipsData.removeWhere((data) {
-              return item == data;
-            });
-          });
-        },
-      );
+  validateInputs(String username, String password) {
+    passwordError = usernameError = null;
+    setState(() => isInputsValid = true);
+    if (password.length < 6)
+      setState(() {
+        passwordError = "رمز عبور نامعتبر میباشد";
+        isInputsValid = false;
+      });
+    if (username.length < 6) {
+      setState(() {
+        usernameError = "نام کاربری نامعتبر میباشد";
+        isInputsValid = false;
+      });
     }
   }
-
-  Future<void> _getImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: source);
-    File file = File(pickedFile.path);
-    File finalFile = await ImageCompressor.compressAndGetFile(file);
-//    _image = Image.file(finalFile, fit: BoxFit.cover);
-    var bytes = await finalFile.readAsBytes();
-    _image = MemoryImage(bytes);
-    setState(() {});
-  }
-
-  void _pickImage() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('انتخاب نمایید'),
-            actions: <Widget>[
-              RaisedButton(
-                child: Text('دوربین'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  return _getImage(ImageSource.camera);
-                },
-              ),
-              RaisedButton(
-                child: Text('گالری'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  return _getImage(ImageSource.gallery);
-                },
-              ),
-            ],
-          );
-        });
-  }
 }
-
-// fixme : search field item font ROBOTO download

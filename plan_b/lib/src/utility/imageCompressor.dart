@@ -7,7 +7,7 @@ class ImageCompressor {
   static final int _minWidth = 200;
   static final int _minHeight = 200;
 
-  static Future<File> compressAndGetFile(File file) async {
+  Future<File> compressAndGetFile(File file) async {
     List<String> arr = file.path.split('/');
     arr.last = arr.last.split('.').first + '_modified.' + arr.last.split('.').last;
     String targetPath = arr.first;
@@ -15,15 +15,15 @@ class ImageCompressor {
       targetPath += '/'+arr[i];
     }
     var result = await FlutterImageCompress.compressAndGetFile(
-        file.absolute.path, targetPath,
-        quality: _quality,
-        minWidth: _minWidth,
-        minHeight: _minHeight,
+      file.absolute.path, targetPath,
+      quality: _quality,
+      minWidth: _minWidth,
+      minHeight: _minHeight,
     );
     return result;
   }
 
-  static Future<List<int>> compressAssetAndGetList(String assetName) async {
+  Future<List<int>> compressAssetAndGetList(String assetName) async {
     var list = await FlutterImageCompress.compressAssetImage(
       assetName,
       quality: _quality,

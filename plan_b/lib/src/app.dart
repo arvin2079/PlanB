@@ -18,7 +18,7 @@ class _PlanBAppState extends State<PlanBApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: isDarkMode? ThemeData.dark() : lightTheme,
-      home: SignupScreen()
+      home: SignUpScreen()
     );
   }
 }
