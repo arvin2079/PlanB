@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/login_screen.dart';
 
-import 'uiComponents/customTextField.dart';
 
 class SignUpScreen extends StatelessWidget {
   UserBloc bloc = UserBloc();
@@ -124,7 +124,9 @@ class SignUpScreen extends StatelessWidget {
                                   .textTheme
                                   .display2
                                   .copyWith(color: secondaryColor)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
+                          },
                         ),
                         Text(
                           "اکانت ندارید؟",
@@ -140,5 +142,12 @@ class SignUpScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+  void dispose(){
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    bloc.dispose();
   }
 }
