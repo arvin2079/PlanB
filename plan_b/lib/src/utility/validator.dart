@@ -1,27 +1,33 @@
+import 'package:planb/src/utility/languageDetector.dart';
+
 abstract class StringValidator {
   bool isValid(String value);
 }
 
-class EmailValidator implements StringValidator {
+class EmailValidator with LanguageDetector implements StringValidator {
   @override
   bool isValid(String value) {
-    if (value.isEmpty) return false;
+    if (value.isEmpty || !hasEnglishChar(value)) return false;
     RegExp emailReg = RegExp(r'(?:\S)+@(?:\S)+\.(?:\S)+', caseSensitive: false);
     return emailReg.hasMatch(value);
   }
 }
 
 class PasswordValidator implements StringValidator {
+  //just can user numeric and chars
+  RegExp regExp = RegExp(r'[\d\w]+', caseSensitive: false);
   @override
   bool isValid(String value) {
-    return value.length >= 6;
+    return value.length >= 6 && regExp.stringMatch(value) == value;
   }
 }
 
-class UsernameValidator implements StringValidator {
+class UsernameValidator with LanguageDetector implements StringValidator {
+  //must be numeric or chars and cant be in persian
+  RegExp regExp = RegExp(r'[\d\w]+', caseSensitive: false);
   @override
   bool isValid(String value) {
-    return value.length >= 5;
+    return value.length >= 5 && regExp.stringMatch(value) == value;
   }
 }
 
