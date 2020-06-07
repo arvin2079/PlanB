@@ -15,8 +15,6 @@ class SignUpScreen extends StatelessWidget {
   TextEditingController _passwordController = TextEditingController();
   User user = User();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,17 +37,19 @@ class SignUpScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     TextField(
-                      style: Theme.of(context).textTheme.display2,
-                      decoration: InputDecoration(
+                        autofocus: true,
+                        style: Theme.of(context).textTheme.display2,
+                        decoration: InputDecoration(
                           hintText: "نام",
-                      ),
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.right,
-                      controller: _firstNameController,
-                      onChanged: (text) {
-                        user.firstName = text;
-                      },
-                    ),
+                        ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                        controller: _firstNameController,
+                        onChanged: (text) {
+                          user.firstName = text;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onSubmitted: (_) => FocusScope.of(context).nextFocus()),
                     SizedBox(
                       height: 15,
                     ),
@@ -64,6 +64,8 @@ class SignUpScreen extends StatelessWidget {
                       onChanged: (text) {
                         user.lastName = text;
                       },
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     ),
                     SizedBox(
                       height: 15,
@@ -71,14 +73,17 @@ class SignUpScreen extends StatelessWidget {
                     TextField(
                       style: Theme.of(context).textTheme.display2,
                       decoration: InputDecoration(
-                          hintText: "نام کاربری",
-                          labelStyle: Theme.of(context).textTheme.button,),
+                        hintText: "نام کاربری",
+                        labelStyle: Theme.of(context).textTheme.button,
+                      ),
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.right,
                       controller: _usernameController,
                       onChanged: (text) {
                         user.username = text;
                       },
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     ),
                     SizedBox(
                       height: 15,
@@ -95,6 +100,7 @@ class SignUpScreen extends StatelessWidget {
                       onChanged: (text) {
                         user.password = text;
                       },
+                      textInputAction: TextInputAction.done,
                     ),
                     SizedBox(
                       height: 40,

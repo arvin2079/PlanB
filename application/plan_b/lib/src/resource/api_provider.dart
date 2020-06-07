@@ -15,6 +15,8 @@ class APIProvider{
 
     final response = await client.post(url, headers: headers, body: json);
 
+    print(response.statusCode);
+
     if (response.statusCode == 200){
       return response.body;
     }
