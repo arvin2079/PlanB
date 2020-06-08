@@ -1,11 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/utility/validator.dart';
 
 import 'uiComponents/customTextField.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget with LogInValidator{
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  User user = User();
+  GlobalKey<FormState> form_key = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,47 +31,77 @@ class LoginScreen extends StatelessWidget {
                 margin: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 8,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    CustomTextField(
-                      hintText: 'نام کاربری',
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextField(
-                      hintText: 'رمز عبور',
-                      inputType: TextInputType.text,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    RaisedButton(
-                      child: Text(
-                        "ورود",
-                        style: Theme.of(context).textTheme.button,
+                child: Form(
+                  key: form_key,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      TextFormField(
+                        style: Theme.of(context).textTheme.display1,
+                        validator: (value) {
+                          return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "نام کاربری",
+                        ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                        controller: _usernameController,
+                        onSaved: (text) {
+                          user.username = text;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => FocusScope.of(context).nextFocus(),
                       ),
-                      onPressed: () {},
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        FlatButton(
-                          child: Text("ایجاد حساب  ",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(color: secondaryColor)),
-                          onPressed: () {},
+                      SizedBox(
+                        height: 15,
+                      ),
+                      TextFormField(
+                        style: Theme.of(context).textTheme.display1,
+                        validator: (value) {
+                          return passwordValidator.isValid(value) ? null : notValidPasswordMessage;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "رمز عبور",
                         ),
-                        Text(
-                          "اکانت ندارید؟",
-                          style: Theme.of(context).textTheme.display1,
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                        obscureText: true,
+                        controller: _passwordController,
+                        onSaved: (text) {
+                          user.password = text;
+                        },
+                        textInputAction: TextInputAction.done,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      RaisedButton(
+                        child: Text(
+                          "ورود",
+                          style: Theme.of(context).textTheme.button,
                         ),
-                      ],
-                    )
-                  ],
+                        onPressed: _submit,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                            child: Text("ایجاد حساب  ",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    .copyWith(color: secondaryColor)),
+                            onPressed: () {},
+                          ),
+                          Text(
+                            "اکانت ندارید؟",
+                            style: Theme.of(context).textTheme.display1,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -72,5 +109,12 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _submit() {
+    if(form_key.currentState.validate()) {
+      form_key.currentState.save();
+      //todo : do the authentication with user object here
+    }
   }
 }

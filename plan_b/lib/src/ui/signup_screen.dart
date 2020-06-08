@@ -20,8 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
   TextEditingController _uniIdController;
   TextEditingController _usernameController;
   TextEditingController _passwordController;
-  User user;
   final GlobalKey<FormState> form_key = GlobalKey<FormState>();
+  User user;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.right,
                           controller: _firstNameController,
-                          onChanged: (text) {
+                          onSaved: (text) {
                             user.firstName = text;
                           },
                           textInputAction: TextInputAction.next,
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
                         controller: _lastNameController,
-                        onChanged: (text) {
+                        onSaved: (text) {
                           user.lastName = text;
                         },
                         textInputAction: TextInputAction.next,
@@ -109,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
                         controller: _uniIdController,
-                        onChanged: (text) {
+                        onSaved: (text) {
                           user.studentCode = text;
                         },
                         textInputAction: TextInputAction.next,
@@ -129,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
                         controller: _emailController,
-                        onChanged: (text) {
+                        onSaved: (text) {
                           user.email = text;
                         },
                         textInputAction: TextInputAction.next,
@@ -149,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
                         controller: _usernameController,
-                        onChanged: (text) {
+                        onSaved: (text) {
                           user.username = text;
                         },
                         textInputAction: TextInputAction.next,
@@ -170,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textAlign: TextAlign.right,
                         obscureText: true,
                         controller: _passwordController,
-                        onChanged: (text) {
+                        onSaved: (text) {
                           user.password = text;
                         },
                         textInputAction: TextInputAction.done,
@@ -203,6 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         ),
                         onPressed: () {
                           if(form_key.currentState.validate()) {
+                            form_key.currentState.save();
                             bloc.signUpNewUser(user);
                           }
 //                          validateInputs(
