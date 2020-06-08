@@ -24,7 +24,7 @@ class PasswordValidator implements StringValidator {
 
 class UsernameValidator with LanguageDetector implements StringValidator {
   //must be numeric or chars and cant be in persian
-  RegExp regExp = RegExp(r'[\d\w]+', caseSensitive: false);
+  RegExp regExp = RegExp(r'[\w]+', caseSensitive: false);
   @override
   bool isValid(String value) {
     return value.length >= 5 && regExp.stringMatch(value) == value;
