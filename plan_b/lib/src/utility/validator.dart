@@ -61,14 +61,14 @@ class SignUpValidator {
   final String notValidLastnameMessage = 'پر کردن این بخش الزامیست';
 }
 
-class SignInValidator {
+class LogInValidator {
   final StringValidator usernameValidator = UsernameValidator();
-  final StringValidator passwordValidator = NonEmptyStringValidator();
+  final StringValidator passwordValidator = PasswordValidator();
   final String notValidUsernameMessage = 'نام کاربری غیر مجاز';
   final String notValidPasswordMessage = 'رمز عبور غیر مجاز';
 }
 
-class ProfileEditingValidator {
+class CompleteProfileValidator {
   final StringValidator firstnameValidator = NonEmptyStringValidator();
   final StringValidator lastnameValidator = NonEmptyStringValidator();
   final StringValidator usernameValidator = NonEmptyStringValidator();
