@@ -28,7 +28,9 @@ class Project{
 
       data['creator'] = this.creator;
       data['name'] = this.name;
-      data['skill'] = skill.toJson();
+      if(this.skill != null){
+        data['skill'] = skill.toJson();
+      }
       data['start_date'] = this.startDate;
       data['image'] = this.image;
       data['description'] = this.descriptions;

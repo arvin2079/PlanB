@@ -4,6 +4,7 @@ import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/university_model.dart';
 
 class User {
+  String studentCode;
   String username;
   String password;
   String email;
@@ -21,7 +22,9 @@ class User {
   bool isStaff;
 
   User(
-      {this.username,
+      {
+        this.studentCode,
+        this.username,
       this.password,
       this.email,
       this.firstName,
@@ -39,6 +42,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+        studentCode: json['student_code'],
         username: json['username'],
         password: json['password'],
         email: json['email'],
@@ -64,6 +68,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['student_code'] = this.studentCode;
     data['username'] = this.username;
     data['password'] = this.password;
     data['email'] = this.email;
@@ -78,8 +83,12 @@ class User {
     if (this.projects != null) {
       data['projects'] = this.projects.map((v) => v.toJson()).toList();
     }
-    data['university'] = this.university.toJson();
-    data['city'] = this.city.toJson();
+    if (this.university != null){
+      data['university'] = this.university.toJson();
+    }
+    if (this.city != null){
+      data['city'] = this.city.toJson();
+    }
     data['phone_number'] = this.phoneNumber;
     data['is_super_user'] = this.isSuperUser;
     data['is_staff'] = this.isStaff;

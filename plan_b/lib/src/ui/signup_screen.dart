@@ -110,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textAlign: TextAlign.right,
                         controller: _uniIdController,
                         onChanged: (text) {
-                          user.lastName = text;
+                          user.studentCode = text;
                         },
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -130,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         textAlign: TextAlign.right,
                         controller: _emailController,
                         onChanged: (text) {
-                          user.username = text;
+                          user.email = text;
                         },
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -144,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                           return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
                         },
                         decoration: InputDecoration(
-                          hintText: "username",
+                          hintText: "نام کاربری",
                         ),
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
@@ -203,7 +203,6 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                         ),
                         onPressed: () {
                           if(form_key.currentState.validate()) {
-                            user.phoneNumber = "9382883937";
                             bloc.signUpNewUser(user);
                           }
 //                          validateInputs(
@@ -254,19 +253,4 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
     super.dispose();
   }
 
-//  validateInputs(String username, String password) {
-//    passwordError = usernameError = null;
-//    setState(() => isInputsValid = true);
-//    if (password.length < 6)
-//      setState(() {
-//        passwordError = "رمز عبور نامعتبر میباشد";
-//        isInputsValid = false;
-//      });
-//    if (username.length < 6) {
-//      setState(() {
-//        usernameError = "نام کاربری نامعتبر میباشد";
-//        isInputsValid = false;
-//      });
-//    }
-//  }
 }

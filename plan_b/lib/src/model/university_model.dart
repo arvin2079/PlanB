@@ -20,7 +20,9 @@ class University{
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['code'] = this.code;
     data['name'] = this.name;
-    data['city'] = city.toJson();
+    if(this.city != null){
+      data['city'] = city.toJson();
+    }
     return data;
   }
 }

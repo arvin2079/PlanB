@@ -5,13 +5,15 @@ import 'package:planb/src/model/user_model.dart';
 
 class APIProvider{
   final Client client = Client();
-  String _baseUrl = "http://tabbesh.ir:83/";
+  String _baseUrl = "http://192.168.43.147:8000/";
 
 
   Future<String> signUpNewUser(User user) async{
-    String url = _baseUrl + "api/token/";
-    Map<String, String> headers = {"Content-type" : "application/json"};
+    String url = _baseUrl + "signup/";
+    Map<String, String> headers = {"Content-type" : "application/json","Accept" : "application/json"};
     String json = jsonEncode(user.toJson());
+
+    print((json));
 
     final response = await client.post(url, headers: headers, body: json);
 
