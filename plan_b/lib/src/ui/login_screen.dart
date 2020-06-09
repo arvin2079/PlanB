@@ -5,7 +5,6 @@ import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/utility/validator.dart';
 
-import 'uiComponents/customTextField.dart';
 
 class LoginScreen extends StatelessWidget with LogInValidator{
   TextEditingController _usernameController = TextEditingController();
@@ -115,6 +114,7 @@ class LoginScreen extends StatelessWidget with LogInValidator{
     if(form_key.currentState.validate()) {
       form_key.currentState.save();
       //todo : do the authentication with user object here
+
     }
   }
 }

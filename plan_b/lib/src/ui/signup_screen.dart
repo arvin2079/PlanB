@@ -206,12 +206,6 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                             form_key.currentState.save();
                             bloc.signUpNewUser(user);
                           }
-//                          validateInputs(
-//                              _usernameController.text, _passwordController.text);
-//                          if (isInputsValid) {
-//                            user.phoneNumber = "9382883937";
-//                            bloc.signUpNewUser(user);
-//                          }
                         },
                       ),
                       Row(
