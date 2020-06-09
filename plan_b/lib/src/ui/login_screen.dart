@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/utility/validator.dart';
@@ -9,7 +10,7 @@ import 'package:planb/src/utility/validator.dart';
 class LoginScreen extends StatelessWidget with LogInValidator{
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  User user = User();
+  String username, password;
   GlobalKey<FormState> form_key = GlobalKey<FormState>();
 
   @override
@@ -47,7 +48,7 @@ class LoginScreen extends StatelessWidget with LogInValidator{
                         textAlign: TextAlign.right,
                         controller: _usernameController,
                         onSaved: (text) {
-                          user.username = text;
+                          username = text;
                         },
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -68,7 +69,7 @@ class LoginScreen extends StatelessWidget with LogInValidator{
                         obscureText: true,
                         controller: _passwordController,
                         onSaved: (text) {
-                          user.password = text;
+                          password = text;
                         },
                         textInputAction: TextInputAction.done,
                       ),
@@ -113,8 +114,7 @@ class LoginScreen extends StatelessWidget with LogInValidator{
   void _submit() {
     if(form_key.currentState.validate()) {
       form_key.currentState.save();
-      //todo : do the authentication with user object here
-
+      bloc.login(username, password);
     }
   }
 }

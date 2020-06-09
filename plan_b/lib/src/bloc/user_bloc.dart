@@ -16,10 +16,15 @@ class UserBloc extends Bloc{
     tokenValidationStreamController.sink.add(true);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("token", token);
-    print("token => " + preferences.getString("token"));
   }
 
   login(String username, String password) async{
+    Map data = await repository.login(username, password);
+    tokenValidationStreamController.sink.add(true);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("token", data['token']);
+    // todo: save user info in a separate stream controller
+    print(preferences.getString("token"));
 
   }
 
@@ -30,3 +35,4 @@ class UserBloc extends Bloc{
     tokenValidationStreamController.close();
   }
 }
+UserBloc bloc = UserBloc();

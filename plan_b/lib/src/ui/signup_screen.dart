@@ -13,7 +13,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
-  UserBloc bloc;
   TextEditingController _firstNameController;
   TextEditingController _lastNameController;
   TextEditingController _emailController;
@@ -25,7 +24,6 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
 
   @override
   void initState() {
-    bloc = UserBloc();
     user = User();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
@@ -178,23 +176,6 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                       SizedBox(
                         height: 15,
                       ),
-//                      TextFormField(
-//                        style: Theme.of(context).textTheme.display1,
-//                        decoration: InputDecoration(
-//                          hintText: "تکرار رمز عبور",
-//                        ),
-//                        textDirection: TextDirection.rtl,
-//                        textAlign: TextAlign.right,
-//                        obscureText: true,
-//                        controller: _passwordController,
-//                        onChanged: (text) {
-//                          user.password = text;
-//                        },
-//                        textInputAction: TextInputAction.done,
-//                      ),
-//                      SizedBox(
-//                        height: 40,
-//                      ),
                       RaisedButton(
                         child: Text(
                           "ادامه و تکمیل اطلاعات",
@@ -244,7 +225,6 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
     _lastNameController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
-    bloc.dispose();
     super.dispose();
   }
 

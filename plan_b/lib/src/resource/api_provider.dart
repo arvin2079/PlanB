@@ -28,7 +28,10 @@ class APIProvider {
 
   Future<Map<String, dynamic>> loginUser(String username, String password) async{
     String url = _baseUrl + "api/token/" ;
-    String json = jsonEncode("{'username' = $username , 'password' = $password}");
+    Map map = {"username" : username, "password" : password};
+    String json = jsonEncode(map);
+
+    print(json);
 
     final response = await client.post(url, headers: headers, body: json);
 
@@ -38,7 +41,7 @@ class APIProvider {
       Map<String, dynamic> json = jsonDecode(response.body);
       Map<String, dynamic> data = Map<String, dynamic>();
       data['token'] = json['token'];
-      data['user'] = User.fromJson(json['user']);
+//      data['user'] = User.fromJson(json['user']);
       return data;
     }
     else {
