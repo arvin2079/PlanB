@@ -30,7 +30,6 @@ dependencies:
   flutter_image_compress: ^0.6.8
   shared_preferences: ^0.5.7+3
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
