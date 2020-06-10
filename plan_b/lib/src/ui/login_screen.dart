@@ -118,6 +118,7 @@ class LoginScreen extends StatelessWidget with LogInValidator {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       bloc.login(username, password);
+
     }
   }
 }
