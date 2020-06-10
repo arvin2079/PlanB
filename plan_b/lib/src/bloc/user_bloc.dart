@@ -8,49 +8,64 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserBloc extends Bloc {
-  Repository repository = Repository();
-  PublishSubject tokenValidationStreamController = PublishSubject();
-  PublishSubject errorsStreamController = PublishSubject();
 
-  Stream<bool> get tokenValidationStream =>
-      tokenValidationStreamController.stream;
+  final repository = Repository();
+  PublishSubject<AuthStatus> authStatusStreamController = PublishSubject();
+  PublishSubject<String> errorsStreamController = PublishSubject();
+  dynamic _lastStatus;
 
-  Stream<String> get errorsStream => tokenValidationStreamController.stream;
+  UserBloc(){
+    _lastStatus = authStatusStreamController.stream.shareValue();
+    _lastStatus.listen(null);
+  }
+
+
+  Stream<AuthStatus> get authStatusStream =>
+      authStatusStreamController.stream;
+
+  Stream<String> get errorsStream => errorsStreamController.stream;
+  AuthStatus get lastStatus => _lastStatus.value;
 
   signUpNewUser(User user) async {
     try {
+      authStatusStreamController.sink.add(AuthStatus.loading);
       String token = await repository.getNewToken(user);
-      tokenValidationStreamController.sink.add(true);
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("token", token);
+      authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e) {
-      tokenValidationStreamController.sink.add(false);
+      authStatusStreamController.sink.add(AuthStatus.signedOut);
       Map errors = jsonDecode(e.message);
       for (dynamic error in errors.values) {
-        errorsStreamController.sink.add(error);
+        errorsStreamController.sink.add(error.toString());
       }
+    } catch (e){
+      authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
   }
 
   login(String username, String password) async {
     try {
+      authStatusStreamController.sink.add(AuthStatus.loading);
       Map data = await repository.login(username, password);
-      tokenValidationStreamController.sink.add(true);
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("token", data['token']);
+      authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e){
-      tokenValidationStreamController.sink.add(false);
+      authStatusStreamController.sink.add(AuthStatus.signedOut);
       Map errors = jsonDecode(e.message);
       for(dynamic error in errors.values){
-        errorsStreamController.sink.add(error);
+        errorsStreamController.sink.add(error[0]);
         print(error);
       }
+    } catch (e){
+      authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
   }
 
   @override
   void dispose() {
-    tokenValidationStreamController.close();
+    authStatusStreamController.close();
     errorsStreamController.close();
   }
 }
