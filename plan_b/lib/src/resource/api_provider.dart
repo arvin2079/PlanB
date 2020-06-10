@@ -45,7 +45,7 @@ class APIProvider {
       return data;
     }
     else {
-      throw Exception (response.body);
+      throw MessagedException(utf8.decode(response.bodyBytes));
     }
   }
 }

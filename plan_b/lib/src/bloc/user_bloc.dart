@@ -33,12 +33,19 @@ class UserBloc extends Bloc {
   }
 
   login(String username, String password) async {
-    Map data = await repository.login(username, password);
-    tokenValidationStreamController.sink.add(true);
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString("token", data['token']);
-    // todo: save user info in a separate stream controller
-    print(preferences.getString("token"));
+    try {
+      Map data = await repository.login(username, password);
+      tokenValidationStreamController.sink.add(true);
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString("token", data['token']);
+    } on MessagedException catch (e){
+      tokenValidationStreamController.sink.add(false);
+      Map errors = jsonDecode(e.message);
+      for(dynamic error in errors.values){
+        errorsStreamController.sink.add(error);
+        print(error);
+      }
+    }
   }
 
   @override
