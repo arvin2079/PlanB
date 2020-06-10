@@ -12,7 +12,7 @@ class UserBloc extends Bloc {
   PublishSubject tokenValidationStreamController = PublishSubject();
   PublishSubject errorsStreamController = PublishSubject();
 
-  Stream<String> get tokenValidationStream =>
+  Stream<bool> get tokenValidationStream =>
       tokenValidationStreamController.stream;
 
   Stream<String> get errorsStream => tokenValidationStreamController.stream;
