@@ -2,16 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
-import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/utility/validator.dart';
 
-
-class LoginScreen extends StatelessWidget with LogInValidator{
+class LoginScreen extends StatelessWidget with LogInValidator {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   String username, password;
-  GlobalKey<FormState> form_key = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +30,16 @@ class LoginScreen extends StatelessWidget with LogInValidator{
                   horizontal: MediaQuery.of(context).size.width / 8,
                 ),
                 child: Form(
-                  key: form_key,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       TextFormField(
                         style: Theme.of(context).textTheme.display1,
                         validator: (value) {
-                          return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
+                          return usernameValidator.isValid(value)
+                              ? null
+                              : notValidUsernameMessage;
                         },
                         decoration: InputDecoration(
                           hintText: "نام کاربری",
@@ -51,7 +51,8 @@ class LoginScreen extends StatelessWidget with LogInValidator{
                           username = text;
                         },
                         textInputAction: TextInputAction.next,
-                        onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                        onEditingComplete: () =>
+                            FocusScope.of(context).nextFocus(),
                       ),
                       SizedBox(
                         height: 15,
@@ -59,7 +60,9 @@ class LoginScreen extends StatelessWidget with LogInValidator{
                       TextFormField(
                         style: Theme.of(context).textTheme.display1,
                         validator: (value) {
-                          return passwordValidator.isValid(value) ? null : notValidPasswordMessage;
+                          return passwordValidator.isValid(value)
+                              ? null
+                              : notValidPasswordMessage;
                         },
                         decoration: InputDecoration(
                           hintText: "رمز عبور",
@@ -112,8 +115,8 @@ class LoginScreen extends StatelessWidget with LogInValidator{
   }
 
   void _submit() {
-    if(form_key.currentState.validate()) {
-      form_key.currentState.save();
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
       bloc.login(username, password);
     }
   }

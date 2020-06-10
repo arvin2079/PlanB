@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:planb/src/model/user_model.dart';
+import 'package:planb/src/utility/message_exception.dart';
 
 class APIProvider {
   final Client client = Client();
@@ -22,7 +23,7 @@ class APIProvider {
     if (response.statusCode == 200) {
       return jsonDecode(response.body)['token'];
     } else {
-      throw Exception(response.body);
+      throw MessagedException(utf8.decode(response.bodyBytes));
     }
   }
 
@@ -41,7 +42,6 @@ class APIProvider {
       Map<String, dynamic> json = jsonDecode(response.body);
       Map<String, dynamic> data = Map<String, dynamic>();
       data['token'] = json['token'];
-//      data['user'] = User.fromJson(json['user']);
       return data;
     }
     else {
