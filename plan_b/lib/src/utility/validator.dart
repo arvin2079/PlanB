@@ -41,7 +41,7 @@ class NonEmptyStringValidator implements StringValidator {
 class PhoneNumberStringValidator implements StringValidator {
   @override
   bool isValid(String value) {
-    RegExp regExp = RegExp(r'9\d{9}');
+    RegExp regExp = RegExp(r'09\d{9}');
     return regExp.hasMatch(value) && value.length == 10;
   }
 }
@@ -73,8 +73,8 @@ class CompleteProfileValidator {
   final StringValidator lastnameValidator = NonEmptyStringValidator();
   final StringValidator usernameValidator = NonEmptyStringValidator();
   final StringValidator phoneNumberValidator = PhoneNumberStringValidator();
-  final String inValidFirstnameErrorMassage = 'نام کوچک صحیح خود را وارد کنید';
-  final String inValidLastnameErrorMassage = 'نام خوانوادگی صحیح خود را وارد کنید';
-  final String inValidUsernameErrorMassage = 'نام کاربری صحیح خود را وارد کنید';
-  final String inValidPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
+  final String notValidFirstnameMessage = 'پر کردن این بخش الزامیست';
+  final String notValidLastnameMessage = 'پر کردن این بخش الزامیست';
+  final String notValidUsernameMessage = 'نام کاربری صحیح خود را وارد کنید';
+  final String notPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
 }
