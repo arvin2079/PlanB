@@ -3,6 +3,12 @@ import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/university_model.dart';
 
+enum AuthStatus{
+  signedOut,
+  loading,
+  signedIn
+}
+
 class User {
   String studentCode;
   String username;
