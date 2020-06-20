@@ -5,6 +5,7 @@ class City {
   City({this.code, this.title});
 
   factory City.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return City(code: json['code'], title: json['title']);
   }
 

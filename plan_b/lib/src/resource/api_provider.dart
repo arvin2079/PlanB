@@ -45,7 +45,7 @@ class APIProvider {
     }
   }
 
-  Future<String> getCompleteProfileFields() async{
+  Future<Map> getCompleteProfileFields() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/edit_profile/";
     Map<String, String> headers = this.headers;
@@ -54,7 +54,7 @@ class APIProvider {
     final response = await client.get(url, headers: headers);
     if(response.statusCode == 200){
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
-      return jsonEncode(map);
+      return map;
     }
     else{
       throw MessagedException("Something went wrong");

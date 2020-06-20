@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
@@ -23,20 +24,17 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
   final GlobalKey _fromKey = GlobalKey<FormState>();
+  User user = User(firstName: "mamad", lastName: 'mamad');
 
   ImageProvider _image;
 
-  List<String> sexItems = <String>['مرد', 'زن'];
+  List<String> genderItems = <String>['مرد', 'زن'];
 
   List<String> _chipsData = <String>[];
 
-  List<String> _uniItems = <String>[
-    'امیرکبیر',
-    'خوارزمی',
-    'شریف',
-    'مشهد',
-    'خواجه نصیر',
-  ];
+  List<String> _universityItems = <String>[];
+  List<String> _skillItems = <String>[];
+  List<String> _cityItems = <String>[];
 
   List<String> _getSearchFieldSuggestion(String data) {
     return <String>[
@@ -62,9 +60,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 
   @override
   void initState() {
-
+    bloc.getCompleteProfileFields();
+    initializeItems();
     super.initState();
-
   }
 
   @override
@@ -105,7 +103,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                               backgroundImage: _image,
                               child: _image == null
                                   ? Icon(Icons.photo_camera,
-                                  color: Colors.black45, size: 30)
+                                      color: Colors.black45, size: 30)
                                   : null,
                               radius: 35,
                             ),
@@ -123,7 +121,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                               ),
                               SizedBox(height: 10),
                               Text(
-                                'نام خوانوادگی',
+                                user.firstName,
                                 style: Theme.of(context).textTheme.subtitle,
                               ),
                             ],
@@ -146,7 +144,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                                 _genderTitle = value;
                               });
                             },
-                            items: sexItems.map((value) {
+                            items: genderItems.map((value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -167,7 +165,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                                 _universityTitle = value;
                               });
                             },
-                            items: _uniItems.map((value) {
+                            items: _universityItems.map((value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -255,12 +253,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: AutoCompleteTextField<String>(
-        style: _isPersian ? Theme.of(context).textTheme.display1 : Theme.of(context).textTheme.display2,
+        style: _isPersian
+            ? Theme.of(context).textTheme.display1
+            : Theme.of(context).textTheme.display2,
         controller: _searchInputController,
         clearOnSubmit: true,
-        textSubmitted: (value) {
-
-        },
+        textSubmitted: (value) {},
         itemSubmitted: (data) {
           setState(() {
             if (!_chipsData.contains(data))
@@ -361,6 +359,37 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ],
           );
         });
+  }
+
+  void initializeItems() async {
+    bloc.universitiesStream.first.then((value) {
+      if (value != null) {
+        List<String> names = List<String>();
+        _universityItems = names;
+      }
+    });
+
+    bloc.skillsStream.first.then((value) {
+
+      if (value != null) {
+        List<String> names = List<String>();
+        _skillItems = names;
+      }
+    });
+
+    bloc.citiesStream.first.then((value) {
+      if (value != null) {
+        List<String> names = List<String>();
+        _cityItems = names;
+      }
+    });
+
+    bloc.userInfoStream.first.then((value){
+
+      if(value != null){
+        user = value;
+      }
+    });
   }
 }
 

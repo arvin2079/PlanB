@@ -3,11 +3,7 @@ import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/university_model.dart';
 
-enum AuthStatus{
-  signedOut,
-  loading,
-  signedIn
-}
+enum AuthStatus { signedOut, loading, signedIn }
 
 class User {
   String studentCode;
@@ -26,11 +22,11 @@ class User {
   String phoneNumber;
   bool isSuperUser;
   bool isStaff;
+  String descriptions;
 
   User(
-      {
-        this.studentCode,
-        this.username,
+      {this.studentCode,
+      this.username,
       this.password,
       this.email,
       this.firstName,
@@ -44,9 +40,12 @@ class User {
       this.city,
       this.phoneNumber,
       this.isSuperUser,
-      this.isStaff});
+      this.isStaff,
+      this.descriptions});
 
   factory User.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+
     return User(
         studentCode: json['student_code'],
         username: json['username'],
@@ -69,6 +68,7 @@ class User {
         city: City.fromJson(json['city']),
         phoneNumber: json['phone_number'],
         isSuperUser: json['is_super_user'],
+        descriptions: json['descriptions'],
         isStaff: json['is_staff']);
   }
 
@@ -89,16 +89,22 @@ class User {
     if (this.projects != null) {
       data['projects'] = this.projects.map((v) => v.toJson()).toList();
     }
-    if (this.university != null){
+    if (this.university != null) {
       data['university'] = this.university.toJson();
     }
-    if (this.city != null){
+    if (this.city != null) {
       data['city'] = this.city.toJson();
     }
     data['phone_number'] = this.phoneNumber;
     data['is_super_user'] = this.isSuperUser;
     data['is_staff'] = this.isStaff;
+    data['descriptions'] = this.descriptions;
 
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'User{studentCode: $studentCode, username: $username, password: $password, email: $email, firstName: $firstName, lastName: $lastName, dateJoined: $dateJoined, avatar: $avatar, gender: $gender, skills: $skills, projects: $projects, university: $university, city: $city, phoneNumber: $phoneNumber, isSuperUser: $isSuperUser, isStaff: $isStaff}';
   }
 }
