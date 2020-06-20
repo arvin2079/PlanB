@@ -5,6 +5,7 @@ class University{
   String name;
   City city;
 
+  Map<String, University> universitiesMap = Map();
 
   University({this.code, this.name, this.city});
 
@@ -25,4 +26,5 @@ class University{
     }
     return data;
   }
+
 }

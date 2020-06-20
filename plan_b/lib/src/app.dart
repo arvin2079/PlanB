@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/home_screen.dart';
 import 'package:planb/src/ui/login_screen.dart';
@@ -26,6 +27,7 @@ class _PlanBAppState extends State<PlanBApp> {
         '/signup' : (BuildContext context) => SignUpScreen(),
         '/login' : (BuildContext context) => LoginScreen(),
         '/home' : (BuildContext context) => HomeScreen(),
+        '/edit_profile' : (BuildContext context) => CompleteProfileScreen(),
       },
       home: SplashScreen()
     );

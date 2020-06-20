@@ -11,7 +11,8 @@ class UserBloc extends Bloc {
 
   final repository = Repository();
   PublishSubject<AuthStatus> authStatusStreamController = PublishSubject();
-  PublishSubject<String> errorsStreamController = PublishSubject();
+  PublishSubject<List> errorsStreamController = PublishSubject();
+  PublishSubject<List> skillsStreamController = PublishSubject();
   dynamic _lastStatus;
 
   UserBloc(){
@@ -23,7 +24,7 @@ class UserBloc extends Bloc {
   Stream<AuthStatus> get authStatusStream =>
       authStatusStreamController.stream;
 
-  Stream<String> get errorsStream => errorsStreamController.stream;
+  Stream<List> get errorsStream => errorsStreamController.stream;
   AuthStatus get lastStatus => _lastStatus.value;
 
   signUpNewUser(User user) async {
@@ -35,10 +36,10 @@ class UserBloc extends Bloc {
       authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e) {
       authStatusStreamController.sink.add(AuthStatus.signedOut);
-      Map errors = jsonDecode(e.message);
-      for (dynamic error in errors.values) {
-        errorsStreamController.sink.add(error.toString());
-      }
+      Map errorsMap = jsonDecode(e.message);
+      List<String> errorsList = List();
+      errorsMap.forEach((k , v ) => errorsList.add(v.toString()));
+      errorsStreamController.sink.add(errorsList);
     } catch (e){
       authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
@@ -53,18 +54,27 @@ class UserBloc extends Bloc {
       authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e){
       authStatusStreamController.sink.add(AuthStatus.signedOut);
-      Map errors = jsonDecode(e.message);
-      for(dynamic error in errors.values){
-        errorsStreamController.sink.add(error[0]);
-        print(error);
-      }
+      Map errorsMap = jsonDecode(e.message);
+      List<String> errorsList = List();
+      errorsMap.forEach((k , v ) =>errorsList.add(v.toString()));
+      errorsStreamController.sink.add(errorsList);
     } catch (e){
       authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
   }
 
+
+  getCompleteProfileFields() async{
+    try{
+      final response = await repository.getCompleteProfileFields();
+    }
+    catch (e){}
+  }
+
+
   @override
   void dispose() {
+    skillsStreamController.close();
     authStatusStreamController.close();
     errorsStreamController.close();
   }

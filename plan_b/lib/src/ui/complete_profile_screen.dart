@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
@@ -57,6 +58,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
       'container',
       'flutter',
     ];
+  }
+
+  @override
+  void initState() {
+
+    super.initState();
+
   }
 
   @override
@@ -206,7 +214,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         hintText: "yourID",
                       ),
                       SizedBox(height: 30),
-                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      //todo: convert textfield to textarea if we need
+//                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      CustomTextField(
+                        labelText: 'سوابق خود را بنویسید',
+                      ),
                       SizedBox(height: 30),
                       TitleText(text: 'مهارت های شما'),
                       _buildSearchTextField(context),
@@ -222,7 +234,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         child: Text(
                           'ادامه و تکمیل حساب',
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          bloc.getCompleteProfileFields();
+                        },
                       ),
                     ],
                   ),
