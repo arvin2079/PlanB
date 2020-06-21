@@ -1,3 +1,4 @@
+
 class LanguageDetector {
 
   bool hasEnglishChar(String string) {

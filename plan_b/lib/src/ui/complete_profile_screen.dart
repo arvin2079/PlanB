@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
@@ -25,17 +27,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 
   ImageProvider _image;
 
-  List<String> sexItems = <String>['مرد', 'زن'];
+  List<String> genderItems = <String>['مرد', 'زن'];
 
   List<String> _chipsData = <String>[];
 
-  List<String> _uniItems = <String>[
-    'امیرکبیر',
-    'خوارزمی',
-    'شریف',
-    'مشهد',
-    'خواجه نصیر',
-  ];
+  List<String> _universityItems = <String>[];
+  List<String> _skillItems = <String>[];
+  List<String> _cityItems = <String>[];
 
   List<String> _getSearchFieldSuggestion(String data) {
     return <String>[
@@ -57,6 +55,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
       'container',
       'flutter',
     ];
+  }
+
+  @override
+  void initState() {
+    bloc.getCompleteProfileFields();
+    initializeItems();
+    super.initState();
   }
 
   @override
@@ -97,7 +102,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                               backgroundImage: _image,
                               child: _image == null
                                   ? Icon(Icons.photo_camera,
-                                  color: Colors.black45, size: 30)
+                                      color: Colors.black45, size: 30)
                                   : null,
                               radius: 35,
                             ),
@@ -109,15 +114,39 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                             children: <Widget>[
                               // fixme : style for these texts
                               //fixme: user must enter his name, its a static text!
-                              Text(
-                                'نام',
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
+                              StreamBuilder<User>(
+                                  stream: bloc.userInfoStream,
+                                  builder: (context, snapshot) {
+                                    String firstname = "";
+                                    if (snapshot.hasData) {
+                                      firstname = snapshot.data.firstName;
+                                      return Text(
+                                        firstname,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      );
+                                    } else {
+                                      return LinearProgressIndicator();
+                                    }
+                                  }),
                               SizedBox(height: 10),
-                              Text(
-                                'نام خوانوادگی',
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
+                              StreamBuilder<User>(
+                                  stream: bloc.userInfoStream,
+                                  builder: (context, snapshot) {
+                                    String lastname = "";
+                                    if (snapshot.hasData) {
+                                      lastname = snapshot.data.lastName;
+                                      return Text(
+                                        lastname,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      );
+                                    } else {
+                                      return LinearProgressIndicator();
+                                    }
+                                  }),
                             ],
                           ),
                         ],
@@ -138,7 +167,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                                 _genderTitle = value;
                               });
                             },
-                            items: sexItems.map((value) {
+                            items: genderItems.map((value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -159,7 +188,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                                 _universityTitle = value;
                               });
                             },
-                            items: _uniItems.map((value) {
+                            items: _universityItems.map((value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -206,7 +235,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         hintText: "yourID",
                       ),
                       SizedBox(height: 30),
-                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      //todo: convert textfield to textarea if we need
+//                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      CustomTextField(
+                        labelText: 'سوابق خود را بنویسید',
+                      ),
                       SizedBox(height: 30),
                       TitleText(text: 'مهارت های شما'),
                       _buildSearchTextField(context),
@@ -222,7 +255,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         child: Text(
                           'ادامه و تکمیل حساب',
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          bloc.getCompleteProfileFields();
+                        },
                       ),
                     ],
                   ),
@@ -241,12 +276,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: AutoCompleteTextField<String>(
-        style: _isPersian ? Theme.of(context).textTheme.display1 : Theme.of(context).textTheme.display2,
+        style: _isPersian
+            ? Theme.of(context).textTheme.display1
+            : Theme.of(context).textTheme.display2,
         controller: _searchInputController,
         clearOnSubmit: true,
-        textSubmitted: (value) {
-
-        },
+        textSubmitted: (value) {},
         itemSubmitted: (data) {
           setState(() {
             if (!_chipsData.contains(data))
@@ -347,6 +382,39 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ],
           );
         });
+  }
+
+  void initializeItems() async {
+    bloc.universitiesStream.first.then((value) {
+      if (value != null) {
+        List<String> names = List<String>();
+        for (int i = 0; i < value.length; i++) {
+          names.add(value[i]['University_name']);
+        }
+        _universityItems = names;
+      }
+    });
+
+    bloc.skillsStream.first.then((value) {
+      if (value != null) {
+        List<String> names = List<String>();
+        for (int i = 0; i < value.length; i++) {
+          names.add(value[i]['skill_name']);
+        }
+        _skillItems = names;
+      }
+    });
+
+    bloc.citiesStream.first.then((value) {
+      if (value != null) {
+        List<String> names = List<String>();
+        for (int i = 0; i < value.length; i++) {
+          names.add(value[i]['title']);
+        }
+        _cityItems = names;
+      }
+    });
+
   }
 }
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/utility/message_exception.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class APIProvider {
   final Client client = Client();
@@ -17,8 +18,6 @@ class APIProvider {
 
     final response = await client.post(url, headers: headers, body: json);
 
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
       return jsonDecode(response.body)['token'];
     } else {
@@ -31,11 +30,8 @@ class APIProvider {
     Map map = {"username" : username, "password" : password};
     String json = jsonEncode(map);
 
-    print(json);
-
     final response = await client.post(url, headers: headers, body: json);
 
-    print(response.statusCode);
 
     if(response.statusCode == 200){
       Map<String, dynamic> json = jsonDecode(response.body);
@@ -46,5 +42,22 @@ class APIProvider {
     else {
       throw MessagedException(utf8.decode(response.bodyBytes));
     }
+  }
+
+  Future<Map> getCompleteProfileFields() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/edit_profile/";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+
+    final response = await client.get(url, headers: headers);
+    if(response.statusCode == 200){
+      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+      return map;
+    }
+    else{
+      throw MessagedException("Something went wrong");
+    }
+
   }
 }

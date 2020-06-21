@@ -19,10 +19,12 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
   String username, password;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: Center(
         child: StreamBuilder(
           stream: bloc.authStatusStream,
@@ -140,12 +142,26 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
       formKey.currentState.save();
       bloc.login(username, password);
       bloc.authStatusStream.first.then((value){
-        print(value);
         if(value == AuthStatus.signedIn){
           Navigator.of(context).pushReplacementNamed('/home');
         }
         else if(value == AuthStatus.signedOut){
-          //todo show error
+
+          SnackBar snackBar = SnackBar(
+            //fixme snack bar must show based on response json
+            /*content: StreamBuilder(
+              stream: bloc.errorsStream,
+              builder: (context, AsyncSnapshot<String> snapshot){
+
+                for(String error in snapshot.data){}
+                return Text("");
+              },
+            ),*/
+            content: Text("Login Failed"),
+            backgroundColor: Colors.red,
+
+          );
+          scaffoldKey.currentState.showSnackBar(snackBar);
         }
       });
     }
