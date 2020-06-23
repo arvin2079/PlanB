@@ -127,7 +127,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                                             .subtitle,
                                       );
                                     } else {
-                                      return LinearProgressIndicator();
+                                      return CircularProgressIndicator();
                                     }
                                   }),
                               SizedBox(height: 10),
@@ -144,7 +144,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                                             .subtitle,
                                       );
                                     } else {
-                                      return LinearProgressIndicator();
+                                      return CircularProgressIndicator();
                                     }
                                   }),
                             ],
