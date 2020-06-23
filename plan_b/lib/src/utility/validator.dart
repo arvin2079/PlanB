@@ -46,19 +46,37 @@ class PhoneNumberStringValidator implements StringValidator {
   }
 }
 
+class PersianValidator with LanguageDetector implements StringValidator {
+  @override
+  bool isValid(String value) {
+    if(value.isEmpty || hasEnglishChar(value))
+      return false;
+    return true;
+  }
+}
+
+class EnglishValidator with LanguageDetector implements StringValidator {
+  @override
+  bool isValid(String value) {
+    if(value.isEmpty || !hasEnglishChar(value))
+      return false;
+    return true;
+  }
+}
+
 class SignUpValidator {
-  final StringValidator firstnameValidator = NonEmptyStringValidator();
-  final StringValidator lastnameValidator = NonEmptyStringValidator();
+  final StringValidator firstnameValidator = PersianValidator();
+  final StringValidator lastnameValidator = PersianValidator();
+  final StringValidator usernameValidator = EnglishValidator();
   final StringValidator uniIdValidator = NonEmptyStringValidator();
-  final StringValidator usernameValidator = UsernameValidator();
   final StringValidator passwordValidator = NonEmptyStringValidator();
   final StringValidator emailValidator = EmailValidator();
   final String notValidEmailMessage = 'ایمیل غیر مجاز';
   final String notValidPasswordMessage = 'رمز عبور غیر مجاز';
-  final String notValidUsernameMessage = 'نام کاربری غیر مجاز';
   final String notValidUniIdMessage = 'کد دانشجویی غیر مجاز';
-  final String notValidFirstnameMessage = 'پر کردن این بخش الزامیست';
-  final String notValidLastnameMessage = 'پر کردن این بخش الزامیست';
+  final String notValidUsernameMessage = 'پر کردن این فیلد به زبان انگلیسی الزامیست';
+  final String notValidFirstnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidLastnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
 }
 
 class LogInValidator {
@@ -69,12 +87,12 @@ class LogInValidator {
 }
 
 class CompleteProfileValidator {
-  final StringValidator firstnameValidator = NonEmptyStringValidator();
-  final StringValidator lastnameValidator = NonEmptyStringValidator();
-  final StringValidator usernameValidator = NonEmptyStringValidator();
+  final StringValidator firstnameValidator = PersianValidator();
+  final StringValidator lastnameValidator = PersianValidator();
+  final StringValidator usernameValidator = EnglishValidator();
   final StringValidator phoneNumberValidator = PhoneNumberStringValidator();
-  final String notValidFirstnameMessage = 'پر کردن این بخش الزامیست';
-  final String notValidLastnameMessage = 'پر کردن این بخش الزامیست';
-  final String notValidUsernameMessage = 'نام کاربری صحیح خود را وارد کنید';
+  final String notValidUsernameMessage = 'پر کردن این فیلد به زبان انگلیسی الزامیست';
+  final String notValidFirstnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidLastnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
   final String notPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
 }

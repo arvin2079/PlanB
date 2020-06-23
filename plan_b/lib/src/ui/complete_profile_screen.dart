@@ -23,14 +23,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
+  String _cityTitle = 'شهر';
   final GlobalKey _fromKey = GlobalKey<FormState>();
 
   ImageProvider _image;
 
-  List<String> genderItems = <String>['مرد', 'زن'];
-
   List<String> _chipsData = <String>[];
 
+  List<String> genderItems = <String>['مرد', 'زن'];
   List<String> _universityItems = <String>[];
   List<String> _skillItems = <String>[];
   List<String> _cityItems = <String>[];
@@ -168,6 +168,27 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                               });
                             },
                             items: genderItems.map((value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: Theme.of(context).textTheme.subtitle,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          DropdownButton(
+                            hint: Text(
+                              _cityTitle,
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                            onChanged: (value) {
+                              print(value);
+                              setState(() {
+                                _cityTitle = value;
+                              });
+                            },
+                            items: _cityItems.map((value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
