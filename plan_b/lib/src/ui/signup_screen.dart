@@ -47,179 +47,183 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  // Picture of header
                   ClipRRect(
                       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
                       child: Image.asset("images/loginBackground.jpg")),
-                  SizedBox(
-                    height: 80,
-                  ),
+                  SizedBox(height: 40,),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width / 8,
-                        ),
-                        child: Form(
-                          key: form_key,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              TextFormField(
-                                autofocus: true,
-                                style: Theme.of(context).textTheme.display1,
-                                validator: (value) {
-                                  return firstnameValidator.isValid(value) ? null : notValidFirstnameMessage;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "نام",
+                    child: ScrollConfiguration(
+                      // This line removing scroll glow
+                      behavior: _NoGlowScrollBehavior(),
+                      // This widget make form scrollable
+                      child: SingleChildScrollView(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: MediaQuery.of(context).size.width / 8,
+                          ),
+                          child: Form(
+                            key: form_key,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                TextFormField(
+                                  autofocus: true,
+                                  style: Theme.of(context).textTheme.display1,
+                                  validator: (value) {
+                                    return firstnameValidator.isValid(value) ? null : notValidFirstnameMessage;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: "نام",
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  controller: _firstNameController,
+                                  onSaved: (text) {
+                                    user.firstName = text;
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                                 ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                                controller: _firstNameController,
-                                onSaved: (text) {
-                                  user.firstName = text;
-                                },
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                style: Theme.of(context).textTheme.display1,
-                                validator: (value) {
-                                  return lastnameValidator.isValid(value) ? null : notValidLastnameMessage;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "نام خانوادگی",
+                                SizedBox(
+                                  height: 15,
                                 ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                                controller: _lastNameController,
-                                onSaved: (text) {
-                                  user.lastName = text;
-                                },
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                style: Theme.of(context).textTheme.display1,
-                                validator: (value) {
-                                  return uniIdValidator.isValid(value) ? null : notValidUniIdMessage;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "کد دانشجویی",
+                                TextFormField(
+                                  style: Theme.of(context).textTheme.display1,
+                                  validator: (value) {
+                                    return lastnameValidator.isValid(value) ? null : notValidLastnameMessage;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: "نام خانوادگی",
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  controller: _lastNameController,
+                                  onSaved: (text) {
+                                    user.lastName = text;
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                                 ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                                controller: _uniIdController,
-                                onSaved: (text) {
-                                  user.studentCode = text;
-                                },
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                style: Theme.of(context).textTheme.display1,
-                                validator: (value) {
-                                  return emailValidator.isValid(value) ? null : notValidEmailMessage;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "ایمیل",
+                                SizedBox(
+                                  height: 15,
                                 ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                                controller: _emailController,
-                                onSaved: (text) {
-                                  user.email = text;
-                                },
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                style: Theme.of(context).textTheme.display1,
-                                validator: (value) {
-                                  return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "نام کاربری",
+                                TextFormField(
+                                  style: Theme.of(context).textTheme.display1,
+                                  validator: (value) {
+                                    return uniIdValidator.isValid(value) ? null : notValidUniIdMessage;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: "کد دانشجویی",
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  controller: _uniIdController,
+                                  onSaved: (text) {
+                                    user.studentCode = text;
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                                 ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                                controller: _usernameController,
-                                onSaved: (text) {
-                                  user.username = text;
-                                },
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                style: Theme.of(context).textTheme.display1,
-                                validator: (value) {
-                                  return passwordValidator.isValid(value) ? null : notValidPasswordMessage;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "رمز عبور",
+                                SizedBox(
+                                  height: 15,
                                 ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                                obscureText: true,
-                                controller: _passwordController,
-                                onSaved: (text) {
-                                  user.password = text;
-                                },
-                                textInputAction: TextInputAction.done,
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              RaisedButton(
-                                child: Text(
-                                  "ادامه و تکمیل اطلاعات",
-                                  // fixme : theme for in button texts
-                                  style: Theme.of(context).textTheme.subtitle,
+                                TextFormField(
+                                  style: Theme.of(context).textTheme.display1,
+                                  validator: (value) {
+                                    return emailValidator.isValid(value) ? null : notValidEmailMessage;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: "ایمیل",
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  controller: _emailController,
+                                  onSaved: (text) {
+                                    user.email = text;
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                                 ),
-                                onPressed: () {
-                                  if(form_key.currentState.validate()) {
-                                    form_key.currentState.save();
-                                    _checkForNavigate();
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                TextFormField(
+                                  style: Theme.of(context).textTheme.display1,
+                                  validator: (value) {
+                                    return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: "نام کاربری",
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  controller: _usernameController,
+                                  onSaved: (text) {
+                                    user.username = text;
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                TextFormField(
+                                  style: Theme.of(context).textTheme.display1,
+                                  validator: (value) {
+                                    return passwordValidator.isValid(value) ? null : notValidPasswordMessage;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: "رمز عبور",
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  obscureText: true,
+                                  controller: _passwordController,
+                                  onSaved: (text) {
+                                    user.password = text;
+                                  },
+                                  textInputAction: TextInputAction.done,
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                RaisedButton(
+                                  child: Text(
+                                    "ادامه و تکمیل اطلاعات",
+                                    // fixme : theme for in button texts
+                                    style: Theme.of(context).textTheme.subtitle,
+                                  ),
+                                  onPressed: () {
+                                    if(form_key.currentState.validate()) {
+                                      form_key.currentState.save();
+                                      _checkForNavigate();
 
-                                  }
-                                },
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  FlatButton(
-                                    child: Text("وارد شوید  ",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .button
-                                            .copyWith(color: secondaryColor)),
-                                    onPressed: () {
-                                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                          builder: (context) => LoginScreen()));
-                                    },
-                                  ),
-                                  Text(
-                                    "اکانت ندارید؟",
-                                    style: Theme.of(context).textTheme.display1,
-                                  ),
-                                ],
-                              )
-                            ],
+                                    }
+                                  },
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      child: Text("وارد شو",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button
+                                              .copyWith(color: secondaryColor)),
+                                      onPressed: () {
+                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                            builder: (context) => LoginScreen()));
+                                      },
+                                    ),
+                                    Text(
+                                      "اکانت داری؟",
+                                      style: Theme.of(context).textTheme.display1,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -257,12 +261,19 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                 return Text("");
               },
             ),*/
-          content: Text("Sign up Failed"),
+          content: Text("خطا در ثبت نام! دوباره امتخان کن...", textDirection: TextDirection.rtl,),
           backgroundColor: Colors.red,
         );
         scaffoldKey.currentState.showSnackBar(snackBar);
       }
     });
   }
+}
 
+class _NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
 }

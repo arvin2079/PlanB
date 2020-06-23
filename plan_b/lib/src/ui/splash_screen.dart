@@ -1,54 +1,63 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:planb/src/ui/home_screen.dart';
-import 'package:planb/src/ui/login_screen.dart';
-import 'package:planb/src/ui/complete_profile_screen.dart';
-import 'package:planb/src/ui/signup_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-              child: Text("sign up"),
-              onPressed: (){
-                Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (context) => SignUpScreen()
-                    ));
-              },
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('images/splashScreen.jpg'),
+              fit: BoxFit.fitHeight,
             ),
-            FlatButton(
-              child: Text("complete"),
-              onPressed: (){
-                Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (context) => CompleteProfileScreen()
-                    ));
-              },
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Positioned(
+                    top: 140,
+                    child: Text(
+                      'PlanB',
+                      style: TextStyle(
+                        fontSize: 55,
+                        fontWeight: FontWeight.w400,
+                        shadows: [
+                          Shadow(blurRadius: 10, color: Colors.black54)
+                        ],
+                      ),
+                    ),
+                  ),
+                  SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  Positioned(
+                    bottom: 5,
+                    child: Text(
+                      'Tetha',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        shadows: [
+                          Shadow(blurRadius: 10, color: Colors.black54)
+                        ],
+                        height: 2.7,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            FlatButton(
-              child: Text("Home"),
-              onPressed: (){
-                Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeScreen()
-                    ));
-              },
-            ),
-            FlatButton(
-              child: Text("Login"),
-              onPressed: (){
-                Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginScreen()
-                    ));
-              },
-            )
-          ],
+          ),
         ),
       ),
     );

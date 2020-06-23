@@ -17,61 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        endDrawer: SafeArea(
-          child: Drawer(
-            child: Container(
-              color: primaryColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              "نام",
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.right,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "نام خانوادگی",
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.right,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        CircleAvatar(
-                          radius: 50,
-                          child: ClipOval(
-                              child: Image.asset(
-                            "images/noImage.png",
-                            fit: BoxFit.cover,
-                            width: 95.0,
-                            height: 95.0,
-                          )),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _buildListTile("پروژه جدید", Icons.insert_drive_file),
-                  _buildListTile("پروفایل", Icons.person),
-                  _buildListTile("درباره ما", Icons.info_outline),
-                ],
-              ),
-            ),
-          ),
-        ),
+        endDrawer: _buildEndDrawer(),
         appBar: AppBar(
           title: Text(
             'PlanB',
@@ -132,6 +78,64 @@ class _HomeScreenState extends State<HomeScreen> {
           trailing: Icon(
             iconData,
             color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildEndDrawer() {
+    return SafeArea(
+      child: Drawer(
+        child: Container(
+          color: primaryColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "نام",
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.right,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "نام خانوادگی",
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    CircleAvatar(
+                      radius: 50,
+                      child: ClipOval(
+                          child: Image.asset(
+                            "images/noImage.png",
+                            fit: BoxFit.cover,
+                            width: 95.0,
+                            height: 95.0,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+              _buildListTile("پروژه جدید", Icons.insert_drive_file),
+              _buildListTile("پروفایل", Icons.person),
+              _buildListTile("درباره ما", Icons.info_outline),
+            ],
           ),
         ),
       ),

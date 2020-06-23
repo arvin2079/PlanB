@@ -62,8 +62,8 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                               decoration: InputDecoration(
                                 hintText: "نام کاربری",
                               ),
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.right,
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
                               controller: _usernameController,
                               onSaved: (text) {
                                 username = text;
@@ -85,8 +85,8 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                               decoration: InputDecoration(
                                 hintText: "رمز عبور",
                               ),
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.right,
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
                               obscureText: true,
                               controller: _passwordController,
                               onSaved: (text) {
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                               textInputAction: TextInputAction.done,
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 35,
                             ),
                             RaisedButton(
                               child: Text(
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 FlatButton(
-                                  child: Text("ایجاد حساب  ",
+                                  child: Text("ایجاد کن",
                                       style: Theme.of(context)
                                           .textTheme
                                           .button
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                                   },
                                 ),
                                 Text(
-                                  "اکانت ندارید؟",
+                                  "اکانت نداری؟",
                                   style: Theme.of(context).textTheme.display1,
                                 ),
                               ],
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                 return Text("");
               },
             ),*/
-            content: Text("Login Failed"),
+            content: Text("خطا در ورود! دوباره امتخان کن...", textDirection: TextDirection.rtl,),
             backgroundColor: Colors.red,
 
           );

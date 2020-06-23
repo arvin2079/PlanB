@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:planb/src/bloc/authenticatin_bloc.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/home_screen.dart';
@@ -19,6 +21,7 @@ class _PlanBAppState extends State<PlanBApp> {
 
   @override
   Widget build(BuildContext context) {
+    authenticationBloc.isUserLoggedIn();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: isDarkMode? ThemeData.dark() : lightTheme,
@@ -29,7 +32,21 @@ class _PlanBAppState extends State<PlanBApp> {
         '/home' : (BuildContext context) => HomeScreen(),
         '/edit_profile' : (BuildContext context) => CompleteProfileScreen(),
       },
-      home: SplashScreen()
+      home: StreamBuilder<AuthStatus>(
+        stream: authenticationBloc.authenticationStatusStream,
+        builder: (context, snapshot) {
+          Widget result = SplashScreen();
+
+          if(snapshot.hasData){
+            if(snapshot.data == AuthStatus.signedIn ){
+              result = HomeScreen();
+            } else if (snapshot.data == AuthStatus.signedOut){
+              result = LoginScreen();
+            }
+          }
+          return result;
+        }
+      )
     );
   }
 }
