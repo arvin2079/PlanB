@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -51,36 +53,32 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       ),
     ),
   ),
-  primaryTextTheme: TextTheme(
 
+  buttonTheme: ButtonThemeData(
+    buttonColor: secondaryColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
   ),
 
   textTheme: TextTheme(
+    //fixme : fix deprecated parts
     //textField persian style
-    display1: TextStyle(
-      fontFamily: 'yekan',
-      fontSize: 16,
-      color: Colors.black87
-    ),
+    display1:
+        TextStyle(fontFamily: 'yekan', fontSize: 16, color: Colors.black87),
 
     //textField english style
-    display2: TextStyle(
-        fontSize: 16,
-        color: Colors.black87
-    ),
+    display2: TextStyle(fontSize: 16, color: Colors.black87),
 
     //autocomplete list persian item style
-    display3: TextStyle(
-        fontFamily: 'yekan',
-        fontSize: 19,
-        color: Colors.black87
-    ),
+    display3:
+        TextStyle(fontFamily: 'yekan', fontSize: 19, color: Colors.black87),
 
     //autocomplete list english item style
     display4: TextStyle(
-        fontSize: 19,
-        fontWeight: FontWeight.w300,
-        color: Colors.black87,
+      fontSize: 19,
+      fontWeight: FontWeight.w300,
+      color: Colors.black87,
     ),
 
     title: TextStyle(
@@ -102,6 +100,11 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       fontFamily: 'yekan',
       fontSize: 10,
       color: Colors.black,
+    ),
+    button: TextStyle(
+      fontFamily: 'yekan',
+      fontSize: 15,
+      color: Colors.white,
     ),
   ),
 );

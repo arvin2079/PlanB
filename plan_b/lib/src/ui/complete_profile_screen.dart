@@ -253,6 +253,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                       RaisedButton(
                         child: Text(
                           'ادامه و تکمیل حساب',
+                          style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () {
                           bloc.getCompleteProfileFields();
