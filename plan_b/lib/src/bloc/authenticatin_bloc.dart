@@ -13,7 +13,6 @@ class AuthenticationBloc extends Bloc{
   isUserLoggedIn() async{
     await new Future.delayed(const Duration(seconds : 2));
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    print(preferences.getString('token'));
     if(preferences.getString('token') != null){
       //todo Check validation of token
       _authStatusStreamController.sink.add(AuthStatus.signedIn);
