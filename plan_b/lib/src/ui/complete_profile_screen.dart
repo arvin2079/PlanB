@@ -235,8 +235,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         hintText: "yourID",
                       ),
                       SizedBox(height: 30),
-                      //todo: convert textfield to textarea if we need
-//                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
                       CustomTextField(
                         labelText: 'سوابق خود را بنویسید',
                       ),
