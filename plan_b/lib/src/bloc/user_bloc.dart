@@ -13,66 +13,66 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserBloc extends Bloc {
   final repository = Repository();
-  PublishSubject<AuthStatus> authStatusStreamController = PublishSubject();
-  PublishSubject<List> errorsStreamController = PublishSubject();
-  PublishSubject<List> skillsStreamController = PublishSubject();
-  PublishSubject<List> citiesStreamController = PublishSubject();
-  PublishSubject<List> universitiesStreamController = PublishSubject();
-  PublishSubject<User> userInfoStreamController = PublishSubject();
+  PublishSubject<AuthStatus> _authStatusStreamController = PublishSubject();
+  PublishSubject<List> _errorsStreamController = PublishSubject();
+  PublishSubject<List> _skillsStreamController = PublishSubject();
+  PublishSubject<List> _citiesStreamController = PublishSubject();
+  PublishSubject<List> _universitiesStreamController = PublishSubject();
+  PublishSubject<User> _userInfoStreamController = PublishSubject();
   dynamic _lastStatus;
 
   UserBloc() {
-    _lastStatus = authStatusStreamController.stream.shareValue();
+    _lastStatus = _authStatusStreamController.stream.shareValue();
     _lastStatus.listen(null);
   }
 
-  Stream<AuthStatus> get authStatusStream => authStatusStreamController.stream;
+  Stream<AuthStatus> get authStatusStream => _authStatusStreamController.stream;
 
-  Stream<List> get errorsStream => errorsStreamController.stream;
+  Stream<List> get errorsStream => _errorsStreamController.stream;
 
-  Stream<List> get skillsStream => skillsStreamController.stream;
+  Stream<List> get skillsStream => _skillsStreamController.stream;
 
-  Stream<List> get citiesStream => citiesStreamController.stream;
+  Stream<List> get citiesStream => _citiesStreamController.stream;
 
-  Stream<List> get universitiesStream => universitiesStreamController.stream;
+  Stream<List> get universitiesStream => _universitiesStreamController.stream;
 
-  Stream<User> get userInfoStream => userInfoStreamController.stream;
+  Stream<User> get userInfoStream => _userInfoStreamController.stream;
 
   AuthStatus get lastStatus => _lastStatus.value;
 
   signUpNewUser(User user) async {
     try {
-      authStatusStreamController.sink.add(AuthStatus.loading);
+      _authStatusStreamController.sink.add(AuthStatus.loading);
       String token = await repository.getNewToken(user);
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("token", token);
-      authStatusStreamController.sink.add(AuthStatus.signedIn);
+      _authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e) {
-      authStatusStreamController.sink.add(AuthStatus.signedOut);
+      _authStatusStreamController.sink.add(AuthStatus.signedOut);
       Map errorsMap = jsonDecode(e.message);
       List<String> errorsList = List();
       errorsMap.forEach((k, v) => errorsList.add(v.toString()));
-      errorsStreamController.sink.add(errorsList);
+      _errorsStreamController.sink.add(errorsList);
     } catch (e) {
-      authStatusStreamController.sink.add(AuthStatus.signedOut);
+      _authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
   }
 
   login(String username, String password) async {
     try {
-      authStatusStreamController.sink.add(AuthStatus.loading);
+      _authStatusStreamController.sink.add(AuthStatus.loading);
       Map data = await repository.login(username, password);
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("token", data['token']);
-      authStatusStreamController.sink.add(AuthStatus.signedIn);
+      _authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e) {
-      authStatusStreamController.sink.add(AuthStatus.signedOut);
+      _authStatusStreamController.sink.add(AuthStatus.signedOut);
       Map errorsMap = jsonDecode(e.message);
       List<String> errorsList = List();
       errorsMap.forEach((k, v) => errorsList.add(v.toString()));
-      errorsStreamController.sink.add(errorsList);
+      _errorsStreamController.sink.add(errorsList);
     } catch (e) {
-      authStatusStreamController.sink.add(AuthStatus.signedOut);
+      _authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
   }
 
@@ -81,25 +81,25 @@ class UserBloc extends Bloc {
 
       Map response = await repository.getCompleteProfileFields();
       Map user = response['username'];
-      userInfoStreamController.sink.add(User.fromJson(user));
+      _userInfoStreamController.sink.add(User.fromJson(user));
       List list = response['skills'];
-      skillsStreamController.sink.add(list);
+      _skillsStreamController.sink.add(list);
       list = response['Code'];
-      citiesStreamController.sink.add(list);
+      _citiesStreamController.sink.add(list);
       list = response['University_name'];
-      universitiesStreamController.sink.add(list);
+      _universitiesStreamController.sink.add(list);
 
     } catch (e) {}
   }
 
   @override
   void dispose() {
-    skillsStreamController.close();
-    citiesStreamController.close();
-    universitiesStreamController.close();
-    authStatusStreamController.close();
-    errorsStreamController.close();
-    userInfoStreamController.close();
+    _skillsStreamController.close();
+    _citiesStreamController.close();
+    _universitiesStreamController.close();
+    _authStatusStreamController.close();
+    _errorsStreamController.close();
+    _userInfoStreamController.close();
   }
 }
 
