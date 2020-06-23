@@ -16,9 +16,9 @@ class SplashScreen extends StatelessWidget {
               child: Text("sign up"),
               onPressed: (){
                 Navigator.push(context,
-                MaterialPageRoute(
-                  builder: (context) => SignUpScreen()
-                ));
+                    MaterialPageRoute(
+                        builder: (context) => SignUpScreen()
+                    ));
               },
             ),
             FlatButton(
