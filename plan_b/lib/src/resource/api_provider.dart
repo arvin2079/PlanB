@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/utility/message_exception.dart';

@@ -24,7 +24,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
   final GlobalKey _fromKey = GlobalKey<FormState>();
-  User user = User(firstName: "mamad", lastName: 'mamad');
 
   ImageProvider _image;
 
@@ -115,15 +114,39 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                             children: <Widget>[
                               // fixme : style for these texts
                               //fixme: user must enter his name, its a static text!
-                              Text(
-                                'نام',
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
+                              StreamBuilder<User>(
+                                  stream: bloc.userInfoStream,
+                                  builder: (context, snapshot) {
+                                    String firstname = "";
+                                    if (snapshot.hasData) {
+                                      firstname = snapshot.data.firstName;
+                                      return Text(
+                                        firstname,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      );
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  }),
                               SizedBox(height: 10),
-                              Text(
-                                user.firstName,
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
+                              StreamBuilder<User>(
+                                  stream: bloc.userInfoStream,
+                                  builder: (context, snapshot) {
+                                    String lastname = "";
+                                    if (snapshot.hasData) {
+                                      lastname = snapshot.data.lastName;
+                                      return Text(
+                                        lastname,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      );
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  }),
                             ],
                           ),
                         ],
@@ -212,8 +235,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         hintText: "yourID",
                       ),
                       SizedBox(height: 30),
-                      //todo: convert textfield to textarea if we need
-//                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
                       CustomTextField(
                         labelText: 'سوابق خود را بنویسید',
                       ),
@@ -365,14 +387,19 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     bloc.universitiesStream.first.then((value) {
       if (value != null) {
         List<String> names = List<String>();
+        for (int i = 0; i < value.length; i++) {
+          names.add(value[i]['University_name']);
+        }
         _universityItems = names;
       }
     });
 
     bloc.skillsStream.first.then((value) {
-
       if (value != null) {
         List<String> names = List<String>();
+        for (int i = 0; i < value.length; i++) {
+          names.add(value[i]['skill_name']);
+        }
         _skillItems = names;
       }
     });
@@ -380,16 +407,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     bloc.citiesStream.first.then((value) {
       if (value != null) {
         List<String> names = List<String>();
+        for (int i = 0; i < value.length; i++) {
+          names.add(value[i]['title']);
+        }
         _cityItems = names;
       }
     });
 
-    bloc.userInfoStream.first.then((value){
-
-      if(value != null){
-        user = value;
-      }
-    });
   }
 }
 
