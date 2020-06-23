@@ -21,6 +21,7 @@ class _PlanBAppState extends State<PlanBApp> {
 
   @override
   Widget build(BuildContext context) {
+    authenticationBloc.isUserLoggedIn();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: isDarkMode? ThemeData.dark() : lightTheme,
@@ -34,7 +35,7 @@ class _PlanBAppState extends State<PlanBApp> {
       home: StreamBuilder<AuthStatus>(
         stream: authenticationBloc.authenticationStatusStream,
         builder: (context, snapshot) {
-          Widget result = SplashScreen();;
+          Widget result = SplashScreen();
 
           if(snapshot.hasData){
             if(snapshot.data == AuthStatus.signedIn ){
