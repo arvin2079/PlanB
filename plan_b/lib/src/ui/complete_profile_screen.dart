@@ -276,11 +276,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         SizedBox(height: 100),
         RaisedButton(
           child: Text(
-            'ادامه و تکمیل حساب',
+            'ذخیره اطلاعات',
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: () {
-            bloc.getCompleteProfileFields();
           },
         ),
       ],
@@ -392,7 +391,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               RaisedButton(
                 child: Text('گالری'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed('/home');
                   return _getImage(ImageSource.gallery);
                 },
               ),
