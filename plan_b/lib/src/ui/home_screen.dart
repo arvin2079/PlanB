@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab.dart';
 import 'package:planb/src/ui/homeTabs/goingProject_tab.dart';
@@ -63,12 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildListTile(String title, IconData iconData) {
+  Widget _buildListTile(String title, IconData iconData, String destinationPath) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         child: ListTile(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, destinationPath);
+          },
           contentPadding: EdgeInsets.symmetric(horizontal: 20),
           title: Text(
             title,
@@ -132,9 +135,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              _buildListTile("پروژه جدید", Icons.insert_drive_file),
-              _buildListTile("پروفایل", Icons.person),
-              _buildListTile("درباره ما", Icons.info_outline),
+              _buildListTile("پروژه جدید", Icons.insert_drive_file, '/home'),
+              _buildListTile("پروفایل", Icons.person, '/edit_profile'),
+              _buildListTile("درباره ما", Icons.info_outline, '/home'),
             ],
           ),
         ),

@@ -11,7 +11,7 @@ class AuthenticationBloc extends Bloc{
 
 
   isUserLoggedIn() async{
-    await new Future.delayed(const Duration(seconds : 2));
+    await new Future.delayed(const Duration(seconds : 4));
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if(preferences.getString('token') != null){
       //todo Check validation of token

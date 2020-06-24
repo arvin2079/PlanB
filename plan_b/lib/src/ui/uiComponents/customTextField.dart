@@ -15,9 +15,11 @@ class CustomTextField extends StatefulWidget {
         this.validator,
         @required this.labelText,
         this.hintText,
+        this.initialValue,
         this.maxLength});
 
   final String labelText;
+  final String initialValue;
   final String hintText;
   final String errorText;
   final TextInputType inputType;
@@ -40,6 +42,7 @@ class _CustomTextFieldState extends State<CustomTextField>
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
+        initialValue: widget.initialValue,
         controller: widget.controller,
         maxLength: widget.maxLength,
         focusNode: widget.focusNode,

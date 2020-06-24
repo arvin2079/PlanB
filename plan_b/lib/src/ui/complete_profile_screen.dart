@@ -88,199 +88,19 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             maxWidth: double.maxFinite,
             child: Form(
               key: _fromKey,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(25),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          GestureDetector(
-                            child: CircleAvatar(
-                              backgroundColor: Colors.grey[300],
-                              backgroundImage: _image,
-                              child: _image == null
-                                  ? Icon(Icons.photo_camera,
-                                      color: Colors.black45, size: 30)
-                                  : null,
-                              radius: 35,
-                            ),
-                            onTap: () => _pickImage(),
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              // fixme : style for these texts
-                              //fixme: user must enter his name, its a static text!
-                              StreamBuilder<User>(
-                                  stream: bloc.userInfoStream,
-                                  builder: (context, snapshot) {
-                                    String firstname = "";
-                                    if (snapshot.hasData) {
-                                      firstname = snapshot.data.firstName;
-                                      return Text(
-                                        firstname,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle,
-                                      );
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  }),
-                              SizedBox(height: 10),
-                              StreamBuilder<User>(
-                                  stream: bloc.userInfoStream,
-                                  builder: (context, snapshot) {
-                                    String lastname = "";
-                                    if (snapshot.hasData) {
-                                      lastname = snapshot.data.lastName;
-                                      return Text(
-                                        lastname,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle,
-                                      );
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  }),
-                            ],
-                          ),
-                        ],
-                      ),
-                      //fixme: university has a dropBox for choose and its useless
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          DropdownButton(
-                            hint: Text(
-                              _genderTitle,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                            onChanged: (value) {
-                              print(value);
-                              setState(() {
-                                _genderTitle = value;
-                              });
-                            },
-                            items: genderItems.map((value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: Theme.of(context).textTheme.subtitle,
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          DropdownButton(
-                            hint: Text(
-                              _cityTitle,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                            onChanged: (value) {
-                              print(value);
-                              setState(() {
-                                _cityTitle = value;
-                              });
-                            },
-                            items: _cityItems.map((value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: Theme.of(context).textTheme.subtitle,
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          DropdownButton(
-                            hint: Text(
-                              _universityTitle,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                            onChanged: (value) {
-                              print(value);
-                              setState(() {
-                                _universityTitle = value;
-                              });
-                            },
-                            items: _universityItems.map((value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: Theme.of(context).textTheme.subtitle,
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      TitleText(text: 'اطلاعات تماس'),
-                      CustomTextField(
-                        labelText: 'موبایل',
-                        inputType: TextInputType.phone,
-                        maxLength: 11,
-                        hintText: "09123456789",
-                      ),
-                      CustomTextField(
-                        labelText: 'ایمیل',
-                        inputType: TextInputType.emailAddress,
-                        hintText: "example@gmail.com",
-                      ),
-                      CustomTextField(
-                        labelText: 'وبسایت',
-                        inputType: TextInputType.url,
-                        hintText: "www.example.com",
-                      ),
-                      CustomTextField(
-                        labelText: 'اینستاگرام',
-                        hintText: "yourID",
-                      ),
-                      CustomTextField(
-                        labelText: 'تلگرام',
-                        hintText: "yourID",
-                      ),
-                      CustomTextField(
-                        labelText: 'گیت',
-                        hintText: "yourID",
-                      ),
-                      CustomTextField(
-                        labelText: 'لینکدین',
-                        hintText: "yourID",
-                      ),
-                      SizedBox(height: 30),
-                      TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
-                      CustomTextField(
-                        labelText: 'سوابق خود را بنویسید',
-                      ),
-                      SizedBox(height: 30),
-                      TitleText(text: 'مهارت های شما'),
-                      _buildSearchTextField(context),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Wrap(
-                          children: _chipWidgets.toList(),
-                          spacing: 10.0,
-                        ),
-                      ),
-                      SizedBox(height: 100),
-                      RaisedButton(
-                        child: Text(
-                          'ادامه و تکمیل حساب',
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                        onPressed: () {
-                          bloc.getCompleteProfileFields();
-                        },
-                      ),
-                    ],
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(25),
+                    child: StreamBuilder<User>(
+                      stream: bloc.userInfoStream,
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData){
+                          return _buildScreenWidget();
+                        }
+                        return LinearProgressIndicator();
+                      }
+                    ),
                   ),
                 ),
               ),
@@ -288,6 +108,180 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildScreenWidget(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            GestureDetector(
+              child: CircleAvatar(
+                backgroundColor: Colors.grey[300],
+                backgroundImage: _image,
+                child: _image == null
+                    ? Icon(Icons.photo_camera,
+                    color: Colors.black45, size: 30)
+                    : null,
+                radius: 35,
+              ),
+              onTap: () => _pickImage(),
+            ),
+            SizedBox(width: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // fixme : style for these texts
+                //fixme: user must enter his name, its a static text!
+                Text(
+                  'firstname',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'lastname',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle,
+                ),
+              ],
+            ),
+          ],
+        ),
+        //fixme: university has a dropBox for choose and its useless
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            DropdownButton(
+              hint: Text(
+                _genderTitle,
+                style: Theme.of(context).textTheme.subtitle,
+              ),
+              onChanged: (value) {
+                print(value);
+                setState(() {
+                  _genderTitle = value;
+                });
+              },
+              items: genderItems.map((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                );
+              }).toList(),
+            ),
+            DropdownButton(
+              hint: Text(
+                _cityTitle,
+                style: Theme.of(context).textTheme.subtitle,
+              ),
+              onChanged: (value) {
+                print(value);
+                setState(() {
+                  _cityTitle = value;
+                });
+              },
+              items: _cityItems.map((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                );
+              }).toList(),
+            ),
+            DropdownButton(
+              hint: Text(
+                _universityTitle,
+                style: Theme.of(context).textTheme.subtitle,
+              ),
+              onChanged: (value) {
+                print(value);
+                setState(() {
+                  _universityTitle = value;
+                });
+              },
+              items: _universityItems.map((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+        SizedBox(height: 30),
+        TitleText(text: 'اطلاعات تماس'),
+        CustomTextField(
+          labelText: 'موبایل',
+          inputType: TextInputType.phone,
+          maxLength: 11,
+          hintText: "09123456789",
+        ),
+        CustomTextField(
+          labelText: 'ایمیل',
+          inputType: TextInputType.emailAddress,
+          hintText: "example@gmail.com",
+        ),
+        CustomTextField(
+          labelText: 'وبسایت',
+          inputType: TextInputType.url,
+          hintText: "www.example.com",
+        ),
+        CustomTextField(
+          labelText: 'اینستاگرام',
+          hintText: "yourID",
+        ),
+        CustomTextField(
+          labelText: 'تلگرام',
+          hintText: "yourID",
+        ),
+        CustomTextField(
+          labelText: 'گیت',
+          hintText: "yourID",
+        ),
+        CustomTextField(
+          labelText: 'لینکدین',
+          hintText: "yourID",
+        ),
+        SizedBox(height: 30),
+        TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+        CustomTextField(
+          labelText: 'سوابق خود را بنویسید',
+        ),
+        SizedBox(height: 30),
+        TitleText(text: 'مهارت های شما'),
+        _buildSearchTextField(context),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: Wrap(
+            children: _chipWidgets.toList(),
+            spacing: 10.0,
+          ),
+        ),
+        SizedBox(height: 100),
+        RaisedButton(
+          child: Text(
+            'ادامه و تکمیل حساب',
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () {
+            bloc.getCompleteProfileFields();
+          },
+        ),
+      ],
     );
   }
 
