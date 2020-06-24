@@ -92,6 +92,18 @@ class UserBloc extends Bloc {
     } catch (e) {}
   }
 
+
+  completeProfile(User requestUser) async{
+    try{
+      User user = repository.completeProfile(requestUser);
+      _userInfoStreamController.sink.add(user);
+    }
+    on MessagedException catch(e){
+      _errorsStreamController.add([e]);
+    }
+  }
+
+
   @override
   void dispose() {
     _skillsStreamController.close();

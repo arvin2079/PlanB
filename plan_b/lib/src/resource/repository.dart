@@ -7,5 +7,6 @@ class Repository{
   Future<String> getNewToken(User user) => _provider.signUpNewUser(user);
   Future<Map<String, dynamic>> login(String username, String password) => _provider.loginUser(username, password);
   getCompleteProfileFields() => _provider.getCompleteProfileFields();
+  completeProfile(User user) => _provider.completeProfile(user);
 
 }
