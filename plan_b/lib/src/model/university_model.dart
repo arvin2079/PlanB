@@ -4,11 +4,11 @@ class University{
   int id;
   int code;
   String name;
-  City city;
+  int cityCode;
 
   Map<String, University> universitiesMap = Map();
 
-  University({this.id, this.code, this.name, this.city});
+  University({this.id, this.code, this.name, this.cityCode});
 
   factory University.fromJson(Map<String, dynamic> json){
     if (json == null) return null;
@@ -16,7 +16,7 @@ class University{
       id: json['id'],
       code: json['Code'],
       name: json['University_name'],
-      city: City.fromJson(json['University_city'])
+      cityCode: json['University_city']
     );
   }
 
@@ -26,9 +26,7 @@ class University{
     data['id'] = this.id;
     data['Code'] = this.code;
     data['University_name'] = this.name;
-    if(this.city != null){
-      data['University_city'] = city.toJson();
-    }
+    data['University_city'] = this.cityCode;
     return data;
   }
 

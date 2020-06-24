@@ -78,7 +78,7 @@ class APIProvider {
     String url = _baseUrl + "dashboard/edit_profile/";
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
-    var body = newUser.toJson();
+    String body = jsonEncode(newUser.toJson());
     // Sending request
     final response = await client.post(url, headers: headers, body: body);
     if (response.statusCode == 200) {

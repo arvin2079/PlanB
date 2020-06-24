@@ -95,7 +95,8 @@ class UserBloc extends Bloc {
 
   completeProfile(User requestUser) async{
     try{
-      User user = repository.completeProfile(requestUser);
+      Map map = await repository.completeProfile(requestUser);
+      User user = User.fromJson(map);
       _userInfoStreamController.sink.add(user);
     }
     on MessagedException catch(e){

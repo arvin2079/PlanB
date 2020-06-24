@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/city_model.dart';
+import 'package:planb/src/model/skill_model.dart';
+import 'package:planb/src/model/university_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
-import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
@@ -31,9 +33,15 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   List<String> _chipsData = <String>[];
 
   List<String> genderItems = <String>['مرد', 'زن'];
-  List<String> _universityItems = <String>[];
-  List<String> _skillItems = <String>[];
-  List<String> _cityItems = <String>[];
+  List<String> _universityTitlesItems = <String>[];
+  List<String> _skillITitleItems = <String>[];
+  List<String> _cityTitleItems = <String>[];
+  List<City> _cityObjects = [];
+  List<University> _universityObjects = [];
+  List<Skill> _skillObjects = [];
+
+  User requestUser;
+
 
   List<String> _getSearchFieldSuggestion(String data) {
     return <String>[
@@ -59,6 +67,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 
   @override
   void initState() {
+    requestUser = User();
     userBloc.getCompleteProfileFields();
     initializeItems();
     super.initState();
@@ -93,14 +102,15 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                   child: Padding(
                     padding: EdgeInsets.all(25),
                     child: StreamBuilder<User>(
-                      stream: userBloc.userInfoStream,
-                      builder: (context, snapshot) {
-                        if(snapshot.hasData){
-                          return _buildScreenWidget(snapshot.data);
-                        }
-                        return LinearProgressIndicator(backgroundColor: Colors.transparent,);
-                      }
-                    ),
+                        stream: userBloc.userInfoStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _buildScreenWidget(snapshot.data);
+                          }
+                          return LinearProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                          );
+                        }),
                   ),
                 ),
               ),
@@ -111,7 +121,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     );
   }
 
-  Widget _buildScreenWidget(User user){
+  Widget _buildScreenWidget(User user) {
+    requestUser = user;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -122,8 +133,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 backgroundColor: Colors.grey[300],
                 backgroundImage: _image,
                 child: _image == null
-                    ? Icon(Icons.photo_camera,
-                    color: Colors.black45, size: 30)
+                    ? Icon(Icons.photo_camera, color: Colors.black45, size: 30)
                     : null,
                 radius: 35,
               ),
@@ -137,16 +147,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 //fixme: user must enter his name, its a static text!
                 Text(
                   user.firstName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle,
+                  style: Theme.of(context).textTheme.subtitle,
                 ),
                 SizedBox(height: 10),
                 Text(
                   user.lastName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle,
+                  style: Theme.of(context).textTheme.subtitle,
                 ),
               ],
             ),
@@ -164,6 +170,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               ),
               onChanged: (value) {
                 setState(() {
+                  requestUser.gender = value == 'مرد';
                   _genderTitle = value;
                 });
               },
@@ -183,12 +190,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 style: Theme.of(context).textTheme.subtitle,
               ),
               onChanged: (value) {
-                print(value);
                 setState(() {
+                  requestUser.cityCode = _findCityCode(value);
                   _cityTitle = value;
                 });
               },
-              items: _cityItems.map((value) {
+              items: _cityTitleItems.map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
@@ -204,12 +211,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 style: Theme.of(context).textTheme.subtitle,
               ),
               onChanged: (value) {
-                print(value);
                 setState(() {
+                  requestUser.universityCode = _findUniversityCode(value);
                   _universityTitle = value;
                 });
               },
-              items: _universityItems.map((value) {
+              items: _universityTitlesItems.map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
@@ -228,18 +235,26 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           labelText: 'موبایل',
           inputType: TextInputType.phone,
           maxLength: 11,
+          onSaved: (text) {
+            setState() => {requestUser.phoneNumber = text};
+          },
         ),
         CustomTextField(
           initialValue: user.email,
           labelText: 'ایمیل',
           inputType: TextInputType.emailAddress,
           hintText: "example@gmail.com",
+          onSaved: (text) {
+            setState() => {requestUser.email = text};
+          },
         ),
         // next text fields aren't save in back-end and better to delete them
         CustomTextField(
-          labelText: 'وبسایت',
-          inputType: TextInputType.url,
-          hintText: "www.example.com",
+          labelText: 'شماره دانشجویی',
+          inputType: TextInputType.number,
+          onSaved: (text) {
+            setState() => {requestUser.studentCode = text};
+          },
         ),
         CustomTextField(
           labelText: 'اینستاگرام',
@@ -258,10 +273,17 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           hintText: "yourID",
         ),
         SizedBox(height: 30),
-        //fixme initial value for TextArea class
-        TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
+        //fixme initial value for TextArea class and ONSAVED DOES NOT WORK
+        TextArea(labelText: 'خلاصه ای از سوابق خود بنویسید',
+          onSaved: (text) {
+            setState() {requestUser.descriptions = text;}
+          },),
         CustomTextField(
-          labelText: 'سوابق خود را بنویسید',
+          labelText: 'خلاصه ای از سوابق خود بنویسید',
+          inputType: TextInputType.text,
+          onSaved: (text) {
+            setState() {requestUser.descriptions = text;}
+          },
         ),
         SizedBox(height: 30),
         TitleText(text: 'مهارت های شما'),
@@ -280,6 +302,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: () {
+            // fixme complete these fields with textFields value
+            requestUser.studentCode = '1234567';
+            requestUser.descriptions = 'test description';
+            userBloc.completeProfile(requestUser);
           },
         ),
       ],
@@ -406,8 +432,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
           names.add(value[i]['University_name']);
+          University university = University.fromJson(value[i]);
+          _universityObjects.add(university);
         }
-        _universityItems = names;
+        _universityTitlesItems = names;
       }
     });
 
@@ -416,8 +444,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
           names.add(value[i]['skill_name']);
+          Skill skill = Skill.fromJson(value[i]);
+          _skillObjects.add(skill);
         }
-        _skillItems = names;
+        _skillITitleItems = names;
       }
     });
 
@@ -426,11 +456,39 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
           names.add(value[i]['title']);
+          City city = City.fromJson(value[i]);
+          _cityObjects.add(city);
         }
-        _cityItems = names;
+        _cityTitleItems = names;
       }
     });
+  }
 
+  String _findCityCode(name) {
+    for (City c in _cityObjects) {
+      if (c.title == name) {
+        return c.code;
+      }
+    }
+    return null;
+  }
+
+  int _findUniversityCode(value) {
+    for (University u in _universityObjects) {
+      if (u.name == value) {
+        return u.code;
+      }
+    }
+    return null;
+  }
+
+  int _findSkillCode(value) {
+    for (Skill s in _skillObjects) {
+      if (s.name == value) {
+        return s.code;
+      }
+    }
+    return null;
   }
 }
 

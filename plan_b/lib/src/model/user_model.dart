@@ -1,7 +1,5 @@
-import 'package:planb/src/model/city_model.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
-import 'package:planb/src/model/university_model.dart';
 
 enum AuthStatus { signedOut, loading, signedIn }
 
@@ -17,8 +15,8 @@ class User {
   bool gender;
   List<Skill> skills;
   List<Project> projects;
-  University university;
-  City city;
+  int universityCode;
+  String cityCode;
   String phoneNumber;
   bool isSuperUser;
   bool isStaff;
@@ -36,8 +34,8 @@ class User {
       this.gender,
       this.skills,
       this.projects,
-      this.university,
-      this.city,
+      this.universityCode,
+      this.cityCode,
       this.phoneNumber,
       this.isSuperUser,
       this.isStaff,
@@ -64,8 +62,8 @@ class User {
                 .map((i) => Project.fromJson(i))
                 .toList()
             : null,
-        university: University.fromJson(json['university']),
-        city: City.fromJson(json['city']),
+        universityCode: json['university'],
+        cityCode: json['city'].toString(),
         phoneNumber: json['phone_number'],
         isSuperUser: json['is_super_user'],
         descriptions: json['descriptions'],
@@ -89,12 +87,8 @@ class User {
     if (this.projects != null) {
       data['projects'] = this.projects.map((v) => v.toJson()).toList();
     }
-    if (this.university != null) {
-      data['university'] = this.university.toJson();
-    }
-    if (this.city != null) {
-      data['city'] = this.city.toJson();
-    }
+    data['university'] = this.universityCode;
+    data['city'] = this.cityCode;
     data['phone_number'] = this.phoneNumber;
     data['is_super_user'] = this.isSuperUser;
     data['is_staff'] = this.isStaff;
@@ -105,6 +99,6 @@ class User {
 
   @override
   String toString() {
-    return 'User{studentCode: $studentCode, username: $username, password: $password, email: $email, firstName: $firstName, lastName: $lastName, dateJoined: $dateJoined, avatar: $avatar, gender: $gender, skills: $skills, projects: $projects, university: $university, city: $city, phoneNumber: $phoneNumber, isSuperUser: $isSuperUser, isStaff: $isStaff}';
+    return 'User{studentCode: $studentCode, username: $username, email: $email, firstName: $firstName, lastName: $lastName, avatar: $avatar, gender: $gender, skills: $skills, projects: $projects, university: $universityCode, city: $cityCode, phoneNumber: $phoneNumber, desc : $descriptions}';
   }
 }
