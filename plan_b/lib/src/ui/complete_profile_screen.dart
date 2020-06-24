@@ -59,7 +59,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 
   @override
   void initState() {
-    bloc.getCompleteProfileFields();
+    userBloc.getCompleteProfileFields();
     initializeItems();
     super.initState();
   }
@@ -93,7 +93,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                   child: Padding(
                     padding: EdgeInsets.all(25),
                     child: StreamBuilder<User>(
-                      stream: bloc.userInfoStream,
+                      stream: userBloc.userInfoStream,
                       builder: (context, snapshot) {
                         if(snapshot.hasData){
                           return _buildScreenWidget(snapshot.data);
@@ -401,7 +401,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   }
 
   void initializeItems() async {
-    bloc.universitiesStream.first.then((value) {
+    userBloc.universitiesStream.first.then((value) {
       if (value != null) {
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
@@ -411,7 +411,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
       }
     });
 
-    bloc.skillsStream.first.then((value) {
+    userBloc.skillsStream.first.then((value) {
       if (value != null) {
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
@@ -421,7 +421,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
       }
     });
 
-    bloc.citiesStream.first.then((value) {
+    userBloc.citiesStream.first.then((value) {
       if (value != null) {
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {

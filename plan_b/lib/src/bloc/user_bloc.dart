@@ -103,4 +103,4 @@ class UserBloc extends Bloc {
   }
 }
 
-UserBloc bloc = UserBloc();
+UserBloc userBloc = UserBloc();

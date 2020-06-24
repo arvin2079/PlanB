@@ -21,6 +21,12 @@ class AuthenticationBloc extends Bloc{
     }
   }
 
+  logOut() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove('token');
+    _authStatusStreamController.sink.add(AuthStatus.signedOut);
+  }
+
   @override
   void dispose() {
     _authStatusStreamController.close();

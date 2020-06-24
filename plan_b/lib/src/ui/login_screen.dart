@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
       key: scaffoldKey,
       body: Center(
         child: StreamBuilder(
-          stream: bloc.authStatusStream,
+          stream: userBloc.authStatusStream,
           builder: (context, snapshot) {
             if(snapshot.data == AuthStatus.loading){
               return CircularProgressIndicator();
@@ -140,8 +140,8 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
   void _submit() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      bloc.login(username, password);
-      bloc.authStatusStream.first.then((value){
+      userBloc.login(username, password);
+      userBloc.authStatusStream.first.then((value){
         if(value == AuthStatus.signedIn){
           Navigator.of(context).pushReplacementNamed('/home');
         }

@@ -39,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
       key: scaffoldKey,
       body: Center(
         child: StreamBuilder(
-            stream: bloc.authStatusStream,
+            stream: userBloc.authStatusStream,
             builder: (context, snapshot) {
               if(snapshot.data == AuthStatus.loading){
                 return CircularProgressIndicator();
@@ -246,8 +246,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
   }
 
   void _checkForNavigate() {
-    bloc.signUpNewUser(user);
-    bloc.authStatusStream.first.then((value){
+    userBloc.signUpNewUser(user);
+    userBloc.authStatusStream.first.then((value){
       if(value == AuthStatus.signedIn){
         Navigator.of(context).pushReplacementNamed('/edit_profile');
       }

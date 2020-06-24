@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:planb/src/bloc/authenticatin_bloc.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab.dart';
@@ -70,6 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: InkWell(
         child: ListTile(
           onTap: () {
+            if(destinationPath == '/login'){
+              authenticationBloc.logOut();
+            }
             Navigator.pushNamed(context, destinationPath);
           },
           contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -138,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildListTile("پروژه جدید", Icons.insert_drive_file, '/home'),
               _buildListTile("پروفایل", Icons.person, '/edit_profile'),
               _buildListTile("درباره ما", Icons.info_outline, '/home'),
+              _buildListTile("خروج", Icons.exit_to_app, '/login'),
             ],
           ),
         ),
