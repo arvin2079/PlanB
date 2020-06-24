@@ -96,9 +96,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                       stream: bloc.userInfoStream,
                       builder: (context, snapshot) {
                         if(snapshot.hasData){
-                          return _buildScreenWidget();
+                          return _buildScreenWidget(snapshot.data);
                         }
-                        return LinearProgressIndicator();
+                        return LinearProgressIndicator(backgroundColor: Colors.transparent,);
                       }
                     ),
                   ),
@@ -111,7 +111,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     );
   }
 
-  Widget _buildScreenWidget(){
+  Widget _buildScreenWidget(User user){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -136,14 +136,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 // fixme : style for these texts
                 //fixme: user must enter his name, its a static text!
                 Text(
-                  'firstname',
+                  user.firstName,
                   style: Theme.of(context)
                       .textTheme
                       .subtitle,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'lastname',
+                  user.lastName,
                   style: Theme.of(context)
                       .textTheme
                       .subtitle,
@@ -152,7 +152,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ),
           ],
         ),
-        //fixme: university has a dropBox for choose and its useless
+        //fixme: fix initial values for drop boxes
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -163,7 +163,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 style: Theme.of(context).textTheme.subtitle,
               ),
               onChanged: (value) {
-                print(value);
                 setState(() {
                   _genderTitle = value;
                 });
@@ -225,16 +224,18 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         SizedBox(height: 30),
         TitleText(text: 'اطلاعات تماس'),
         CustomTextField(
+          initialValue: user.phoneNumber,
           labelText: 'موبایل',
           inputType: TextInputType.phone,
           maxLength: 11,
-          hintText: "09123456789",
         ),
         CustomTextField(
+          initialValue: user.email,
           labelText: 'ایمیل',
           inputType: TextInputType.emailAddress,
           hintText: "example@gmail.com",
         ),
+        // next text fields aren't save in back-end and better to delete them
         CustomTextField(
           labelText: 'وبسایت',
           inputType: TextInputType.url,
@@ -257,6 +258,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           hintText: "yourID",
         ),
         SizedBox(height: 30),
+        //fixme initial value for TextArea class
         TextArea(labelText: 'خلاصه ای از سوابغ خود بنویسید'),
         CustomTextField(
           labelText: 'سوابق خود را بنویسید',
