@@ -103,7 +103,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
     ),
     button: TextStyle(
       fontFamily: 'yekan',
-      fontSize: 15,
+      fontSize: 17,
       color: Colors.white,
     ),
   ),

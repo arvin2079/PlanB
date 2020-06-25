@@ -192,7 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   child: Text(
                                     "ادامه و تکمیل اطلاعات",
                                     // fixme : theme for in button texts
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style: Theme.of(context).textTheme.button,
                                   ),
                                   onPressed: () {
                                     if(form_key.currentState.validate()) {
