@@ -14,6 +14,7 @@ import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
+import 'package:planb/src/utility/validator.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
   @override
@@ -21,12 +22,12 @@ class CompleteProfileScreen extends StatefulWidget {
 }
 
 class _CompleteProfileScreenState extends State<CompleteProfileScreen>
-    with ImageCompressor, LanguageDetector {
+    with ImageCompressor, LanguageDetector, CompleteProfileValidator {
   TextEditingController _searchInputController = TextEditingController();
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
   String _cityTitle = 'شهر';
-  final GlobalKey _fromKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   ImageProvider _image;
 
@@ -41,7 +42,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   List<Skill> _skillObjects = [];
 
   User requestUser;
-
 
   List<String> _getSearchFieldSuggestion(String data) {
     return <String>[
@@ -96,21 +96,21 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             maxHeight: double.maxFinite,
             maxWidth: double.maxFinite,
             child: Form(
-              key: _fromKey,
+              key: _formkey,
               child: Center(
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.all(25),
-                    child: StreamBuilder<User>(
-                        stream: userBloc.userInfoStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return _buildScreenWidget(snapshot.data);
-                          }
-                          return LinearProgressIndicator(
-                            backgroundColor: Colors.transparent,
-                          );
-                        }),
+                        child: StreamBuilder<User>(
+                            stream: userBloc.userInfoStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return _buildScreenWidget(snapshot.data);
+                              }
+                              return LinearProgressIndicator(
+                                backgroundColor: Colors.transparent,
+                              );
+                            }),
                   ),
                 ),
               ),
@@ -146,12 +146,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 // fixme : style for these texts
                 //fixme: user must enter his name, its a static text!
                 Text(
-                  user.firstName,
+                  user.firstName == null ? 'empty' : user.firstName,
                   style: Theme.of(context).textTheme.subtitle,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  user.lastName,
+                  user.lastName == null ? 'empty' : user.lastName,
                   style: Theme.of(context).textTheme.subtitle,
                 ),
               ],
@@ -230,59 +230,92 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         ),
         SizedBox(height: 30),
         TitleText(text: 'اطلاعات تماس'),
-        CustomTextField(
-          initialValue: user.phoneNumber,
-          labelText: 'موبایل',
-          inputType: TextInputType.phone,
-          maxLength: 11,
-          onSaved: (text) {
-            setState() => {requestUser.phoneNumber = text};
-          },
-        ),
-        CustomTextField(
-          initialValue: user.email,
-          labelText: 'ایمیل',
-          inputType: TextInputType.emailAddress,
-          hintText: "example@gmail.com",
-          onSaved: (text) {
-            setState() => {requestUser.email = text};
-          },
-        ),
+//        CustomTextField(
+//          initialValue: user.phoneNumber,
+//          labelText: 'موبایل',
+//          inputType: TextInputType.phone,
+//          maxLength: 11,
+//          validator: (value) {
+//            return phoneNumberValidator.isValid(value)
+//                ? null
+//                : notPhoneNumberErrorMassage;
+//          },
+//          onSaved: (text) {
+//            requestUser.phoneNumber = text;
+//          },
+//        ),
+//        CustomTextField(
+//          initialValue: user.email,
+//          labelText: 'ایمیل',
+//          inputType: TextInputType.emailAddress,
+//          hintText: "example@gmail.com",
+//          validator: (value) {
+//            return .isValid(value)
+//                ? null
+//                : notPhoneNumberErrorMassage;
+//          },
+//          onSaved: (text) {
+//            requestUser.email = text;
+//          },
+//        ),
         // next text fields aren't save in back-end and better to delete them
-        CustomTextField(
-          labelText: 'شماره دانشجویی',
-          inputType: TextInputType.number,
-          onSaved: (text) {
-            setState() => {requestUser.studentCode = text};
-          },
-        ),
-        CustomTextField(
-          labelText: 'اینستاگرام',
-          hintText: "yourID",
-        ),
-        CustomTextField(
-          labelText: 'تلگرام',
-          hintText: "yourID",
-        ),
-        CustomTextField(
-          labelText: 'گیت',
-          hintText: "yourID",
-        ),
-        CustomTextField(
-          labelText: 'لینکدین',
-          hintText: "yourID",
-        ),
-        SizedBox(height: 30),
-        //fixme initial value for TextArea class and ONSAVED DOES NOT WORK
-        TextArea(labelText: 'خلاصه ای از سوابق خود بنویسید',
-          onSaved: (text) {
-            setState() {requestUser.descriptions = text;}
-          },),
-        CustomTextField(
+//        CustomTextField(
+//          labelText: 'شماره دانشجویی',
+//          inputType: TextInputType.number,
+//          onSaved: (text) {
+//            requestUser.studentCode = text;
+//          },
+//        ),
+
+//        CustomTextField(
+//          labelText: 'اینستاگرام',
+//          hintText: "yourID",
+//          validator: (value) {
+//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
+//          },
+//          onSaved: (text) {
+//
+//          },
+//        ),
+//        CustomTextField(
+//          labelText: 'تلگرام',
+//          hintText: "yourID",
+//          validator: (value) {
+//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
+//          },
+//          onSaved: (text) {
+//
+//          },
+//        ),
+//        CustomTextField(
+//          labelText: 'گیت',
+//          hintText: "yourID",
+//          validator: (value) {
+//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
+//          },
+//          onSaved: (text) {
+//
+//          },
+//        ),
+//        CustomTextField(
+//          labelText: 'لینکدین',
+//          hintText: "yourID",
+//          validator: (value) {
+//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
+//          },
+//          onSaved: (text) {
+//
+//          },
+//        ),
+//        SizedBox(height: 30),
+
+        TextArea(
           labelText: 'خلاصه ای از سوابق خود بنویسید',
-          inputType: TextInputType.text,
+          validator: (value) {
+            return descriptionValidator.isValid(value) ? null : notValidDescriptionErrorMassage;
+          },
           onSaved: (text) {
-            setState() {requestUser.descriptions = text;}
+            requestUser.descriptions = text;
           },
         ),
         SizedBox(height: 30),
@@ -302,10 +335,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: () {
-            // fixme complete these fields with textFields value
-            requestUser.studentCode = '1234567';
-            requestUser.descriptions = 'test description';
-            userBloc.completeProfile(requestUser);
+            if (_formkey.currentState.validate()) {
+              _formkey.currentState.save();
+              userBloc.completeProfile(requestUser);
+            }
           },
         ),
       ],

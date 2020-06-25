@@ -87,12 +87,14 @@ class LogInValidator {
 }
 
 class CompleteProfileValidator {
-  final StringValidator firstnameValidator = PersianValidator();
-  final StringValidator lastnameValidator = PersianValidator();
-  final StringValidator usernameValidator = EnglishValidator();
-  final StringValidator phoneNumberValidator = PhoneNumberStringValidator();
+  //todo : vlaidator for instagram and telegram and... validator
+  final StringValidator socialMediaIdValidator = NonEmptyStringValidator();
+  final StringValidator descriptionValidator = PersianValidator();
+  final String notValidUniIdMessage = 'کد دانشجویی غیر مجاز';
   final String notValidUsernameMessage = 'پر کردن این فیلد به زبان انگلیسی الزامیست';
   final String notValidFirstnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
   final String notValidLastnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
-  final String notPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
+  final String notValidPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
+  final String notValidSocialMediaErrorMassage = 'پر کردن این فیلد الزامیست';
+  final String notValidDescriptionErrorMassage = 'پر کردن این فیلد به زبان فارسی الزامیست';
 }
