@@ -13,7 +13,7 @@ class User {
   DateTime dateJoined;
   String avatar;
   bool gender;
-  List<Skill> skills;
+  List<int> skillCodes;
   List<Project> projects;
   int universityCode;
   String cityCode;
@@ -32,7 +32,7 @@ class User {
       this.dateJoined,
       this.avatar,
       this.gender,
-      this.skills,
+      this.skillCodes,
       this.projects,
       this.universityCode,
       this.cityCode,
@@ -54,8 +54,8 @@ class User {
         dateJoined: json['date_joined'],
         avatar: json['avatar'],
         gender: json['gender'],
-        skills: json['skills'] != null
-            ? (json['skills'] as List).map((i) => Skill.fromJson(i)).toList()
+        skillCodes: json['skills'] != null
+            ? (json['skills'] as List).toList()
             : null,
         projects: json['projects'] != null
             ? (json['projects'] as List)
@@ -81,8 +81,8 @@ class User {
     data['date_joined'] = this.dateJoined;
     data['avatar'] = this.avatar;
     data['gender'] = this.gender;
-    if (this.skills != null) {
-      data['skills'] = this.skills.map((v) => v.toJson()).toList();
+    if (this.skillCodes != null) {
+      data['skills'] = this.skillCodes.toList();
     }
     if (this.projects != null) {
       data['projects'] = this.projects.map((v) => v.toJson()).toList();
@@ -99,6 +99,6 @@ class User {
 
   @override
   String toString() {
-    return 'User{studentCode: $studentCode, username: $username, email: $email, firstName: $firstName, lastName: $lastName, avatar: $avatar, gender: $gender, skills: $skills, projects: $projects, university: $universityCode, city: $cityCode, phoneNumber: $phoneNumber, desc : $descriptions}';
+    return 'User{studentCode: $studentCode, username: $username, email: $email, firstName: $firstName, lastName: $lastName, avatar: $avatar, gender: $gender, skills: $skillCodes, projects: $projects, university: $universityCode, city: $cityCode, phoneNumber: $phoneNumber, desc : $descriptions}';
   }
 }
