@@ -3,16 +3,16 @@ import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/resumeButton.dart';
 
-class DoneProjectsTab extends StatefulWidget {
+class DoneProjectsTabTakePart extends StatefulWidget {
   // fixme : pass the list of items from home or each tab get its own items
 //  const DoneProjectsTab({this._doneProjectsTabList});
 //  final List<ProjectItem> _doneProjectsTabList;
 
   @override
-  _DoneProjectsTabState createState() => _DoneProjectsTabState();
+  _DoneProjectsTabTakePartState createState() => _DoneProjectsTabTakePartState();
 }
 
-class _DoneProjectsTabState extends State<DoneProjectsTab> {
+class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
   List<ProjectItem> _doneProjectsTabList = <ProjectItem>[
     // example
 //    ProjectItem(

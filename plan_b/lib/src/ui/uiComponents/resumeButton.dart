@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 6, bottom: 6),
       child: Container(
-        height: 75,
+        height: 65,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
@@ -88,7 +88,7 @@ class CustomButton extends StatelessWidget {
                 Positioned(
                   right: 15,
                   child: CircleAvatar(
-                    radius: 25,
+                    radius: 24,
                     child: image == null
                         ? Icon(Icons.person, color: Colors.black26)
                         : image,

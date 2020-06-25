@@ -88,13 +88,16 @@ class _ProjectCardState extends State<ProjectCard>
                     .textTheme
                     .subtitle,
               ),
-              subtitle: Text(
-                widget.caption,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'yekan',
-                  fontSize: 15,
-                  height: 1.3,
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  widget.caption,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'yekan',
+                    fontSize: 15,
+                    height: 1.3,
+                  ),
                 ),
               ),
             ),
@@ -116,30 +119,33 @@ class _ProjectCardState extends State<ProjectCard>
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5),
+        padding: EdgeInsets.only(right: 3, left: 3, top: 5),
         child: Card(
           elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              AnimatedBuilder(
-                animation: _controller.view,
-                builder: _buildChildren,
-                child: closed
-                    ? null
-                    : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: widget.children,
+          child: Padding(
+            padding: EdgeInsets.all(7),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                AnimatedBuilder(
+                  animation: _controller.view,
+                  builder: _buildChildren,
+                  child: closed
+                      ? null
+                      : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: widget.children,
+                    ),
                   ),
                 ),
-              ),
-              _buildBottomButton(closed, context),
-            ],
+                _buildBottomButton(closed, context),
+              ],
+            ),
           ),
         ),
       ),

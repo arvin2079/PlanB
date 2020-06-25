@@ -4,9 +4,10 @@ import 'package:planb/src/bloc/authenticatin_bloc.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
-import 'package:planb/src/ui/homeTabs/doneProject_tab.dart';
+import 'package:planb/src/ui/homeTabs/doneProject_tab_created.dart';
+import 'package:planb/src/ui/homeTabs/doneProject_tab_takePart.dart';
 import 'package:planb/src/ui/homeTabs/goingProject_tab.dart';
-import 'package:planb/src/ui/homeTabs/todoProject_tab.dart';
+import 'package:planb/src/ui/homeTabs/searchProject_tab.dart';
 import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,24 +24,24 @@ class _HomeScreenState extends State<HomeScreen> {
         endDrawer: _buildEndDrawer(),
         appBar: AppBar(
           title: Text(
-            'PlanB',
-            style: TextStyle(
-              fontSize: 25,
-            ),
+            'پروژه ها',
           ),
           bottom: TabBar(
+            isScrollable: false,
             tabs: <Widget>[
-              _buildTabName(context, 'انجام شده'),
-              _buildTabName(context, 'درحال انجام'),
-              _buildTabName(context, 'برای انجام'),
+              _buildTabName(context, 'ساخته شده'),
+              _buildTabName(context, 'شرکت داشتی'),
+//              _buildTabName(context, 'در حال انجام'),
+              _buildTabName(context, 'جستوجو'),
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            DoneProjectsTab(),
-            GoingProjectsTab(),
-            TodoProjectsTab(),
+            DoneProjectsTabCreated(),
+            DoneProjectsTabTakePart(),
+//            GoingProjectsTab(),
+            SearchProjectTab(),
           ],
         ),
       ),
@@ -52,6 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: EdgeInsets.only(bottom: 10),
       child: Text(
         name,
+        style: TextStyle(
+            fontFamily: 'yekan',
+            fontSize: 16,
+            color: Colors.white.withOpacity(0.9),
+        ),
       ),
     );
   }

@@ -64,15 +64,13 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
   textTheme: TextTheme(
     //fixme : fix deprecated parts
     //textField persian style
-    display1:
-        TextStyle(fontFamily: 'yekan', fontSize: 16, color: Colors.black87),
+    display1: TextStyle(fontFamily: 'yekan', fontSize: 16, color: Colors.black87),
 
     //textField english style
     display2: TextStyle(fontSize: 16, color: Colors.black87),
 
     //autocomplete list persian item style
-    display3:
-        TextStyle(fontFamily: 'yekan', fontSize: 19, color: Colors.black87),
+    display3: TextStyle(fontFamily: 'yekan', fontSize: 19, color: Colors.black87),
 
     //autocomplete list english item style
     display4: TextStyle(
@@ -86,11 +84,13 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       fontSize: 22,
       color: Colors.black87,
     ),
+
     subtitle: TextStyle(
       fontFamily: 'yekan',
       fontSize: 18,
       color: Colors.black54,
     ),
+
     caption: TextStyle(
       fontFamily: 'yekan',
       fontSize: 13,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 
-class TodoProjectsTab extends StatefulWidget {
+class SearchProjectTab extends StatefulWidget {
   @override
-  _TodoProjectsTabState createState() => _TodoProjectsTabState();
+  _SearchProjectTabState createState() => _SearchProjectTabState();
 }
 
-class _TodoProjectsTabState extends State<TodoProjectsTab> {
+class _SearchProjectTabState extends State<SearchProjectTab> {
   List<ProjectItem> _todoProjectsTabList = <ProjectItem>[];
 
   @override
