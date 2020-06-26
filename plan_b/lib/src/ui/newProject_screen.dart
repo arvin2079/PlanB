@@ -3,11 +3,7 @@ import 'dart:io';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:planb/src/bloc/user_bloc.dart';
-import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
-import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
 import 'package:planb/src/utility/validator.dart';
@@ -101,10 +97,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                               FocusScope.of(context).nextFocus(),
                         ),
                         SizedBox(height: 15),
-                        TextArea(
-                          labelText: 'شرح پروژه',
-                        ),
-                        SizedBox(height: 25),
                         _buildSearchTextField(context),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 5),
@@ -112,6 +104,10 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             children: _chipWidgets.toList(),
                             spacing: 10.0,
                           ),
+                        ),
+                        SizedBox(height: 15),
+                        TextArea(
+                          labelText: 'شرح پروژه',
                         ),
                       ],
                     ),
@@ -157,26 +153,30 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         },
         suggestions: _getSearchFieldSuggestion(_searchInputController.text),
         key: GlobalKey(),
+        decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
+
         itemFilter: (String suggestion, String query) {
-          return suggestion.contains(RegExp(r'\b' + '${query.toLowerCase()}'));
+          RegExp re = RegExp(r'^' +query.toLowerCase() + r'.*');
+          return re.hasMatch(suggestion);
         },
+
         itemSorter: (String a, String b) {
           if (a.length < b.length)
             return -1;
           else
             return 1;
         },
-        decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
+
         itemBuilder: (BuildContext context, String suggestion) {
-          // FIXME : make style for list item Texts
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 5 , horizontal: 5),
             child: Text(
               suggestion,
               style: Theme.of(context).textTheme.headline2,
             ),
           );
         },
+
       ),
     );
   }

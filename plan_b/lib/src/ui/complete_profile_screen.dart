@@ -378,7 +378,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         suggestions: _getSearchFieldSuggestion(_searchInputController.text),
         key: GlobalKey(),
         itemFilter: (String suggestion, String query) {
-          return suggestion.contains(RegExp(r'\b' + '${query.toLowerCase()}'));
+          RegExp re = RegExp(r'^' +query.toLowerCase() + r'.*');
+          return re.hasMatch(suggestion);
         },
         itemSorter: (String a, String b) {
           if (a.length < b.length)

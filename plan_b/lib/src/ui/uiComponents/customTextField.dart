@@ -101,7 +101,7 @@ class _TextAreaState extends State<TextArea> with LanguageDetector {
         style: Theme.of(context).textTheme.headline1,
         textDirection: TextDirection.rtl,
         keyboardType: TextInputType.multiline,
-        maxLines: 7,
+        maxLines: 8,
 //        validator: (value) {
 //          if (_isPersian)
 //            return null;
