@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/authenticatin_bloc.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab_created.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab_takePart.dart';
 import 'package:planb/src/ui/homeTabs/searchProject_tab.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,6 +15,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String firstName, lastName;
+
+  @override
+  void initState() {
+    userBloc.getCompleteProfileFields();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -23,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
             'پروژه ها',
           ),
           bottom: TabBar(
+            indicatorColor: secondaryColor,
+            indicatorWeight: 5,
             isScrollable: false,
             tabs: <Widget>[
               _buildTabName(context, 'ایجادشده‌ها'),
@@ -102,60 +115,71 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildEndDrawer() {
-    return SafeArea(
-      child: Drawer(
-        child: Container(
-          color: primaryColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          "نام",
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.right,
+        return FutureBuilder(
+          future: _getUserInfoFromSharedPreferences(),
+          builder: (context, snapshot){
+            return SafeArea(
+              child: Drawer(
+                child: Container(
+                  color: primaryColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Text(
+                                  firstName,
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  lastName,
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            CircleAvatar(
+                              radius: 50,
+                              child: ClipOval(
+                                  child: Image.asset(
+                                    "images/noImage.png",
+                                    fit: BoxFit.cover,
+                                    width: 95.0,
+                                    height: 95.0,
+                                  )),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "نام خانوادگی",
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.right,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    CircleAvatar(
-                      radius: 50,
-                      child: ClipOval(
-                          child: Image.asset(
-                        "images/noImage.png",
-                        fit: BoxFit.cover,
-                        width: 95.0,
-                        height: 95.0,
-                      )),
-                    ),
-                  ],
+                      ),
+                      _buildListTile("پروفایل", Icons.person, '/edit_profile'),
+                      _buildListTile("درباره ما", Icons.info_outline, '/home'),
+                      _buildListTile("خروج", Icons.exit_to_app, '/login'),
+                    ],
+                  ),
                 ),
               ),
-              _buildListTile("پروفایل", Icons.person, '/edit_profile'),
-              _buildListTile("درباره ما", Icons.info_outline, '/home'),
-              _buildListTile("خروج", Icons.exit_to_app, '/login'),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          },
+        );
+      }
+
+  _getUserInfoFromSharedPreferences() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    firstName = sharedPreferences.getString('firstName');
+    lastName = sharedPreferences.getString('lastName');
   }
 }

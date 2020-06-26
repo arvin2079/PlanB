@@ -70,9 +70,9 @@ class _NewProjectScreenState extends State<NewProjectScreen>
               key: _formkey,
               child: Padding(
                 padding: EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  child: ScrollConfiguration(
-                    behavior: NoGlowScrollBehavior(),
+                child: ScrollConfiguration(
+                  behavior: NoGlowScrollBehavior(),
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[

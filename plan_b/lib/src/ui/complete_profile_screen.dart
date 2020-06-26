@@ -61,12 +61,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             'تکمیل اطلاعات',
           ),
           actions: <Widget>[
+            !Navigator.of(context).canPop() ?
             IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacementNamed('/home');
               },
-            ),
+            ) :
+                Container()
           ],
         ),
         body: Builder(

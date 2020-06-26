@@ -60,6 +60,7 @@ class UserBloc extends Bloc {
       Map data = await repository.login(username, password);
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("token", data['token']);
+      getCompleteProfileFields();
       _authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e) {
       _authStatusStreamController.sink.add(AuthStatus.signedOut);
@@ -77,6 +78,7 @@ class UserBloc extends Bloc {
       Map response = await repository.getCompleteProfileFields();
       Map user = response['username'];
       _userInfoStreamController.sink.add(User.fromJson(user));
+      _saveUsersInfoInSharedPreferences(User.fromJson(user));
       List list = response['skills'];
       _skillsStreamController.sink.add(list);
       list = response['Code'];
@@ -94,6 +96,12 @@ class UserBloc extends Bloc {
     } on MessagedException catch (e) {
       _errorsStreamController.add([e]);
     }
+  }
+
+  _saveUsersInfoInSharedPreferences(User user) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString('firstName', user.firstName);
+    sharedPreferences.setString('lastName', user.lastName);
   }
 
   @override
