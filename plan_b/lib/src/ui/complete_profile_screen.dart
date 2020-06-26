@@ -33,9 +33,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   List<String> _chipsData = <String>[];
 
   List<String> genderItems = <String>['مرد', 'زن'];
-  List<String> _universityTitlesItems = <String>[];
-  List<String> _skillITitleItems = <String>[];
-  List<String> _cityTitleItems = <String>[];
   CityRepository cityRepository;
   UniversityRepository universityRepository;
   SkillRepository skillRepository;
@@ -43,25 +40,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   User requestUser;
 
   List<String> _getSearchFieldSuggestion(String data) {
-    return <String>[
-      'hello',
-      'this is apple',
-      'android',
-      'ios',
-      'art',
-      'python',
-      'front-end',
-      'fuck',
-      'film',
-      'fish',
-      'foster',
-      'felamingo',
-      'back-end',
-      'yellow',
-      'arvin',
-      'container',
-      'flutter',
-    ];
+    return skillRepository.getNames();
   }
 
   @override
@@ -164,7 +143,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           children: <Widget>[
             DropdownButton(
               hint: Text(
-                user.gender == null ? _genderTitle : (user.gender ? 'مرد' : 'زن'),
+                user.gender == null
+                    ? _genderTitle
+                    : (user.gender ? 'مرد' : 'زن'),
                 style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
@@ -185,12 +166,15 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ),
             DropdownButton(
               hint: Text(
-                user.cityCode == 'null' ? _cityTitle : cityRepository.findCityTitleByCode(user.cityCode),
+                user.cityCode == 'null'
+                    ? _cityTitle
+                    : cityRepository.findCityTitleByCode(user.cityCode),
                 style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
-                  requestUser.cityCode = cityRepository.findCityCodeByTitle(value);
+                  requestUser.cityCode =
+                      cityRepository.findCityCodeByTitle(value);
                   _cityTitle = value;
                 });
               },
@@ -206,16 +190,20 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ),
             DropdownButton(
               hint: Text(
-                user.universityCode == null ? _universityTitle : universityRepository.findUniversityNameByCode(user.universityCode),
+                user.universityCode == null
+                    ? _universityTitle
+                    : universityRepository
+                        .findUniversityNameByCode(user.universityCode),
                 style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
-                  requestUser.universityCode = universityRepository.findUniversityCodeByName(value);
+                  requestUser.universityCode =
+                      universityRepository.findUniversityCodeByName(value);
                   _universityTitle = value;
                 });
               },
-              items: _universityTitlesItems.map((value) {
+              items: universityRepository.getNames().map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
@@ -309,7 +297,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 //        SizedBox(height: 30),
 
         TextArea(
-          labelText: 'خلاصه ای از سوابق خود بنویسید',
+          labelText: 'خلاصه‌ای از سوابق خود بنویسید',
           validator: (value) {
             return descriptionValidator.isValid(value)
                 ? null
@@ -320,7 +308,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           },
         ),
         SizedBox(height: 30),
-        TitleText(text: 'مهارت های شما'),
+        TitleText(text: 'مهارت‌های شما'),
         _buildSearchTextField(context),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
@@ -434,7 +422,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('انتخاب نمایید'),
+            title: Text(
+              'انتخاب نمایید',
+              style: Theme.of(context).textTheme.headline1,
+              textAlign: TextAlign.right,
+            ),
             actions: <Widget>[
               RaisedButton(
                 child: Text('دوربین'),
@@ -459,46 +451,37 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     userBloc.universitiesStream.first.then((value) {
       if (value != null) {
         List<University> _universityObjects = [];
-        List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
-          names.add(value[i]['University_name']);
           University university = University.fromJson(value[i]);
           _universityObjects.add(university);
         }
-        universityRepository = UniversityRepository(universities: _universityObjects);
-        _universityTitlesItems = names;
+        universityRepository =
+            UniversityRepository(universities: _universityObjects);
       }
     });
 
     userBloc.skillsStream.first.then((value) {
       if (value != null) {
         List<Skill> _skillObjects = [];
-        List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
-          names.add(value[i]['skill_name']);
           Skill skill = Skill.fromJson(value[i]);
           _skillObjects.add(skill);
         }
         skillRepository = SkillRepository(skills: _skillObjects);
-        _skillITitleItems = names;
       }
     });
 
     userBloc.citiesStream.first.then((value) {
       if (value != null) {
         List<City> _cityObjects = [];
-        List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
-          names.add(value[i]['title']);
           City city = City.fromJson(value[i]);
           _cityObjects.add(city);
         }
         cityRepository = CityRepository(cities: _cityObjects);
-        _cityTitleItems = names;
       }
     });
   }
-
 }
 
 // fixme : search field item font ROBOTO download

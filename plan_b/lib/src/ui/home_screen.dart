@@ -25,10 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
           bottom: TabBar(
             isScrollable: false,
             tabs: <Widget>[
-              _buildTabName(context, 'ساخته شده'),
-              _buildTabName(context, 'شرکت داشتی'),
+              _buildTabName(context, 'ایجادشده‌ها'),
+              _buildTabName(context, 'مشارکت‌ها'),
 //              _buildTabName(context, 'در حال انجام'),
-              _buildTabName(context, 'جستوجو'),
+              _buildTabName(context, 'جستجو'),
             ],
           ),
         ),
@@ -39,6 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
 //            GoingProjectsTab(),
             SearchProjectTab(),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: (){
+            Navigator.of(context).pushNamed('/new_project');
+          },
         ),
       ),
     );
@@ -143,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              _buildListTile("پروژه جدید", Icons.insert_drive_file, '/home'),
               _buildListTile("پروفایل", Icons.person, '/edit_profile'),
               _buildListTile("درباره ما", Icons.info_outline, '/home'),
               _buildListTile("خروج", Icons.exit_to_app, '/login'),
