@@ -1,10 +1,6 @@
 import 'dart:convert';
 
 import 'package:planb/src/bloc/bloc.dart';
-import 'package:planb/src/model/city_model.dart';
-import 'package:planb/src/model/project_model.dart';
-import 'package:planb/src/model/skill_model.dart';
-import 'package:planb/src/model/university_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/resource/repository.dart';
 import 'package:planb/src/utility/message_exception.dart';
@@ -64,6 +60,7 @@ class UserBloc extends Bloc {
       Map data = await repository.login(username, password);
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("token", data['token']);
+      getCompleteProfileFields();
       _authStatusStreamController.sink.add(AuthStatus.signedIn);
     } on MessagedException catch (e) {
       _authStatusStreamController.sink.add(AuthStatus.signedOut);
@@ -78,32 +75,34 @@ class UserBloc extends Bloc {
 
   getCompleteProfileFields() async {
     try {
-
       Map response = await repository.getCompleteProfileFields();
       Map user = response['username'];
       _userInfoStreamController.sink.add(User.fromJson(user));
+      _saveUsersInfoInSharedPreferences(User.fromJson(user));
       List list = response['skills'];
       _skillsStreamController.sink.add(list);
       list = response['Code'];
       _citiesStreamController.sink.add(list);
       list = response['University_name'];
       _universitiesStreamController.sink.add(list);
-
     } catch (e) {}
   }
 
-
-  completeProfile(User requestUser) async{
-    try{
+  completeProfile(User requestUser) async {
+    try {
       Map map = await repository.completeProfile(requestUser);
       User user = User.fromJson(map);
       _userInfoStreamController.sink.add(user);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _errorsStreamController.add([e]);
     }
   }
 
+  _saveUsersInfoInSharedPreferences(User user) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString('firstName', user.firstName);
+    sharedPreferences.setString('lastName', user.lastName);
+  }
 
   @override
   void dispose() {

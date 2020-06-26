@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,9 +74,9 @@ class _NewProjectScreenState extends State<NewProjectScreen>
               key: _formkey,
               child: Padding(
                 padding: EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  child: ScrollConfiguration(
-                    behavior: NoGlowScrollBehavior(),
+                child: ScrollConfiguration(
+                  behavior: NoGlowScrollBehavior(),
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -143,10 +141,8 @@ class _NewProjectScreenState extends State<NewProjectScreen>
               // _scaffoldKey.currentState.showSnackBar(snackbar);
 
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  'این مهارت قبلا اضافه شده',
-                  style: Theme.of(context).textTheme.headline5
-                ),
+                content: Text('این مهارت قبلا اضافه شده',
+                    style: Theme.of(context).textTheme.headline5),
               ));
             }
           });
@@ -154,29 +150,26 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         suggestions: _getSearchFieldSuggestion(_searchInputController.text),
         key: GlobalKey(),
         decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
-
         itemFilter: (String suggestion, String query) {
-          RegExp re = RegExp(r'^' +query.toLowerCase() + r'.*');
+          RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
           return re.hasMatch(suggestion);
         },
-
         itemSorter: (String a, String b) {
           if (a.length < b.length)
             return -1;
           else
             return 1;
         },
-
         itemBuilder: (BuildContext context, String suggestion) {
+          // FIXME : make style for list item Texts
           return Container(
-            margin: EdgeInsets.symmetric(vertical: 5 , horizontal: 5),
+            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: Text(
               suggestion,
               style: Theme.of(context).textTheme.headline2,
             ),
           );
         },
-
       ),
     );
   }

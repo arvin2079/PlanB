@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Skill {
   int id;
   int code;
@@ -24,5 +22,37 @@ class Skill {
     data['skill_name'] = this.name;
 
     return data;
+  }
+}
+
+class SkillRepository{
+  List<Skill> skills;
+
+  SkillRepository({this.skills});
+
+  int findSkillCodeByName(name) {
+    for (Skill s in skills) {
+      if (s.name == name) {
+        return s.code;
+      }
+    }
+    return null;
+  }
+
+  String findSkillNameByCode(code){
+    for(Skill s in skills){
+      if(s.code == code){
+        return s.name;
+      }
+    }
+    return null;
+  }
+
+  List<String> getNames(){
+    List result = <String>[];
+    for (Skill s in skills){
+      result.add(s.name);
+    }
+    return result;
   }
 }

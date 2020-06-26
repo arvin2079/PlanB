@@ -12,7 +12,7 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
+class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
   TextEditingController _firstNameController;
   TextEditingController _lastNameController;
   TextEditingController _emailController;
@@ -41,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
         child: StreamBuilder(
             stream: userBloc.authStatusStream,
             builder: (context, snapshot) {
-              if(snapshot.data == AuthStatus.loading){
+              if (snapshot.data == AuthStatus.loading) {
                 return CircularProgressIndicator();
               }
               return Column(
@@ -49,9 +49,12 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                 children: <Widget>[
                   // Picture of header
                   ClipRRect(
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
+                      borderRadius:
+                          BorderRadius.only(bottomLeft: Radius.circular(40)),
                       child: Image.asset("images/loginBackground.jpg")),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                   Expanded(
                     child: ScrollConfiguration(
                       // This line removing scroll glow
@@ -71,7 +74,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   autofocus: true,
                                   style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
-                                    return firstnameValidator.isValid(value) ? null : notValidFirstnameMessage;
+                                    return firstnameValidator.isValid(value)
+                                        ? null
+                                        : notValidFirstnameMessage;
                                   },
                                   decoration: InputDecoration(
                                     hintText: "نام",
@@ -83,7 +88,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     user.firstName = text;
                                   },
                                   textInputAction: TextInputAction.next,
-                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                                  onEditingComplete: () =>
+                                      FocusScope.of(context).nextFocus(),
                                 ),
                                 SizedBox(
                                   height: 15,
@@ -91,7 +97,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                 TextFormField(
                                   style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
-                                    return lastnameValidator.isValid(value) ? null : notValidLastnameMessage;
+                                    return lastnameValidator.isValid(value)
+                                        ? null
+                                        : notValidLastnameMessage;
                                   },
                                   decoration: InputDecoration(
                                     hintText: "نام خانوادگی",
@@ -103,7 +111,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     user.lastName = text;
                                   },
                                   textInputAction: TextInputAction.next,
-                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                                  onEditingComplete: () =>
+                                      FocusScope.of(context).nextFocus(),
                                 ),
                                 SizedBox(
                                   height: 15,
@@ -111,7 +120,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                 TextFormField(
                                   style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
-                                    return uniIdValidator.isValid(value) ? null : notValidUniIdMessage;
+                                    return uniIdValidator.isValid(value)
+                                        ? null
+                                        : notValidUniIdMessage;
                                   },
                                   decoration: InputDecoration(
                                     hintText: "کد دانشجویی",
@@ -123,7 +134,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     user.studentCode = text;
                                   },
                                   textInputAction: TextInputAction.next,
-                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                                  onEditingComplete: () =>
+                                      FocusScope.of(context).nextFocus(),
                                 ),
                                 SizedBox(
                                   height: 15,
@@ -131,7 +143,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                 TextFormField(
                                   style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
-                                    return emailValidator.isValid(value) ? null : notValidEmailMessage;
+                                    return emailValidator.isValid(value)
+                                        ? null
+                                        : notValidEmailMessage;
                                   },
                                   decoration: InputDecoration(
                                     hintText: "ایمیل",
@@ -143,7 +157,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     user.email = text;
                                   },
                                   textInputAction: TextInputAction.next,
-                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                                  onEditingComplete: () =>
+                                      FocusScope.of(context).nextFocus(),
                                 ),
                                 SizedBox(
                                   height: 15,
@@ -151,7 +166,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                 TextFormField(
                                   style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
-                                    return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
+                                    return usernameValidator.isValid(value)
+                                        ? null
+                                        : notValidUsernameMessage;
                                   },
                                   decoration: InputDecoration(
                                     hintText: "نام کاربری",
@@ -163,7 +180,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     user.username = text;
                                   },
                                   textInputAction: TextInputAction.next,
-                                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                                  onEditingComplete: () =>
+                                      FocusScope.of(context).nextFocus(),
                                 ),
                                 SizedBox(
                                   height: 15,
@@ -171,7 +189,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                 TextFormField(
                                   style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
-                                    return passwordValidator.isValid(value) ? null : notValidPasswordMessage;
+                                    return passwordValidator.isValid(value)
+                                        ? null
+                                        : notValidPasswordMessage;
                                   },
                                   decoration: InputDecoration(
                                     hintText: "رمز عبور",
@@ -195,10 +215,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     style: Theme.of(context).textTheme.button,
                                   ),
                                   onPressed: () {
-                                    if(form_key.currentState.validate()) {
+                                    if (form_key.currentState.validate()) {
                                       form_key.currentState.save();
                                       _checkForNavigate();
-
                                     }
                                   },
                                 ),
@@ -212,13 +231,16 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                               .button
                                               .copyWith(color: secondaryColor)),
                                       onPressed: () {
-                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                            builder: (context) => LoginScreen()));
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginScreen()));
                                       },
                                     ),
                                     Text(
                                       "اکانت داری؟",
-                                      style: Theme.of(context).textTheme.caption,
+                                      style:
+                                          Theme.of(context).textTheme.caption,
                                     ),
                                   ],
                                 )
@@ -231,8 +253,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                   ),
                 ],
               );
-            }
-        ),
+            }),
       ),
     );
   }
@@ -247,11 +268,10 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
 
   void _checkForNavigate() {
     userBloc.signUpNewUser(user);
-    userBloc.authStatusStream.first.then((value){
-      if(value == AuthStatus.signedIn){
+    userBloc.authStatusStream.first.then((value) {
+      if (value == AuthStatus.signedIn) {
         Navigator.of(context).pushReplacementNamed('/edit_profile');
-      }
-      else if(value == AuthStatus.signedOut){
+      } else if (value == AuthStatus.signedOut) {
         SnackBar snackBar = SnackBar(
           /*content: StreamBuilder(
               stream: bloc.errorsStream,
@@ -261,7 +281,10 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                 return Text("");
               },
             ),*/
-          content: Text("خطا در ثبت نام! دوباره امتخان کن...", textDirection: TextDirection.rtl,),
+          content: Text(
+            "خطا در ثبت نام! دوباره امتخان کن...",
+            textDirection: TextDirection.rtl,
+          ),
           backgroundColor: Colors.red,
         );
         scaffoldKey.currentState.showSnackBar(snackBar);

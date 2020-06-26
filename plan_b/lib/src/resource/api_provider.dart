@@ -84,9 +84,9 @@ class APIProvider {
     if (response.statusCode == 200) {
       // Return data on successful request
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
-      if (map['errors'] == null){
+      if (map['errors'] == null) {
         return (map['username']);
-      } else{
+      } else {
         throw MessagedException(map['errors']);
       }
     } else {

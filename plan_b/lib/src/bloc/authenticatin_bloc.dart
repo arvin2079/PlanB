@@ -3,25 +3,24 @@ import 'package:planb/src/model/user_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthenticationBloc extends Bloc{
-
+class AuthenticationBloc extends Bloc {
   PublishSubject<AuthStatus> _authStatusStreamController = PublishSubject();
 
-  Stream<AuthStatus> get authenticationStatusStream => _authStatusStreamController.stream;
+  Stream<AuthStatus> get authenticationStatusStream =>
+      _authStatusStreamController.stream;
 
-
-  isUserLoggedIn() async{
-    await new Future.delayed(const Duration(seconds : 4));
+  isUserLoggedIn() async {
+    await new Future.delayed(const Duration(seconds: 4));
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    if(preferences.getString('token') != null){
+    if (preferences.getString('token') != null) {
       //todo Check validation of token
       _authStatusStreamController.sink.add(AuthStatus.signedIn);
-    } else{
+    } else {
       _authStatusStreamController.sink.add(AuthStatus.signedOut);
     }
   }
 
-  logOut() async{
+  logOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('token');
     _authStatusStreamController.sink.add(AuthStatus.signedOut);

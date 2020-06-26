@@ -43,3 +43,6 @@ class Project {
     return data;
   }
 }
+class ProjectRepository{
+  List<Project> projects;
+}

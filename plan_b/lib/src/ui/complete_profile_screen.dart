@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/city_model.dart';
@@ -34,35 +33,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   List<String> _chipsData = <String>[];
 
   List<String> genderItems = <String>['مرد', 'زن'];
-  List<String> _universityTitlesItems = <String>[];
-  List<String> _skillITitleItems = <String>[];
-  List<String> _cityTitleItems = <String>[];
-  List<City> _cityObjects = [];
-  List<University> _universityObjects = [];
-  List<Skill> _skillObjects = [];
+  CityRepository cityRepository;
+  UniversityRepository universityRepository;
+  SkillRepository skillRepository;
 
   User requestUser;
 
   List<String> _getSearchFieldSuggestion(String data) {
-    return <String>[
-      'hello',
-      'this is apple',
-      'android',
-      'ios',
-      'art',
-      'python',
-      'front-end',
-      'fuck',
-      'film',
-      'fish',
-      'foster',
-      'felamingo',
-      'back-end',
-      'yellow',
-      'arvin',
-      'container',
-      'flutter',
-    ];
+    return skillRepository.getNames();
   }
 
   @override
@@ -83,12 +61,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             'تکمیل اطلاعات',
           ),
           actions: <Widget>[
+            !Navigator.of(context).canPop() ?
             IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacementNamed('/home');
               },
-            ),
+            ) :
+                Container()
           ],
         ),
         body: Builder(
@@ -147,12 +127,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 //fixme: user must enter his name, its a static text!
                 Text(
                   user.firstName == null ? 'empty' : user.firstName,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
                 SizedBox(height: 10),
                 Text(
                   user.lastName == null ? 'empty' : user.lastName,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
               ],
             ),
@@ -165,8 +145,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           children: <Widget>[
             DropdownButton(
               hint: Text(
-                _genderTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                user.gender == null
+                    ? _genderTitle
+                    : (user.gender ? 'مرد' : 'زن'),
+                style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
@@ -179,49 +161,56 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                   value: value,
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }).toList(),
             ),
             DropdownButton(
               hint: Text(
-                _cityTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                user.cityCode == 'null'
+                    ? _cityTitle
+                    : cityRepository.findCityTitleByCode(user.cityCode),
+                style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
-                  requestUser.cityCode = _findCityCode(value);
+                  requestUser.cityCode =
+                      cityRepository.findCityCodeByTitle(value);
                   _cityTitle = value;
                 });
               },
-              items: _cityTitleItems.map((value) {
+              items: cityRepository.getTitles().map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }).toList(),
             ),
             DropdownButton(
               hint: Text(
-                _universityTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                user.universityCode == null
+                    ? _universityTitle
+                    : universityRepository
+                        .findUniversityNameByCode(user.universityCode),
+                style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
-                  requestUser.universityCode = _findUniversityCode(value);
+                  requestUser.universityCode =
+                      universityRepository.findUniversityCodeByName(value);
                   _universityTitle = value;
                 });
               },
-              items: _universityTitlesItems.map((value) {
+              items: universityRepository.getNames().map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }).toList(),
@@ -310,7 +299,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 //        SizedBox(height: 30),
 
         TextArea(
-          labelText: 'خلاصه ای از سوابق خود بنویسید',
+          labelText: 'خلاصه‌ای از سوابق خود بنویسید',
           validator: (value) {
             return descriptionValidator.isValid(value)
                 ? null
@@ -321,7 +310,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           },
         ),
         SizedBox(height: 30),
-        TitleText(text: 'مهارت های شما'),
+        TitleText(text: 'مهارت‌های شما'),
         _buildSearchTextField(context),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
@@ -340,11 +329,55 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             if (_formkey.currentState.validate()) {
               _formkey.currentState.save();
               userBloc.completeProfile(requestUser);
+              _showAlert(context);
             }
           },
         ),
       ],
     );
+  }
+
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => StreamBuilder(
+          stream: userBloc.errorsStream,
+          builder: (context, snapshot) {
+            bool _hasError = snapshot.hasData;
+            Widget widget = AlertDialog(
+              title: Container(
+                  alignment: Alignment.topRight,child: Text("تکمیل اطلاعات", style: Theme.of(context).textTheme.headline4, textAlign: TextAlign.right, )),
+              content: Row(
+                children: <Widget>[
+                  !_hasError ?
+                  Icon(Icons.done_outline , color: Colors.green,) :
+                  Icon(Icons.error_outline , color: Colors.red,),
+                  SizedBox(width: 10,),
+                  Expanded(child: Text(_hasError ? "خطا در بروزرسانی اطلاعات!" : "اطلاعات با موفقیت بروزرسانی شد", style: Theme.of(context).textTheme.headline1,))
+                ],
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(_hasError? "بیخیال" :"ادامه"),
+                    ),
+                  ],
+                )
+              ],
+            );
+            return widget;
+          }
+        )
+    );
+//    Navigator.of(context).pop();
+//    Navigator.of(context).pop();
   }
 
   Padding _buildSearchTextField(BuildContext context) {
@@ -429,7 +462,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('انتخاب نمایید'),
+            title: Text(
+              'انتخاب نمایید',
+              style: Theme.of(context).textTheme.headline1,
+              textAlign: TextAlign.right,
+            ),
             actions: <Widget>[
               RaisedButton(
                 child: Text('دوربین'),
@@ -453,66 +490,37 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   void initializeItems() async {
     userBloc.universitiesStream.first.then((value) {
       if (value != null) {
-        List<String> names = List<String>();
+        List<University> _universityObjects = [];
         for (int i = 0; i < value.length; i++) {
-          names.add(value[i]['University_name']);
           University university = University.fromJson(value[i]);
           _universityObjects.add(university);
         }
-        _universityTitlesItems = names;
+        universityRepository =
+            UniversityRepository(universities: _universityObjects);
       }
     });
 
     userBloc.skillsStream.first.then((value) {
       if (value != null) {
-        List<String> names = List<String>();
+        List<Skill> _skillObjects = [];
         for (int i = 0; i < value.length; i++) {
-          names.add(value[i]['skill_name']);
           Skill skill = Skill.fromJson(value[i]);
           _skillObjects.add(skill);
         }
-        _skillITitleItems = names;
+        skillRepository = SkillRepository(skills: _skillObjects);
       }
     });
 
     userBloc.citiesStream.first.then((value) {
       if (value != null) {
-        List<String> names = List<String>();
+        List<City> _cityObjects = [];
         for (int i = 0; i < value.length; i++) {
-          names.add(value[i]['title']);
           City city = City.fromJson(value[i]);
           _cityObjects.add(city);
         }
-        _cityTitleItems = names;
+        cityRepository = CityRepository(cities: _cityObjects);
       }
     });
-  }
-
-  String _findCityCode(name) {
-    for (City c in _cityObjects) {
-      if (c.title == name) {
-        return c.code;
-      }
-    }
-    return null;
-  }
-
-  int _findUniversityCode(value) {
-    for (University u in _universityObjects) {
-      if (u.name == value) {
-        return u.code;
-      }
-    }
-    return null;
-  }
-
-  int _findSkillCode(value) {
-    for (Skill s in _skillObjects) {
-      if (s.name == value) {
-        return s.code;
-      }
-    }
-    return null;
   }
 }
 
