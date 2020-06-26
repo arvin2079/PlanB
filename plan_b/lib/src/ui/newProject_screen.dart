@@ -1,6 +1,7 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
@@ -17,6 +18,8 @@ class _NewProjectScreenState extends State<NewProjectScreen>
     with ImageCompressor, LanguageDetector, CompleteProfileValidator {
   final TextEditingController _projectNameController = TextEditingController();
   final TextEditingController _searchInputController = TextEditingController();
+  Project requestProject = Project();
+
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -53,14 +56,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           title: Text(
             'ایجاد پروژه جدید',
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         ),
         body: Builder(
           builder: (context) => LimitedBox(
@@ -102,6 +97,16 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             children: _chipWidgets.toList(),
                             spacing: 10.0,
                           ),
+                        ),
+                        RaisedButton(
+                          child: Text(
+                            'ایجاد پروژه',
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                          onPressed: () {
+                            // fixme: Initialize "requestProject" with textField values
+                            projectBloc.createNewProject(requestProject);
+                          },
                         ),
                       ],
                     ),
