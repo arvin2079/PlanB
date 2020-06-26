@@ -9,7 +9,8 @@ class DoneProjectsTabTakePart extends StatefulWidget {
 //  final List<ProjectItem> _doneProjectsTabList;
 
   @override
-  _DoneProjectsTabTakePartState createState() => _DoneProjectsTabTakePartState();
+  _DoneProjectsTabTakePartState createState() =>
+      _DoneProjectsTabTakePartState();
 }
 
 class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {

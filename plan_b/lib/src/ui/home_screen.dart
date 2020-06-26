@@ -1,14 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/authenticatin_bloc.dart';
-import 'package:planb/src/bloc/user_bloc.dart';
-import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab_created.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab_takePart.dart';
-import 'package:planb/src/ui/homeTabs/goingProject_tab.dart';
 import 'package:planb/src/ui/homeTabs/searchProject_tab.dart';
-import 'package:planb/src/ui/uiComponents/round_icon_avatar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -54,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Text(
         name,
         style: TextStyle(
-            fontFamily: 'yekan',
-            fontSize: 16,
-            color: Colors.white.withOpacity(0.9),
+          fontFamily: 'yekan',
+          fontSize: 16,
+          color: Colors.white.withOpacity(0.9),
         ),
       ),
     );
@@ -72,13 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildListTile(String title, IconData iconData, String destinationPath) {
+  Widget _buildListTile(
+      String title, IconData iconData, String destinationPath) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         child: ListTile(
           onTap: () {
-            if(destinationPath == '/login'){
+            if (destinationPath == '/login') {
               authenticationBloc.logOut();
             }
             Navigator.pushNamed(context, destinationPath);
@@ -137,11 +134,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       radius: 50,
                       child: ClipOval(
                           child: Image.asset(
-                            "images/noImage.png",
-                            fit: BoxFit.cover,
-                            width: 95.0,
-                            height: 95.0,
-                          )),
+                        "images/noImage.png",
+                        fit: BoxFit.cover,
+                        width: 95.0,
+                        height: 95.0,
+                      )),
                     ),
                   ],
                 ),

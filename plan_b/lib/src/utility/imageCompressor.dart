@@ -1,6 +1,6 @@
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'dart:io';
 
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class ImageCompressor {
   static final int _quality = 65;
@@ -9,13 +9,15 @@ class ImageCompressor {
 
   Future<File> compressAndGetFile(File file) async {
     List<String> arr = file.path.split('/');
-    arr.last = arr.last.split('.').first + '_modified.' + arr.last.split('.').last;
+    arr.last =
+        arr.last.split('.').first + '_modified.' + arr.last.split('.').last;
     String targetPath = arr.first;
-    for(int i=1 ; i<arr.length ; i++) {
-      targetPath += '/'+arr[i];
+    for (int i = 1; i < arr.length; i++) {
+      targetPath += '/' + arr[i];
     }
     var result = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path, targetPath,
+      file.absolute.path,
+      targetPath,
       quality: _quality,
       minWidth: _minWidth,
       minHeight: _minHeight,
@@ -32,5 +34,4 @@ class ImageCompressor {
     );
     return list;
   }
-
 }

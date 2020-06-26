@@ -1,10 +1,6 @@
 import 'dart:convert';
 
 import 'package:planb/src/bloc/bloc.dart';
-import 'package:planb/src/model/city_model.dart';
-import 'package:planb/src/model/project_model.dart';
-import 'package:planb/src/model/skill_model.dart';
-import 'package:planb/src/model/university_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/resource/repository.dart';
 import 'package:planb/src/utility/message_exception.dart';
@@ -78,7 +74,6 @@ class UserBloc extends Bloc {
 
   getCompleteProfileFields() async {
     try {
-
       Map response = await repository.getCompleteProfileFields();
       Map user = response['username'];
       _userInfoStreamController.sink.add(User.fromJson(user));
@@ -88,22 +83,18 @@ class UserBloc extends Bloc {
       _citiesStreamController.sink.add(list);
       list = response['University_name'];
       _universitiesStreamController.sink.add(list);
-
     } catch (e) {}
   }
 
-
-  completeProfile(User requestUser) async{
-    try{
+  completeProfile(User requestUser) async {
+    try {
       Map map = await repository.completeProfile(requestUser);
       User user = User.fromJson(map);
       _userInfoStreamController.sink.add(user);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _errorsStreamController.add([e]);
     }
   }
-
 
   @override
   void dispose() {

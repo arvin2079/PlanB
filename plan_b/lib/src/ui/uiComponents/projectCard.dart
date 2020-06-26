@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:planb/src/model/user_model.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
@@ -12,8 +11,7 @@ class ProjectCard extends StatefulWidget {
     @required this.title,
     @required this.caption,
     @required this.buttonOpenText,
-  })
-      : assert(initiallyExpanded != null),
+  })  : assert(initiallyExpanded != null),
         assert(buttonOpenText != null);
 
   final String buttonOpenText;
@@ -32,7 +30,7 @@ class ProjectCard extends StatefulWidget {
 class _ProjectCardState extends State<ProjectCard>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween =
-  CurveTween(curve: Curves.easeIn);
+      CurveTween(curve: Curves.easeIn);
 
   AnimationController _controller;
   Animation<double> _heightFactor;
@@ -83,17 +81,12 @@ class _ProjectCardState extends State<ProjectCard>
             child: ListTile(
               title: Text(
                 widget.title,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline4,
+                style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 5),
-                child: Text(
-                  widget.caption,
-                  style: Theme.of(context).textTheme.caption
-                ),
+                child: Text(widget.caption,
+                    style: Theme.of(context).textTheme.caption),
               ),
             ),
           ),
@@ -131,12 +124,12 @@ class _ProjectCardState extends State<ProjectCard>
                   child: closed
                       ? null
                       : Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: widget.children,
-                    ),
-                  ),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: widget.children,
+                          ),
+                        ),
                 ),
                 _buildBottomButton(closed, context),
               ],
@@ -156,10 +149,7 @@ class _ProjectCardState extends State<ProjectCard>
         ),
         child: Text(
           closed ? widget.buttonOpenText : 'بستن',
-          style: Theme
-              .of(context)
-              .textTheme
-              .button,
+          style: Theme.of(context).textTheme.button,
         ),
         onPressed: _handleTap,
       ),
@@ -169,8 +159,13 @@ class _ProjectCardState extends State<ProjectCard>
 
 //project card item model
 class ProjectItem {
-  ProjectItem({this.team, this.requests, this.creator,
-    @required this.title, @required this.caption, @required this.skills});
+  ProjectItem(
+      {this.team,
+      this.requests,
+      this.creator,
+      @required this.title,
+      @required this.caption,
+      @required this.skills});
 
   // fixme : team and request and creator are type of USER not STRING
   final String title;

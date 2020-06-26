@@ -1,5 +1,4 @@
 import 'package:planb/src/model/project_model.dart';
-import 'package:planb/src/model/skill_model.dart';
 
 enum AuthStatus { signedOut, loading, signedIn }
 
@@ -54,9 +53,8 @@ class User {
         dateJoined: json['date_joined'],
         avatar: json['avatar'],
         gender: json['gender'],
-        skillCodes: json['skills'] != null
-            ? (json['skills'] as List).toList()
-            : null,
+        skillCodes:
+            json['skills'] != null ? (json['skills'] as List).toList() : null,
         projects: json['projects'] != null
             ? (json['projects'] as List)
                 .map((i) => Project.fromJson(i))

@@ -1,13 +1,7 @@
-import 'dart:io';
-
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:planb/src/bloc/user_bloc.dart';
-import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
-import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
 import 'package:planb/src/utility/validator.dart';
@@ -93,7 +87,8 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                           textAlign: TextAlign.right,
                           controller: _projectNameController,
                           textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                          onEditingComplete: () =>
+                              FocusScope.of(context).nextFocus(),
                         ),
                         SizedBox(height: 15),
                         TextArea(
@@ -165,17 +160,13 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           else
             return 1;
         },
-        decoration: InputDecoration(
-          labelText: 'مهارت های این پروژه'
-        ),
+        decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
         itemBuilder: (BuildContext context, String suggestion) {
           // FIXME : make style for list item Texts
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 5),
-            child: Text(
-              suggestion,
-              style: Theme.of(context).textTheme.headline2
-            ),
+            child:
+                Text(suggestion, style: Theme.of(context).textTheme.headline2),
           );
         },
       ),

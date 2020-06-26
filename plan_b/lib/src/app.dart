@@ -14,7 +14,6 @@ class PlanBApp extends StatefulWidget {
 }
 
 class _PlanBAppState extends State<PlanBApp> {
-
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
 
   bool isDarkMode = false;
@@ -23,30 +22,28 @@ class _PlanBAppState extends State<PlanBApp> {
   Widget build(BuildContext context) {
     authenticationBloc.isUserLoggedIn();
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: isDarkMode? ThemeData.dark() : lightTheme,
-      navigatorKey: _navigatorKey,
-      routes: {
-        '/signup' : (BuildContext context) => SignUpScreen(),
-        '/login' : (BuildContext context) => LoginScreen(),
-        '/home' : (BuildContext context) => HomeScreen(),
-        '/edit_profile' : (BuildContext context) => CompleteProfileScreen(),
-      },
-      home: StreamBuilder<AuthStatus>(
-        stream: authenticationBloc.authenticationStatusStream,
-        builder: (context, snapshot) {
-          Widget result = SplashScreen();
+        debugShowCheckedModeBanner: false,
+        theme: isDarkMode ? ThemeData.dark() : lightTheme,
+        navigatorKey: _navigatorKey,
+        routes: {
+          '/signup': (BuildContext context) => SignUpScreen(),
+          '/login': (BuildContext context) => LoginScreen(),
+          '/home': (BuildContext context) => HomeScreen(),
+          '/edit_profile': (BuildContext context) => CompleteProfileScreen(),
+        },
+        home: StreamBuilder<AuthStatus>(
+            stream: authenticationBloc.authenticationStatusStream,
+            builder: (context, snapshot) {
+              Widget result = SplashScreen();
 
-          if(snapshot.hasData){
-            if(snapshot.data == AuthStatus.signedIn ){
-              result = HomeScreen();
-            } else if (snapshot.data == AuthStatus.signedOut){
-              result = LoginScreen();
-            }
-          }
-          return result;
-        }
-      )
-    );
+              if (snapshot.hasData) {
+                if (snapshot.data == AuthStatus.signedIn) {
+                  result = HomeScreen();
+                } else if (snapshot.data == AuthStatus.signedOut) {
+                  result = LoginScreen();
+                }
+              }
+              return result;
+            }));
   }
 }

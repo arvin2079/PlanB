@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Skill {
   int id;
   int code;

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/city_model.dart';
@@ -101,16 +100,16 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.all(25),
-                        child: StreamBuilder<User>(
-                            stream: userBloc.userInfoStream,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return _buildScreenWidget(snapshot.data);
-                              }
-                              return LinearProgressIndicator(
-                                backgroundColor: Colors.transparent,
-                              );
-                            }),
+                    child: StreamBuilder<User>(
+                        stream: userBloc.userInfoStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _buildScreenWidget(snapshot.data);
+                          }
+                          return LinearProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                          );
+                        }),
                   ),
                 ),
               ),
@@ -312,7 +311,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         TextArea(
           labelText: 'خلاصه ای از سوابق خود بنویسید',
           validator: (value) {
-            return descriptionValidator.isValid(value) ? null : notValidDescriptionErrorMassage;
+            return descriptionValidator.isValid(value)
+                ? null
+                : notValidDescriptionErrorMassage;
           },
           onSaved: (text) {
             requestUser.descriptions = text;
@@ -394,10 +395,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           // FIXME : make style for list item Texts
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 5),
-            child: Text(
-              suggestion,
-              style: Theme.of(context).textTheme.headline2
-            ),
+            child:
+                Text(suggestion, style: Theme.of(context).textTheme.headline2),
           );
         },
       ),

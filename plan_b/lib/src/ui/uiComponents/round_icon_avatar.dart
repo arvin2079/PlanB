@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Avatar extends StatefulWidget {
   Avatar({this.icon, this.iconSize, this.size = 80});
+
   final IconData icon;
   final double size;
   final double iconSize;
@@ -45,8 +47,11 @@ class _AvatarState extends State<Avatar> {
                 ),
               ),
               Icon(
-                _imageAsset == null && widget.icon == null ? Icons.person : widget.icon,
-                color: _imageAsset == null ? Colors.grey[600] : Colors.grey[200],
+                _imageAsset == null && widget.icon == null
+                    ? Icons.person
+                    : widget.icon,
+                color:
+                    _imageAsset == null ? Colors.grey[600] : Colors.grey[200],
                 size: widget.iconSize == null ? 40 : widget.iconSize,
               ),
             ],
@@ -71,7 +76,7 @@ class _AvatarState extends State<Avatar> {
       );
   }
 
-  void _getImage() async{
+  void _getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _imageAsset = image;
