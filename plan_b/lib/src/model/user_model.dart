@@ -12,7 +12,7 @@ class User {
   DateTime dateJoined;
   String avatar;
   bool gender;
-  List<int> skillCodes;
+  List skillCodes;
   List<Project> projects;
   int universityCode;
   String cityCode;
@@ -41,9 +41,9 @@ class User {
       this.descriptions});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+    if (json == null) {print("object");return null;}
 
-    return User(
+    User user = User(
         studentCode: json['student_code'],
         username: json['username'],
         password: json['password'],
@@ -54,11 +54,11 @@ class User {
         avatar: json['avatar'],
         gender: json['gender'],
         skillCodes:
-            json['skills'] != null ? (json['skills'] as List).toList() : null,
+        json['skills'] != null ? (json['skills'] as List) : null,
         projects: json['projects'] != null
             ? (json['projects'] as List)
-                .map((i) => Project.fromJson(i))
-                .toList()
+            .map((i) => Project.fromJson(i))
+            .toList()
             : null,
         universityCode: json['university'],
         cityCode: json['city'].toString(),
@@ -66,6 +66,7 @@ class User {
         isSuperUser: json['is_super_user'],
         descriptions: json['descriptions'],
         isStaff: json['is_staff']);
+    return user;
   }
 
   Map<String, dynamic> toJson() {

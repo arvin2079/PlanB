@@ -36,9 +36,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   List<String> _universityTitlesItems = <String>[];
   List<String> _skillITitleItems = <String>[];
   List<String> _cityTitleItems = <String>[];
-  List<City> _cityObjects = [];
-  List<University> _universityObjects = [];
-  List<Skill> _skillObjects = [];
+  CityRepository cityRepository;
+  UniversityRepository universityRepository;
+  SkillRepository skillRepository;
 
   User requestUser;
 
@@ -146,12 +146,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 //fixme: user must enter his name, its a static text!
                 Text(
                   user.firstName == null ? 'empty' : user.firstName,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
                 SizedBox(height: 10),
                 Text(
                   user.lastName == null ? 'empty' : user.lastName,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
               ],
             ),
@@ -164,8 +164,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           children: <Widget>[
             DropdownButton(
               hint: Text(
-                _genderTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                user.gender == null ? _genderTitle : (user.gender ? 'مرد' : 'زن'),
+                style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
@@ -178,40 +178,40 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                   value: value,
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }).toList(),
             ),
             DropdownButton(
               hint: Text(
-                _cityTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                user.cityCode == null ? _cityTitle : cityRepository.findCityTitleByCode(user.cityCode),
+                style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
-                  requestUser.cityCode = _findCityCode(value);
+                  requestUser.cityCode = cityRepository.findCityCodeByTitle(value);
                   _cityTitle = value;
                 });
               },
-              items: _cityTitleItems.map((value) {
+              items: cityRepository.getTitles().map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }).toList(),
             ),
             DropdownButton(
               hint: Text(
-                _universityTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                user.universityCode == null ? _universityTitle : universityRepository.findUniversityNameByCode(user.universityCode),
+                style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
                 setState(() {
-                  requestUser.universityCode = _findUniversityCode(value);
+                  requestUser.universityCode = universityRepository.findUniversityCodeByName(value);
                   _universityTitle = value;
                 });
               },
@@ -220,7 +220,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                   value: value,
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }).toList(),
@@ -338,6 +338,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           onPressed: () {
             if (_formkey.currentState.validate()) {
               _formkey.currentState.save();
+              print(requestUser);
               userBloc.completeProfile(requestUser);
             }
           },
@@ -457,67 +458,47 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   void initializeItems() async {
     userBloc.universitiesStream.first.then((value) {
       if (value != null) {
+        List<University> _universityObjects = [];
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
           names.add(value[i]['University_name']);
           University university = University.fromJson(value[i]);
           _universityObjects.add(university);
         }
+        universityRepository = UniversityRepository(universities: _universityObjects);
         _universityTitlesItems = names;
       }
     });
 
     userBloc.skillsStream.first.then((value) {
       if (value != null) {
+        List<Skill> _skillObjects = [];
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
           names.add(value[i]['skill_name']);
           Skill skill = Skill.fromJson(value[i]);
           _skillObjects.add(skill);
         }
+        skillRepository = SkillRepository(skills: _skillObjects);
         _skillITitleItems = names;
       }
     });
 
     userBloc.citiesStream.first.then((value) {
       if (value != null) {
+        List<City> _cityObjects = [];
         List<String> names = List<String>();
         for (int i = 0; i < value.length; i++) {
           names.add(value[i]['title']);
           City city = City.fromJson(value[i]);
           _cityObjects.add(city);
         }
+        cityRepository = CityRepository(cities: _cityObjects);
         _cityTitleItems = names;
       }
     });
   }
 
-  String _findCityCode(name) {
-    for (City c in _cityObjects) {
-      if (c.title == name) {
-        return c.code;
-      }
-    }
-    return null;
-  }
-
-  int _findUniversityCode(value) {
-    for (University u in _universityObjects) {
-      if (u.name == value) {
-        return u.code;
-      }
-    }
-    return null;
-  }
-
-  int _findSkillCode(value) {
-    for (Skill s in _skillObjects) {
-      if (s.name == value) {
-        return s.code;
-      }
-    }
-    return null;
-  }
 }
 
 // fixme : search field item font ROBOTO download

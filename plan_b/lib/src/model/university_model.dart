@@ -27,3 +27,35 @@ class University {
     return data;
   }
 }
+
+class UniversityRepository{
+  List<University> universities;
+
+  UniversityRepository({this.universities});
+
+  int findUniversityCodeByName(name) {
+    for (University u in universities) {
+      if (u.name == name) {
+        return u.code;
+      }
+    }
+    return null;
+  }
+
+  String findUniversityNameByCode(code){
+    for(University u in universities){
+      if(u.code == code){
+        return u.name;
+      }
+    }
+    return null;
+  }
+
+  List<String> getNames(){
+    List result = <String>[];
+    for (University u in universities){
+      result.add(u.name);
+    }
+    return result;
+  }
+}
