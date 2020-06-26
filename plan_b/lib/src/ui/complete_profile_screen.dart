@@ -351,9 +351,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: AutoCompleteTextField<String>(
-        style: _isPersian
-            ? Theme.of(context).textTheme.display1
-            : Theme.of(context).textTheme.display2,
+        style: Theme.of(context).textTheme.headline1,
         controller: _searchInputController,
         clearOnSubmit: true,
         textSubmitted: (value) {},
@@ -398,9 +396,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             padding: EdgeInsets.symmetric(vertical: 5),
             child: Text(
               suggestion,
-              style: hasEnglishChar(suggestion)
-                  ? Theme.of(context).textTheme.display4
-                  : Theme.of(context).textTheme.display3,
+              style: Theme.of(context).textTheme.headline2
             ),
           );
         },

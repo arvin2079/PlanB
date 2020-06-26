@@ -8,15 +8,15 @@ typedef String Validator(String string);
 class CustomTextField extends StatefulWidget {
   const CustomTextField(
       {this.errorText,
-        this.focusNode,
-        this.controller,
-        this.inputType,
-        this.onSaved,
-        this.validator,
-        @required this.labelText,
-        this.hintText,
-        this.initialValue,
-        this.maxLength});
+      this.focusNode,
+      this.controller,
+      this.inputType,
+      this.onSaved,
+      this.validator,
+      @required this.labelText,
+      this.hintText,
+      this.initialValue,
+      this.maxLength});
 
   final String labelText;
   final String initialValue;
@@ -91,8 +91,6 @@ class TextArea extends StatefulWidget {
 }
 
 class _TextAreaState extends State<TextArea> with LanguageDetector {
-  bool _isPersian = true;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -100,36 +98,17 @@ class _TextAreaState extends State<TextArea> with LanguageDetector {
       child: TextFormField(
         validator: widget.validator,
         onSaved: widget.onSaved,
-        style: _isPersian
-            ? Theme.of(context).textTheme.display1
-            : Theme.of(context).textTheme.display2,
+        style: Theme.of(context).textTheme.headline1,
         textDirection: TextDirection.rtl,
         keyboardType: TextInputType.multiline,
-        maxLines: 5,
+        maxLines: 7,
 //        validator: (value) {
 //          if (_isPersian)
 //            return null;
 //          else
 //            return 'در این قیمت تنها مجاز به استفاده از حروف فارسی میباشید.';
 //        },
-        onChanged: (value) {
-          if (!hasEnglishChar(value)) {
-            setState(() {
-              _isPersian = true;
-            });
-          } else {
-            setState(() {
-              _isPersian = false;
-            });
-          }
-        },
         decoration: InputDecoration(
-          labelStyle: Theme.of(context).textTheme.overline,
-          errorStyle: Theme.of(context).textTheme.overline,
-          helperStyle: Theme.of(context).textTheme.overline,
-          errorText: _isPersian
-              ? null
-              : 'در این قیمت تنها مجاز به استفاده از حروف فارسی میباشید.',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2.0),
           ),

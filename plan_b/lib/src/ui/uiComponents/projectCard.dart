@@ -86,18 +86,13 @@ class _ProjectCardState extends State<ProjectCard>
                 style: Theme
                     .of(context)
                     .textTheme
-                    .subtitle,
+                    .headline4,
               ),
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 5),
                 child: Text(
                   widget.caption,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'yekan',
-                    fontSize: 15,
-                    height: 1.3,
-                  ),
+                  style: Theme.of(context).textTheme.caption
                 ),
               ),
             ),

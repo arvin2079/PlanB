@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                   Expanded(
                     child: ScrollConfiguration(
                       // This line removing scroll glow
-                      behavior: _NoGlowScrollBehavior(),
+                      behavior: NoGlowScrollBehavior(),
                       // This widget make form scrollable
                       child: SingleChildScrollView(
                         child: Container(
@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                               children: <Widget>[
                                 TextFormField(
                                   autofocus: true,
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
                                     return firstnameValidator.isValid(value) ? null : notValidFirstnameMessage;
                                   },
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   height: 15,
                                 ),
                                 TextFormField(
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
                                     return lastnameValidator.isValid(value) ? null : notValidLastnameMessage;
                                   },
@@ -109,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   height: 15,
                                 ),
                                 TextFormField(
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
                                     return uniIdValidator.isValid(value) ? null : notValidUniIdMessage;
                                   },
@@ -129,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   height: 15,
                                 ),
                                 TextFormField(
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
                                     return emailValidator.isValid(value) ? null : notValidEmailMessage;
                                   },
@@ -149,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   height: 15,
                                 ),
                                 TextFormField(
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
                                     return usernameValidator.isValid(value) ? null : notValidUsernameMessage;
                                   },
@@ -169,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                   height: 15,
                                 ),
                                 TextFormField(
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline1,
                                   validator: (value) {
                                     return passwordValidator.isValid(value) ? null : notValidPasswordMessage;
                                   },
@@ -218,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
                                     ),
                                     Text(
                                       "اکانت داری؟",
-                                      style: Theme.of(context).textTheme.display1,
+                                      style: Theme.of(context).textTheme.caption,
                                     ),
                                   ],
                                 )
@@ -267,13 +267,5 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator{
         scaffoldKey.currentState.showSnackBar(snackBar);
       }
     });
-  }
-}
-
-class _NoGlowScrollBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
   }
 }

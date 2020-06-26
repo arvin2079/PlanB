@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             TextFormField(
-                              style: Theme.of(context).textTheme.display1,
+                              style: Theme.of(context).textTheme.headline1,
                               validator: (value) {
                                 return usernameValidator.isValid(value)
                                     ? null
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                               height: 15,
                             ),
                             TextFormField(
-                              style: Theme.of(context).textTheme.display1,
+                              style: Theme.of(context).textTheme.headline1,
                               validator: (value) {
                                 return passwordValidator.isValid(value)
                                     ? null
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen>  with LogInValidator {
                                 ),
                                 Text(
                                   "اکانت نداری؟",
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
                             )

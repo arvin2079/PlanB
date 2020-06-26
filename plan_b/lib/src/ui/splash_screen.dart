@@ -27,8 +27,9 @@ class SplashScreen extends StatelessWidget {
                     child: Text(
                       'PlanB',
                       style: TextStyle(
+                        fontFamily: 'vazir',
                         fontSize: 55,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         shadows: [
                           Shadow(blurRadius: 10, color: Colors.black54)
                         ],
@@ -46,6 +47,7 @@ class SplashScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
+                        fontFamily: 'vazir',
                         fontWeight: FontWeight.w500,
                         shadows: [
                           Shadow(blurRadius: 10, color: Colors.black54)

@@ -48,9 +48,18 @@ flutter:
   uses-material-design: true
 
   fonts:
+    - family: vazir
+      fonts:
+        - asset: assets/fonts/vazir_bold.ttf
+          weight: 900
+        - asset: assets/fonts/vazir_medium.ttf
+          weight: 500
+        - asset: assets/fonts/vazir_light.ttf
+          weight: 100
+
     - family: yekan
       fonts:
-        - asset: assets/fonts/yekan.ttf
+        - asset: assets/fonts/Yekan.ttf
 
   # To add assets to your application, add an assets section, like this:
   assets:

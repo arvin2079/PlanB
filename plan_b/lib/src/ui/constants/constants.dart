@@ -3,6 +3,15 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+//no scrollGlow for scrollable widgets
+class NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
+
 //color pallet
 final Color primaryColor = Color(0xFF1A237E);
 final Color primaryVariant = Color(0xFF171E6B);
@@ -38,14 +47,13 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
     // todo : check brightness later
     brightness: Brightness.light,
   ),
-
   appBarTheme: AppBarTheme(
     brightness: Brightness.dark,
     elevation: 3,
     textTheme: TextTheme(
       title: TextStyle(
         fontFamily: 'yekan',
-        fontSize: 25,
+        fontSize: 24,
       ),
       subtitle: TextStyle(
         fontFamily: 'yekan',
@@ -53,54 +61,59 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       ),
     ),
   ),
-
   buttonTheme: ButtonThemeData(
     buttonColor: secondaryColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
   ),
-
   textTheme: TextTheme(
     //fixme : fix deprecated parts
-    //textField persian style
-    display1: TextStyle(fontFamily: 'yekan', fontSize: 16, color: Colors.black87),
 
-    //textField english style
-    display2: TextStyle(fontSize: 16, color: Colors.black87),
-
-    //autocomplete list persian item style
-    display3: TextStyle(fontFamily: 'yekan', fontSize: 19, color: Colors.black87),
-
-    //autocomplete list english item style
-    display4: TextStyle(
-      fontSize: 19,
-      fontWeight: FontWeight.w300,
+    //english and persian font
+    headline1: TextStyle(
+      fontFamily: 'vazir',
+      fontSize: 16,
+      fontWeight: FontWeight.w100,
       color: Colors.black87,
     ),
 
-    title: TextStyle(
-      fontFamily: 'yekan',
+    //autocompleteTextfield list item style
+    headline2: TextStyle(
+      fontFamily: 'vazir',
+      fontWeight: FontWeight.w100,
+      fontSize: 18,
+      color: Colors.black87,
+    ),
+
+    //in Screen titles
+    headline3: TextStyle(
+      fontFamily: 'vazir',
+      fontWeight: FontWeight.w500,
       fontSize: 22,
       color: Colors.black87,
     ),
 
-    subtitle: TextStyle(
-      fontFamily: 'yekan',
-      fontSize: 18,
-      color: Colors.black54,
+    //home Card title Style
+    headline4: TextStyle(
+      fontFamily: 'vazir',
+      fontSize: 16,
+      color: Colors.grey[800],
+      fontWeight: FontWeight.w500,
     ),
 
     caption: TextStyle(
-      fontFamily: 'yekan',
-      fontSize: 13,
+      fontFamily: 'vazir',
+      fontSize: 14,
       color: Colors.black,
     ),
+
     overline: TextStyle(
       fontFamily: 'yekan',
       fontSize: 10,
       color: Colors.black,
     ),
+
     button: TextStyle(
       fontFamily: 'yekan',
       fontSize: 17,
