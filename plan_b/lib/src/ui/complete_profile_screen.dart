@@ -185,7 +185,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ),
             DropdownButton(
               hint: Text(
-                user.cityCode == null ? _cityTitle : cityRepository.findCityTitleByCode(user.cityCode),
+                user.cityCode == 'null' ? _cityTitle : cityRepository.findCityTitleByCode(user.cityCode),
                 style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
