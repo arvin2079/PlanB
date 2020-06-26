@@ -103,15 +103,15 @@ class APIProvider {
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     String body = jsonEncode(requestProject.toJson());
-    print(headers);
-    print(body);
     // Sending request
     final response = await client.post(url, headers: headers, body: body);
 
     if(response.statusCode == 201){
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       Project project = Project.fromJson(map);
-      print(project);
+      return project;
+    } else {
+      throw MessagedException("Something went wrong");
     }
 
   }

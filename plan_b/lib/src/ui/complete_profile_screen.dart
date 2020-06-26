@@ -402,8 +402,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               // _scaffoldKey.currentState.showSnackBar(snackbar);
 
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('این مهارت قبلا اضافه شده',
-                    style: Theme.of(context).textTheme.headline5),
+                content: Text(
+                  'این مهارت قبلا اضافه شده',
+                ),
+                backgroundColor: Colors.red,
+                duration: Duration(milliseconds: 500),
               ));
             }
           });
