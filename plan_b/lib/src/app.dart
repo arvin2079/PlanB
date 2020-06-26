@@ -5,6 +5,7 @@ import 'package:planb/src/ui/complete_profile_screen.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/home_screen.dart';
 import 'package:planb/src/ui/login_screen.dart';
+import 'package:planb/src/ui/newProject_screen.dart';
 import 'package:planb/src/ui/signup_screen.dart';
 import 'package:planb/src/ui/splash_screen.dart';
 

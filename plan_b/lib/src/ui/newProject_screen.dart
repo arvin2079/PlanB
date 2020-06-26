@@ -30,6 +30,10 @@ class _NewProjectScreenState extends State<NewProjectScreen>
 
   List<String> _getSearchFieldSuggestion(String data) {
     return <String>[
+      'سرما',
+      'حسن',
+      'بیکار',
+      'بیل',
       'hello',
       'this is apple',
       'android',
@@ -41,7 +45,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
       'film',
       'fish',
       'foster',
-      'felamingo',
+      'سیب زمینی',
       'back-end',
       'yellow',
       'arvin',
@@ -93,7 +97,8 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                           textAlign: TextAlign.right,
                           controller: _projectNameController,
                           textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                          onEditingComplete: () =>
+                              FocusScope.of(context).nextFocus(),
                         ),
                         SizedBox(height: 15),
                         TextArea(
@@ -144,11 +149,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'این مهارت قبلا اضافه شده',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontFamily: 'yekan',
-                  ),
+                  style: Theme.of(context).textTheme.headline5
                 ),
               ));
             }
@@ -165,16 +166,14 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           else
             return 1;
         },
-        decoration: InputDecoration(
-          labelText: 'مهارت های این پروژه'
-        ),
+        decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
         itemBuilder: (BuildContext context, String suggestion) {
           // FIXME : make style for list item Texts
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 5),
             child: Text(
               suggestion,
-              style: Theme.of(context).textTheme.headline2
+              style: Theme.of(context).textTheme.headline2,
             ),
           );
         },
@@ -185,7 +184,10 @@ class _NewProjectScreenState extends State<NewProjectScreen>
   Iterable<Widget> get _chipWidgets sync* {
     for (final String item in _chipsData) {
       yield Chip(
-        label: Text(item),
+        label: Text(
+          item,
+          style: Theme.of(context).textTheme.caption,
+        ),
         onDeleted: () {
           setState(() {
             _chipsData.removeWhere((data) {
