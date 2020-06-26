@@ -1,7 +1,6 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
@@ -18,8 +17,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
     with ImageCompressor, LanguageDetector, CompleteProfileValidator {
   final TextEditingController _projectNameController = TextEditingController();
   final TextEditingController _searchInputController = TextEditingController();
-  Project requestProject = Project();
-
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -27,6 +24,10 @@ class _NewProjectScreenState extends State<NewProjectScreen>
 
   List<String> _getSearchFieldSuggestion(String data) {
     return <String>[
+      'سرما',
+      'حسن',
+      'بیکار',
+      'بیل',
       'hello',
       'this is apple',
       'android',
@@ -38,7 +39,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
       'film',
       'fish',
       'foster',
-      'felamingo',
+      'سیب زمینی',
       'back-end',
       'yellow',
       'arvin',
@@ -56,6 +57,14 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           title: Text(
             'ایجاد پروژه جدید',
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         ),
         body: Builder(
           builder: (context) => LimitedBox(
@@ -86,10 +95,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                               FocusScope.of(context).nextFocus(),
                         ),
                         SizedBox(height: 15),
-                        TextArea(
-                          labelText: 'شرح پروژه',
-                        ),
-                        SizedBox(height: 25),
                         _buildSearchTextField(context),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 5),
@@ -98,15 +103,9 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             spacing: 10.0,
                           ),
                         ),
-                        RaisedButton(
-                          child: Text(
-                            'ایجاد پروژه',
-                            style: Theme.of(context).textTheme.button,
-                          ),
-                          onPressed: () {
-                            // fixme: Initialize "requestProject" with textField values
-                            projectBloc.createNewProject(requestProject);
-                          },
+                        SizedBox(height: 15),
+                        TextArea(
+                          labelText: 'شرح پروژه',
                         ),
                       ],
                     ),
@@ -142,22 +141,18 @@ class _NewProjectScreenState extends State<NewProjectScreen>
               // _scaffoldKey.currentState.showSnackBar(snackbar);
 
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  'این مهارت قبلا اضافه شده',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontFamily: 'yekan',
-                  ),
-                ),
+                content: Text('این مهارت قبلا اضافه شده',
+                    style: Theme.of(context).textTheme.headline5),
               ));
             }
           });
         },
         suggestions: _getSearchFieldSuggestion(_searchInputController.text),
         key: GlobalKey(),
+        decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
         itemFilter: (String suggestion, String query) {
-          return suggestion.contains(RegExp(r'\b' + '${query.toLowerCase()}'));
+          RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
+          return re.hasMatch(suggestion);
         },
         itemSorter: (String a, String b) {
           if (a.length < b.length)
@@ -165,13 +160,14 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           else
             return 1;
         },
-        decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
         itemBuilder: (BuildContext context, String suggestion) {
           // FIXME : make style for list item Texts
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            child:
-                Text(suggestion, style: Theme.of(context).textTheme.headline2),
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            child: Text(
+              suggestion,
+              style: Theme.of(context).textTheme.headline2,
+            ),
           );
         },
       ),
@@ -181,7 +177,10 @@ class _NewProjectScreenState extends State<NewProjectScreen>
   Iterable<Widget> get _chipWidgets sync* {
     for (final String item in _chipsData) {
       yield Chip(
-        label: Text(item),
+        label: Text(
+          item,
+          style: Theme.of(context).textTheme.caption,
+        ),
         onDeleted: () {
           setState(() {
             _chipsData.removeWhere((data) {

@@ -102,6 +102,14 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       fontWeight: FontWeight.w500,
     ),
 
+    //snackbar text style
+    headline5: TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+      fontFamily: 'vazir',
+      fontWeight: FontWeight.w500,
+    ),
+
     caption: TextStyle(
       fontFamily: 'vazir',
       fontSize: 14,

@@ -402,14 +402,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               // _scaffoldKey.currentState.showSnackBar(snackbar);
 
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  'این مهارت قبلا اضافه شده',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontFamily: 'yekan',
-                  ),
-                ),
+                content: Text('این مهارت قبلا اضافه شده',
+                    style: Theme.of(context).textTheme.headline5),
               ));
             }
           });
@@ -417,7 +411,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         suggestions: _getSearchFieldSuggestion(_searchInputController.text),
         key: GlobalKey(),
         itemFilter: (String suggestion, String query) {
-          return suggestion.contains(RegExp(r'\b' + '${query.toLowerCase()}'));
+          RegExp re = RegExp(r'^' +query.toLowerCase() + r'.*');
+          return re.hasMatch(suggestion);
         },
         itemSorter: (String a, String b) {
           if (a.length < b.length)
