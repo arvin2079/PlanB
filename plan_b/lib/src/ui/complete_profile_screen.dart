@@ -326,13 +326,56 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           onPressed: () {
             if (_formkey.currentState.validate()) {
               _formkey.currentState.save();
-              print(requestUser);
               userBloc.completeProfile(requestUser);
+              _showAlert(context);
             }
           },
         ),
       ],
     );
+  }
+
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => StreamBuilder(
+          stream: userBloc.errorsStream,
+          builder: (context, snapshot) {
+            bool _hasError = snapshot.hasData;
+            Widget widget = AlertDialog(
+              title: Container(
+                  alignment: Alignment.topRight,child: Text("تکمیل اطلاعات", style: Theme.of(context).textTheme.headline4, textAlign: TextAlign.right, )),
+              content: Row(
+                children: <Widget>[
+                  !_hasError ?
+                  Icon(Icons.done_outline , color: Colors.green,) :
+                  Icon(Icons.error_outline , color: Colors.red,),
+                  SizedBox(width: 10,),
+                  Expanded(child: Text(_hasError ? "خطا در بروزرسانی اطلاعات!" : "اطلاعات با موفقیت بروزرسانی شد", style: Theme.of(context).textTheme.headline1,))
+                ],
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(_hasError? "بیخیال" :"ادامه"),
+                    ),
+                  ],
+                )
+              ],
+            );
+            return widget;
+          }
+        )
+    );
+//    Navigator.of(context).pop();
+//    Navigator.of(context).pop();
   }
 
   Padding _buildSearchTextField(BuildContext context) {
