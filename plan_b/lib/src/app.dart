@@ -45,7 +45,7 @@ class _PlanBAppState extends State<PlanBApp> {
                   result = LoginScreen();
                 }
               }
-              return NewProjectScreen();
+              return result;
             }));
   }
 }
