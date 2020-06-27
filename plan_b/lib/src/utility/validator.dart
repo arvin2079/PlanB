@@ -121,3 +121,10 @@ class CompleteProfileValidator {
   final String notValidSocialMediaErrorMassage = 'نامعتبر';
   final String notValidDescriptionErrorMassage = 'پر کردن این فیلد به زبان فارسی الزامیست';
 }
+
+class NewProjectValidator {
+  final StringValidator projectNameValidator = NonEmptyStringValidator();
+  final StringValidator descriptionValidator = NonEmptyStringValidator();
+  final String notValidDescriptionErrorMassage = 'پر کردن این ققسمت برای پروژه الزامیست';
+  final String notValidProjectNameErrorMassage = 'پر کردن این ققسمت برای پروژه الزامیست';
+}

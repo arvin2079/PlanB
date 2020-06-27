@@ -16,8 +16,7 @@ class NewProjectScreen extends StatefulWidget {
 }
 
 class _NewProjectScreenState extends State<NewProjectScreen>
-    with ImageCompressor, LanguageDetector, CompleteProfileValidator {
-  final TextEditingController _projectNameController = TextEditingController();
+    with ImageCompressor, LanguageDetector, NewProjectValidator {
   final TextEditingController _searchInputController = TextEditingController();
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -76,7 +75,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
             child: Form(
               key: _formkey,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ScrollConfiguration(
                   behavior: NoGlowScrollBehavior(),
                   child: SingleChildScrollView(
@@ -92,8 +91,13 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                           ),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.right,
-                          controller: _projectNameController,
                           textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            return projectNameValidator.isValid(value) ? null : notValidProjectNameErrorMassage;
+                          },
+                          onSaved: (value) {
+                            requestProject.descriptions = value;
+                          },
                           onEditingComplete: () =>
                               FocusScope.of(context).nextFocus(),
                         ),
@@ -108,7 +112,14 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                         ),
                         SizedBox(height: 15),
                         TitleText(text: 'شرح پروژه'),
-                        TextArea(),
+                        TextArea(
+                          validator: (value) {
+                            return descriptionValidator.isValid(value) ? null : notValidDescriptionErrorMassage;
+                          },
+                          onSaved: (value) {
+                            requestProject.name = value;
+                          },
+                        ),
                         SizedBox(height: 15),
                         RaisedButton(
                           child: Text(
@@ -116,7 +127,18 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             style: Theme.of(context).textTheme.button,
                           ),
                           onPressed: () {
-                            projectBloc.createNewProject(requestProject);
+                            if(_formkey.currentState.validate()) {
+                              _formkey.currentState.save();
+                              // TODO : fill requestProject.skillCodes when skill repository added
+//                              if (_chipsData.isNotEmpty) {
+//                                List skillCodes = List();
+//                                for (String item in _chipsData) {
+//                                  skillCodes.add(skillRepository.findSkillCodeByName(item));
+//                                }
+//                                requestProject.skillCodes = skillCodes;
+//                              }
+                              projectBloc.createNewProject(requestProject);
+                            }
                           },
                         ),
                       ],
