@@ -22,7 +22,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
 
   List<String> _chipsData = <String>[];
 
-  List<String> _getSearchFieldSuggestion(String data) {
+  List<String> _getSearchFieldSuggestion() {
     return <String>[
       'سرما',
       'حسن',
@@ -147,7 +147,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
             }
           });
         },
-        suggestions: _getSearchFieldSuggestion(_searchInputController.text),
+        suggestions: _getSearchFieldSuggestion(),
         key: GlobalKey(),
         decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
         itemFilter: (String suggestion, String query) {

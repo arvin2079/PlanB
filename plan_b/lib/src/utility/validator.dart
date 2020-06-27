@@ -64,6 +64,29 @@ class EnglishValidator with LanguageDetector implements StringValidator {
   }
 }
 
+class SocialMediaValidator implements StringValidator {
+  @override
+  bool isValid(String value) {
+    if(value.isEmpty)
+      return true;
+    if(isId(value))
+      return true;
+    return false;
+  }
+
+  bool isId(String string) {
+    RegExp reg = RegExp(r'\w');
+    for(int i=0 ; i< string.length ; i++) {
+      String s = string.substring(i, i+1);
+      if(!reg.hasMatch(s) && s != '@')
+        return false;
+      if(i != 0 && s == '@')
+        return false;
+    }
+    return reg.hasMatch(string);
+  }
+}
+
 class SignUpValidator {
   final StringValidator firstnameValidator = PersianValidator();
   final StringValidator lastnameValidator = PersianValidator();
@@ -71,15 +94,12 @@ class SignUpValidator {
   final StringValidator uniIdValidator = NonEmptyStringValidator();
   final StringValidator passwordValidator = NonEmptyStringValidator();
   final StringValidator emailValidator = EmailValidator();
-  final String notValidEmailMessage = 'ایمیل غیر مجاز';
+  final String notValidEmailMessage = 'ایمیل نامعتبر';
   final String notValidPasswordMessage = 'رمز عبور غیر مجاز';
   final String notValidUniIdMessage = 'کد دانشجویی غیر مجاز';
-  final String notValidUsernameMessage =
-      'پر کردن این فیلد به زبان انگلیسی الزامیست';
-  final String notValidFirstnameMessage =
-      'پر کردن این فیلد به زبان فارسی الزامیست';
-  final String notValidLastnameMessage =
-      'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidUsernameMessage = 'پر کردن این فیلد به زبان انگلیسی الزامیست';
+  final String notValidFirstnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidLastnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
 }
 
 class LogInValidator {
@@ -90,19 +110,14 @@ class LogInValidator {
 }
 
 class CompleteProfileValidator {
-  //todo : vlaidator for instagram and telegram and... validator
-  final StringValidator socialMediaIdValidator = NonEmptyStringValidator();
+  final StringValidator socialMediaIdValidator = SocialMediaValidator();
   final StringValidator descriptionValidator = PersianValidator();
+  final StringValidator emailValidator = EmailValidator();
+  final StringValidator uniIdValidator = NonEmptyStringValidator();
+  final StringValidator phoneNumberValidator = PhoneNumberStringValidator();
   final String notValidUniIdMessage = 'کد دانشجویی غیر مجاز';
-  final String notValidUsernameMessage =
-      'پر کردن این فیلد به زبان انگلیسی الزامیست';
-  final String notValidFirstnameMessage =
-      'پر کردن این فیلد به زبان فارسی الزامیست';
-  final String notValidLastnameMessage =
-      'پر کردن این فیلد به زبان فارسی الزامیست';
-  final String notValidPhoneNumberErrorMassage =
-      'شماره همراه صحیح خود را وارد کنید';
-  final String notValidSocialMediaErrorMassage = 'پر کردن این فیلد الزامیست';
-  final String notValidDescriptionErrorMassage =
-      'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidEmailMessage = 'ایمیل نامعتبر';
+  final String notValidPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
+  final String notValidSocialMediaErrorMassage = 'نامعتبر';
+  final String notValidDescriptionErrorMassage = 'پر کردن این فیلد به زبان فارسی الزامیست';
 }

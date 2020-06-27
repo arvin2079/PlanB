@@ -23,9 +23,11 @@ class CompleteProfileScreen extends StatefulWidget {
 class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     with ImageCompressor, LanguageDetector, CompleteProfileValidator {
   TextEditingController _searchInputController = TextEditingController();
+
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
   String _cityTitle = 'شهر';
+
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   ImageProvider _image;
@@ -33,13 +35,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   List<String> _chipsData = <String>[];
 
   List<String> genderItems = <String>['مرد', 'زن'];
+
   CityRepository cityRepository;
   UniversityRepository universityRepository;
   SkillRepository skillRepository;
 
   User requestUser;
 
-  List<String> _getSearchFieldSuggestion(String data) {
+  List<String> _getSearchFieldSuggestion() {
     return skillRepository.getNames();
   }
 
@@ -47,6 +50,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   void initState() {
     requestUser = User();
     userBloc.getCompleteProfileFields();
+
+    // fixme : initial skill items too
     initializeItems();
     super.initState();
   }
@@ -61,14 +66,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             'تکمیل اطلاعات',
           ),
           actions: <Widget>[
-            !Navigator.of(context).canPop() ?
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/home');
-              },
-            ) :
-                Container()
+            !Navigator.of(context).canPop()
+                ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/home');
+                    },
+                  )
+                : Container()
           ],
         ),
         body: Builder(
@@ -168,7 +173,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ),
             DropdownButton(
               hint: Text(
-                user.cityCode == 'null'
+                user.cityCode == null
                     ? _cityTitle
                     : cityRepository.findCityTitleByCode(user.cityCode),
                 style: Theme.of(context).textTheme.headline4,
@@ -219,86 +224,92 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         ),
         SizedBox(height: 30),
         TitleText(text: 'اطلاعات تماس'),
-//        CustomTextField(
-//          initialValue: user.phoneNumber,
-//          labelText: 'موبایل',
-//          inputType: TextInputType.phone,
-//          maxLength: 11,
-//          validator: (value) {
-//            return phoneNumberValidator.isValid(value)
-//                ? null
-//                : notPhoneNumberErrorMassage;
-//          },
-//          onSaved: (text) {
-//            requestUser.phoneNumber = text;
-//          },
-//        ),
-//        CustomTextField(
-//          initialValue: user.email,
-//          labelText: 'ایمیل',
-//          inputType: TextInputType.emailAddress,
-//          hintText: "example@gmail.com",
-//          validator: (value) {
-//            return .isValid(value)
-//                ? null
-//                : notPhoneNumberErrorMassage;
-//          },
-//          onSaved: (text) {
-//            requestUser.email = text;
-//          },
-//        ),
-        // next text fields aren't save in back-end and better to delete them
-//        CustomTextField(
-//          labelText: 'شماره دانشجویی',
-//          inputType: TextInputType.number,
-//          onSaved: (text) {
-//            requestUser.studentCode = text;
-//          },
-//        ),
+        CustomTextField(
+          controller: TextEditingController(text: user.phoneNumber),
+          initialValue: user.phoneNumber,
+          labelText: 'موبایل',
+          inputType: TextInputType.phone,
+          maxLength: 11,
+          validator: (value) {
+            return phoneNumberValidator.isValid(value)
+                ? null
+                : notValidPhoneNumberErrorMassage;
+          },
+          onSaved: (text) {
+            requestUser.phoneNumber = text;
+          },
+        ),
+        CustomTextField(
+          controller: TextEditingController(text: user.email),
+          initialValue: user.email,
+          labelText: 'ایمیل',
+          inputType: TextInputType.emailAddress,
+          hintText: "example@gmail.com",
+          validator: (value) {
+            return emailValidator.isValid(value) ? null : notValidEmailMessage;
+          },
+          onSaved: (text) {
+            requestUser.email = text;
+          },
+        ),
+        CustomTextField(
+          controller:
+              TextEditingController(text: user.universityCode.toString()),
+          labelText: 'شماره دانشجویی',
+          inputType: TextInputType.number,
+          onSaved: (text) {
+            requestUser.studentCode = text;
+          },
+        ),
 
-//        CustomTextField(
-//          labelText: 'اینستاگرام',
-//          hintText: "yourID",
-//          validator: (value) {
-//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
-//          },
-//          onSaved: (text) {
-//
-//          },
-//        ),
-//        CustomTextField(
-//          labelText: 'تلگرام',
-//          hintText: "yourID",
-//          validator: (value) {
-//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
-//          },
-//          onSaved: (text) {
-//
-//          },
-//        ),
-//        CustomTextField(
-//          labelText: 'گیت',
-//          hintText: "yourID",
-//          validator: (value) {
-//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
-//          },
-//          onSaved: (text) {
-//
-//          },
-//        ),
-//        CustomTextField(
-//          labelText: 'لینکدین',
-//          hintText: "yourID",
-//          validator: (value) {
-//            return socialMediaIdValidator.isValid(value) ? null : notValidSocialMediaErrorMassage;
-//          },
-//          onSaved: (text) {
-//
-//          },
-//        ),
-//        SizedBox(height: 30),
+        CustomTextField(
+//          TODO : controller: TextEditingController(),
+          labelText: 'اینستاگرام',
+          hintText: "yourID",
+          validator: (value) {
+            return socialMediaIdValidator.isValid(value)
+                ? null
+                : notValidSocialMediaErrorMassage;
+          },
+          onSaved: (text) {},
+        ),
+        CustomTextField(
+//          TODO : controller: TextEditingController(),
+          labelText: 'تلگرام',
+          hintText: "yourID",
+          validator: (value) {
+            return socialMediaIdValidator.isValid(value)
+                ? null
+                : notValidSocialMediaErrorMassage;
+          },
+          onSaved: (text) {},
+        ),
+        CustomTextField(
+//          TODO : controller: TextEditingController(),
+          labelText: 'گیت',
+          hintText: "yourID",
+          validator: (value) {
+            return socialMediaIdValidator.isValid(value)
+                ? null
+                : notValidSocialMediaErrorMassage;
+          },
+          onSaved: (text) {},
+        ),
+        CustomTextField(
+//          TODO : controller: TextEditingController(),
+          labelText: 'لینکدین',
+          hintText: "yourID",
+          validator: (value) {
+            return socialMediaIdValidator.isValid(value)
+                ? null
+                : notValidSocialMediaErrorMassage;
+          },
+          onSaved: (text) {},
+        ),
+        SizedBox(height: 30),
 
         TextArea(
+          controller: TextEditingController(text: user.descriptions),
           labelText: 'خلاصه‌ای از سوابق خود بنویسید',
           validator: (value) {
             return descriptionValidator.isValid(value)
@@ -326,8 +337,15 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: () {
+            _formkey.currentState.save();
             if (_formkey.currentState.validate()) {
-              _formkey.currentState.save();
+              if (_chipsData.isNotEmpty) {
+                List skillCodes = List();
+                for (String item in _chipsData) {
+                  skillCodes.add(skillRepository.findSkillCodeByName(item));
+                }
+                requestUser.skillCodes = skillCodes;
+              }
               userBloc.completeProfile(requestUser);
               _showAlert(context);
             }
@@ -341,41 +359,57 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     showDialog(
         context: context,
         builder: (context) => StreamBuilder(
-          stream: userBloc.errorsStream,
-          builder: (context, snapshot) {
-            bool _hasError = snapshot.hasData;
-            Widget widget = AlertDialog(
-              title: Container(
-                  alignment: Alignment.topRight,child: Text("تکمیل اطلاعات", style: Theme.of(context).textTheme.headline4, textAlign: TextAlign.right, )),
-              content: Row(
-                children: <Widget>[
-                  !_hasError ?
-                  Icon(Icons.done_outline , color: Colors.green,) :
-                  Icon(Icons.error_outline , color: Colors.red,),
-                  SizedBox(width: 10,),
-                  Expanded(child: Text(_hasError ? "خطا در بروزرسانی اطلاعات!" : "اطلاعات با موفقیت بروزرسانی شد", style: Theme.of(context).textTheme.headline1,))
-                ],
-              ),
-              actions: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+            stream: userBloc.errorsStream,
+            builder: (context, snapshot) {
+              bool _hasError = snapshot.hasData;
+              Widget widget = AlertDialog(
+                title: Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      "تکمیل اطلاعات",
+                      style: Theme.of(context).textTheme.headline4,
+                      textAlign: TextAlign.right,
+                    )),
+                content: Row(
                   children: <Widget>[
-
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(_hasError? "بیخیال" :"ادامه"),
+                    !_hasError
+                        ? Icon(
+                            Icons.done_outline,
+                            color: Colors.green,
+                          )
+                        : Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                          ),
+                    SizedBox(
+                      width: 10,
                     ),
+                    Expanded(
+                        child: Text(
+                      _hasError
+                          ? "خطا در بروزرسانی اطلاعات!"
+                          : "اطلاعات با موفقیت بروزرسانی شد",
+                      style: Theme.of(context).textTheme.headline1,
+                    ))
                   ],
-                )
-              ],
-            );
-            return widget;
-          }
-        )
-    );
+                ),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(_hasError ? "بیخیال" : "ادامه"),
+                      ),
+                    ],
+                  )
+                ],
+              );
+              return widget;
+            }));
 //    Navigator.of(context).pop();
 //    Navigator.of(context).pop();
   }
@@ -408,10 +442,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             }
           });
         },
-        suggestions: _getSearchFieldSuggestion(_searchInputController.text),
+        suggestions: _getSearchFieldSuggestion(),
         key: GlobalKey(),
         itemFilter: (String suggestion, String query) {
-          RegExp re = RegExp(r'^' +query.toLowerCase() + r'.*');
+          RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
           return re.hasMatch(suggestion);
         },
         itemSorter: (String a, String b) {
@@ -525,4 +559,3 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 }
 
 // fixme : search field item font ROBOTO download
-// todo : create validator for each textfield

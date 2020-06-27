@@ -80,8 +80,10 @@ class TextArea extends StatefulWidget {
     this.labelText,
     this.onSaved,
     this.validator,
+    this.controller,
   });
 
+  final TextEditingController controller;
   final String labelText;
   final OnSaved onSaved;
   final Validator validator;
@@ -96,6 +98,7 @@ class _TextAreaState extends State<TextArea> with LanguageDetector {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
+        controller: widget.controller,
         validator: widget.validator,
         onSaved: widget.onSaved,
         style: Theme.of(context).textTheme.headline1,
