@@ -1,3 +1,4 @@
+import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/resource/api_provider.dart';
 
@@ -12,4 +13,6 @@ class Repository {
   getCompleteProfileFields() => _provider.getCompleteProfileFields();
 
   completeProfile(User user) => _provider.completeProfile(user);
+
+  createNewProject(Project project) => _provider.createNewProject(project);
 }

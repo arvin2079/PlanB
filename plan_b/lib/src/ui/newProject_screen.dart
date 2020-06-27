@@ -1,6 +1,7 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
@@ -19,6 +20,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
   final TextEditingController _searchInputController = TextEditingController();
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  Project requestProject = Project();
 
   List<String> _chipsData = <String>[];
 
@@ -107,6 +109,15 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                         TextArea(
                           labelText: 'شرح پروژه',
                         ),
+                        RaisedButton(
+                          child: Text(
+                            'ایجاد پروژه',
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                          onPressed: () {
+                            projectBloc.createNewProject(requestProject);
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -141,8 +152,11 @@ class _NewProjectScreenState extends State<NewProjectScreen>
               // _scaffoldKey.currentState.showSnackBar(snackbar);
 
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('این مهارت قبلا اضافه شده',
-                    style: Theme.of(context).textTheme.headline5),
+                content: Text(
+                  'این مهارت قبلا اضافه شده',
+                ),
+                backgroundColor: Colors.red,
+                duration: Duration(milliseconds: 500),
               ));
             }
           });
