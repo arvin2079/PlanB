@@ -88,7 +88,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
 
     //in Screen titles
     headline3: TextStyle(
-      fontFamily: 'vazir',
+      fontFamily: 'yekan',
       fontWeight: FontWeight.w500,
       fontSize: 22,
       color: Colors.black87,

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
+import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
 import 'package:planb/src/utility/validator.dart';
@@ -106,9 +107,9 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                           ),
                         ),
                         SizedBox(height: 15),
-                        TextArea(
-                          labelText: 'شرح پروژه',
-                        ),
+                        TitleText(text: 'شرح پروژه'),
+                        TextArea(),
+                        SizedBox(height: 15),
                         RaisedButton(
                           child: Text(
                             'ایجاد پروژه',

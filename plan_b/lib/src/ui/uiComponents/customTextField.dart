@@ -78,6 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField>
 class TextArea extends StatefulWidget {
   const TextArea({
     this.labelText,
+    this.hintText,
     this.onSaved,
     this.validator,
     this.controller,
@@ -85,6 +86,7 @@ class TextArea extends StatefulWidget {
 
   final TextEditingController controller;
   final String labelText;
+  final String hintText;
   final OnSaved onSaved;
   final Validator validator;
 
@@ -115,6 +117,7 @@ class _TextAreaState extends State<TextArea> with LanguageDetector {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2.0),
           ),
+          hintText: widget.hintText,
           labelText: widget.labelText,
         ),
       ),
