@@ -240,7 +240,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           },
         ),
         CustomTextField(
-          controller: TextEditingController(text: user.email),
+          controller: user.email != null ? TextEditingController(text: user.email) : null,
           initialValue: user.email,
           labelText: 'ایمیل',
           inputType: TextInputType.emailAddress,
