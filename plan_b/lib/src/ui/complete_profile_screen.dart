@@ -172,7 +172,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             ),
             DropdownButton(
               hint: Text(
-                user.cityCode == null
+                user.cityCode == 'null'
                     ? _cityTitle
                     : cityRepository.findCityTitleByCode(user.cityCode),
                 style: Theme.of(context).textTheme.headline4,
@@ -198,8 +198,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               hint: Text(
                 user.universityCode == null
                     ? _universityTitle
-                    : universityRepository
-                        .findUniversityNameByCode(user.universityCode),
+                    : user.universityCode == null,
                 style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
@@ -224,8 +223,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         SizedBox(height: 30),
         TitleText(text: 'اطلاعات تماس'),
         CustomTextField(
-          controller: TextEditingController(text: user.phoneNumber.toString()),
-          initialValue: user.phoneNumber.toString(),
+          controller:
+              TextEditingController(text: user.phoneNumber ?? ""),
           labelText: 'موبایل',
           inputType: TextInputType.phone,
           maxLength: 11,
@@ -240,7 +239,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         ),
         CustomTextField(
           controller: TextEditingController(text: user.email),
-          initialValue: user.email,
           labelText: 'ایمیل',
           inputType: TextInputType.emailAddress,
           hintText: "example@gmail.com",
@@ -252,8 +250,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           },
         ),
         CustomTextField(
-          controller:
-              TextEditingController(text: user.studentCode.toString()),
+          controller: TextEditingController(text: user.studentCode.toString()),
           labelText: 'شماره دانشجویی',
           inputType: TextInputType.number,
           onSaved: (text) {
@@ -550,7 +547,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           _skillObjects.add(skill);
         }
         skillRepository = SkillRepository(skills: _skillObjects);
-        print(skillRepository.getNames());
       }
     });
 

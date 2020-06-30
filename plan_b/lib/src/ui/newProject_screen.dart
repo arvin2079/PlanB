@@ -41,6 +41,18 @@ class _NewProjectScreenState extends State<NewProjectScreen>
 
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: userBloc.skillsStream,
+      builder: (context, snapshot){
+        if(snapshot.hasData){
+          return _buildScreenWidget();
+        }
+        return Center(child: CircularProgressIndicator(),);
+      },
+    );
+  }
+
+  _buildScreenWidget(){
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -48,14 +60,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           title: Text(
             'ایجاد پروژه جدید',
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         ),
         body: Builder(
           builder: (context) => LimitedBox(

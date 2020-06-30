@@ -44,7 +44,7 @@ class PhoneNumberStringValidator implements StringValidator {
   @override
   bool isValid(String value) {
     RegExp regExp = RegExp(r'09\d{9}');
-    return regExp.hasMatch(value) && value.length == 10;
+    return regExp.hasMatch(value) && value.length == 11;
   }
 }
 
