@@ -1,7 +1,9 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/project_model.dart';
+import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
@@ -24,30 +26,17 @@ class _NewProjectScreenState extends State<NewProjectScreen>
 
   List<String> _chipsData = <String>[];
 
+  SkillRepository skillRepository = SkillRepository();
+
   List<String> _getSearchFieldSuggestion() {
-    return <String>[
-      'سرما',
-      'حسن',
-      'بیکار',
-      'بیل',
-      'hello',
-      'this is apple',
-      'android',
-      'ios',
-      'art',
-      'python',
-      'front-end',
-      'fuck',
-      'film',
-      'fish',
-      'foster',
-      'سیب زمینی',
-      'back-end',
-      'yellow',
-      'arvin',
-      'container',
-      'flutter',
-    ];
+    return skillRepository.getNames();
+  }
+
+  @override
+  void initState() {
+    userBloc.getCompleteProfileFields();
+    initializeItems();
+    super.initState();
   }
 
   @override
@@ -130,13 +119,13 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             if(_formkey.currentState.validate()) {
                               _formkey.currentState.save();
                               // TODO : fill requestProject.skillCodes when skill repository added
-//                              if (_chipsData.isNotEmpty) {
-//                                List skillCodes = List();
-//                                for (String item in _chipsData) {
-//                                  skillCodes.add(skillRepository.findSkillCodeByName(item));
-//                                }
-//                                requestProject.skillCodes = skillCodes;
-//                              }
+                              if (_chipsData.isNotEmpty) {
+                                List skillCodes = List();
+                                for (String item in _chipsData) {
+                                  skillCodes.add(skillRepository.findSkillCodeByName(item));
+                                }
+                                requestProject.skillCodes = skillCodes;
+                              }
                               projectBloc.createNewProject(requestProject);
                             }
                           },
@@ -227,5 +216,19 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         },
       );
     }
+  }
+
+  void initializeItems() async {
+
+    userBloc.skillsStream.first.then((value) {
+      if (value != null) {
+        List<Skill> _skillObjects = [];
+        for (int i = 0; i < value.length; i++) {
+          Skill skill = Skill.fromJson(value[i]);
+          _skillObjects.add(skill);
+        }
+        skillRepository = SkillRepository(skills: _skillObjects);
+      }
+    });
   }
 }

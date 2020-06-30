@@ -50,8 +50,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   void initState() {
     requestUser = User();
     userBloc.getCompleteProfileFields();
-
-    // fixme : initial skill items too
     initializeItems();
     super.initState();
   }
@@ -108,6 +106,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 
   Widget _buildScreenWidget(User user) {
     requestUser = user;
+    print(user);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -225,8 +224,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         SizedBox(height: 30),
         TitleText(text: 'اطلاعات تماس'),
         CustomTextField(
-          controller: TextEditingController(text: user.phoneNumber),
-          initialValue: user.phoneNumber,
+          controller: TextEditingController(text: user.phoneNumber.toString()),
+          initialValue: user.phoneNumber.toString(),
           labelText: 'موبایل',
           inputType: TextInputType.phone,
           maxLength: 11,
@@ -254,7 +253,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         ),
         CustomTextField(
           controller:
-              TextEditingController(text: user.universityCode.toString()),
+              TextEditingController(text: user.studentCode.toString()),
           labelText: 'شماره دانشجویی',
           inputType: TextInputType.number,
           onSaved: (text) {
@@ -545,6 +544,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           _skillObjects.add(skill);
         }
         skillRepository = SkillRepository(skills: _skillObjects);
+        print(skillRepository.getNames());
       }
     });
 

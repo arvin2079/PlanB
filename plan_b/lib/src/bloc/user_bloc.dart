@@ -78,7 +78,6 @@ class UserBloc extends Bloc {
       Map response = await repository.getCompleteProfileFields();
       Map user = response['username'];
       _userInfoStreamController.sink.add(User.fromJson(user));
-      _saveUsersInfoInSharedPreferences(User.fromJson(user));
       List list = response['skills'];
       _skillsStreamController.sink.add(list);
       list = response['Code'];
@@ -96,12 +95,6 @@ class UserBloc extends Bloc {
     } on MessagedException catch (e) {
       _errorsStreamController.add([e]);
     }
-  }
-
-  _saveUsersInfoInSharedPreferences(User user) async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString('firstName', user.firstName);
-    sharedPreferences.setString('lastName', user.lastName);
   }
 
   @override

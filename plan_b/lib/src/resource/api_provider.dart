@@ -96,7 +96,7 @@ class APIProvider {
     }
   }
 
-  Future<Project> createNewProject(Project requestProject) async{
+  Future<Project> createNewProject(Project requestProject) async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/newproject/";
@@ -106,15 +106,12 @@ class APIProvider {
     // Sending request
     final response = await client.post(url, headers: headers, body: body);
 
-    if(response.statusCode == 201){
+    if (response.statusCode == 201) {
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       Project project = Project.fromJson(map);
       return project;
     } else {
       throw MessagedException("Something went wrong");
     }
-
   }
-
-
 }
