@@ -446,6 +446,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         },
         suggestions: _getSearchFieldSuggestion(),
         key: GlobalKey(),
+        decoration: InputDecoration(labelText: 'مهارت های شما'),
         itemFilter: (String suggestion, String query) {
           RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
           return re.hasMatch(suggestion);
@@ -458,10 +459,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         },
         itemBuilder: (BuildContext context, String suggestion) {
           // FIXME : make style for list item Texts
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            child:
-                Text(suggestion, style: Theme.of(context).textTheme.headline2),
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            child: Text(
+              suggestion,
+              style: Theme.of(context).textTheme.headline2,
+            ),
           );
         },
       ),
@@ -471,7 +474,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   Iterable<Widget> get _chipWidgets sync* {
     for (final String item in _chipsData) {
       yield Chip(
-        label: Text(item),
+        label: Text(
+          item,
+          style: Theme.of(context).textTheme.caption,
+        ),
         onDeleted: () {
           setState(() {
             _chipsData.removeWhere((data) {
