@@ -346,7 +346,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 requestUser.skillCodes = skillCodes;
               }
               userBloc.completeProfile(requestUser);
-              print(requestUser.skillCodes);
+              if (_chipsData.isNotEmpty) {
+                List skillCodes = List();
+                for (String item in _chipsData) {
+                  skillCodes.add(skillRepository.findSkillCodeByName(item));
+                }
+                requestUser.skillCodes = skillCodes;
+              }
               _showAlert(context);
             }
           },
@@ -426,9 +432,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           setState(() {
             if (!_chipsData.contains(data)) {
               _chipsData.add(data);
-              int skillCode = skillRepository.findSkillCodeByName(data);
-              requestUser.skillCodes.add(skillCode);
-              // fixme : We need to delete skillCode from requestUser when onDeleted of a chip is triggering
             } else {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(

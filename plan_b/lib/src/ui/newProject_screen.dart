@@ -89,7 +89,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             return projectNameValidator.isValid(value) ? null : notValidProjectNameErrorMassage;
                           },
                           onSaved: (value) {
-                            requestProject.descriptions = value;
+                            requestProject.name = value;
                           },
                           onEditingComplete: () =>
                               FocusScope.of(context).nextFocus(),
@@ -110,7 +110,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                             return descriptionValidator.isValid(value) ? null : notValidDescriptionErrorMassage;
                           },
                           onSaved: (value) {
-                            requestProject.name = value;
+                            requestProject.descriptions = value;
                           },
                         ),
                         SizedBox(height: 15),
@@ -122,7 +122,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                           onPressed: () {
                             if(_formkey.currentState.validate()) {
                               _formkey.currentState.save();
-                              // TODO : fill requestProject.skillCodes when skill repository added
                               if (_chipsData.isNotEmpty) {
                                 List skillCodes = List();
                                 for (String item in _chipsData) {
@@ -131,6 +130,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                                 requestProject.skillCodes = skillCodes;
                               }
                               projectBloc.createNewProject(requestProject);
+                              _showAlert(context);
                             }
                           },
                         ),
@@ -146,6 +146,63 @@ class _NewProjectScreenState extends State<NewProjectScreen>
     );
   }
 
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => StreamBuilder(
+            stream: projectBloc.errorsStream,
+            builder: (context, snapshot) {
+              bool _hasError = snapshot.hasData;
+              Widget widget = AlertDialog(
+                title: Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      "تکمیل اطلاعات",
+                      style: Theme.of(context).textTheme.headline4,
+                      textAlign: TextAlign.right,
+                    )),
+                content: Row(
+                  children: <Widget>[
+                    !_hasError
+                        ? Icon(
+                      Icons.done_outline,
+                      color: Colors.green,
+                    )
+                        : Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: Text(
+                          _hasError
+                              ? "خطا در ثبت پروژه!"
+                              : "پروژه جدید شما ثبت شد",
+                          style: Theme.of(context).textTheme.headline1,
+                        ))
+                  ],
+                ),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(_hasError ? "بیخیال" : "باشه"),
+                      ),
+                    ],
+                  )
+                ],
+              );
+              return widget;
+            }));
+  }
+
   Padding _buildSearchTextField(BuildContext context) {
     bool _isPersian = true;
 
@@ -159,14 +216,10 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         itemSubmitted: (data) {
           setState(() {
             if (!_chipsData.contains(data))
-              _chipsData.add(data);
+              {
+                _chipsData.add(data);
+              }
             else {
-              // fixme : this part throw an error when i want to show alert snackbar (fixed)
-              // solution : This exception happens because you are using the context of the widget that instantiated Scaffold. Not the context of a child of Scaffold.
-              // for this we add builder to the Scaffold body so builder parent is scaffold and can be userd via ther context.
-              // solution : using globaleKey for the scaffold :
-              // _scaffoldKey.currentState.showSnackBar(snackbar);
-
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'این مهارت قبلا اضافه شده',
