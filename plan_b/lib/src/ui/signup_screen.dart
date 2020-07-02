@@ -37,21 +37,38 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      body: Center(
-        child: StreamBuilder(
-            stream: userBloc.authStatusStream,
-            builder: (context, snapshot) {
-              if (snapshot.data == AuthStatus.loading) {
-                return CircularProgressIndicator();
-              }
-              return Column(
+      body: StreamBuilder(
+          stream: userBloc.authStatusStream,
+          builder: (context, snapshot) {
+            if (snapshot.data == AuthStatus.loading) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return NestedScrollView(
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    expandedHeight: 200.0,
+                    floating: false,
+                    pinned: true,
+                    elevation: 0,
+                    flexibleSpace: FlexibleSpaceBar(
+                      title: Text("PlanB",),
+                      centerTitle: true,
+                      background: Container(
+                        color: backgroundColor,
+                        child: ClipRRect(
+                            borderRadius:
+                            BorderRadius.only(bottomLeft: Radius.circular(40)),
+                            child: Image.asset("images/loginBackground.jpg", fit: BoxFit.fitWidth,)),
+                      ),
+                    ),
+                  ),
+                ];
+              },
+              body: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   // Picture of header
-                  ClipRRect(
-                      borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(40)),
-                      child: Image.asset("images/loginBackground.jpg")),
                   SizedBox(
                     height: 40,
                   ),
@@ -252,9 +269,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
                     ),
                   ),
                 ],
-              );
-            }),
-      ),
+              ),
+            );
+          }),
     );
   }
 
