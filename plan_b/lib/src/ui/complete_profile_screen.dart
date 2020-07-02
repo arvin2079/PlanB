@@ -27,6 +27,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   String _genderTitle = 'جنسیت';
   String _universityTitle = 'دانشگاه';
   String _cityTitle = 'شهر';
+  bool _isFirstBuild = true;
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -106,7 +107,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
 
   Widget _buildScreenWidget(User user) {
     requestUser = user;
-    print(user);
+    if (_isFirstBuild) {
+      _initializeSkillChips(user);
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -198,7 +201,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               hint: Text(
                 user.universityCode == null
                     ? _universityTitle
-                    : user.universityCode == null,
+                    : universityRepository
+                        .findUniversityNameByCode(user.universityCode),
                 style: Theme.of(context).textTheme.headline4,
               ),
               onChanged: (value) {
@@ -223,8 +227,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         SizedBox(height: 30),
         TitleText(text: 'اطلاعات تماس'),
         CustomTextField(
-          controller:
-              TextEditingController(text: user.phoneNumber ?? ""),
+          controller: TextEditingController(text: user.phoneNumber ?? ""),
           labelText: 'موبایل',
           inputType: TextInputType.phone,
           maxLength: 11,
@@ -343,6 +346,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 requestUser.skillCodes = skillCodes;
               }
               userBloc.completeProfile(requestUser);
+              print(requestUser.skillCodes);
               _showAlert(context);
             }
           },
@@ -406,8 +410,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               );
               return widget;
             }));
-//    Navigator.of(context).pop();
-//    Navigator.of(context).pop();
   }
 
   Padding _buildSearchTextField(BuildContext context) {
@@ -422,15 +424,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         textSubmitted: (value) {},
         itemSubmitted: (data) {
           setState(() {
-            if (!_chipsData.contains(data))
+            if (!_chipsData.contains(data)) {
               _chipsData.add(data);
-            else {
-              // fixme : this part throw an error when i want to show alert snackbar (fixed)
-              // solution : This exception happens because you are using the context of the widget that instantiated Scaffold. Not the context of a child of Scaffold.
-              // for this we add builder to the Scaffold body so builder parent is scaffold and can be userd via ther context.
-              // solution : using globaleKey for the scaffold :
-              // _scaffoldKey.currentState.showSnackBar(snackbar);
-
+              int skillCode = skillRepository.findSkillCodeByName(data);
+              requestUser.skillCodes.add(skillCode);
+              // fixme : We need to delete skillCode from requestUser when onDeleted of a chip is triggering
+            } else {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'این مهارت قبلا اضافه شده',
@@ -446,7 +445,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         decoration: InputDecoration(labelText: 'مهارت های شما'),
         itemFilter: (String suggestion, String query) {
           RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
-          return re.hasMatch(suggestion);
+          return re.hasMatch(suggestion.toLowerCase());
         },
         itemSorter: (String a, String b) {
           if (a.length < b.length)
@@ -455,7 +454,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             return 1;
         },
         itemBuilder: (BuildContext context, String suggestion) {
-          // FIXME : make style for list item Texts
           return Container(
             margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: Text(
@@ -560,6 +558,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         cityRepository = CityRepository(cities: _cityObjects);
       }
     });
+  }
+
+  void _initializeSkillChips(User user) {
+    for (int skillCode in user.skillCodes) {
+      _chipsData.add(skillRepository.findSkillNameByCode(skillCode));
+    }
+    _isFirstBuild = false;
   }
 }
 

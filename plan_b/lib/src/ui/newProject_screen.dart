@@ -182,7 +182,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         decoration: InputDecoration(labelText: 'مهارت های این پروژه'),
         itemFilter: (String suggestion, String query) {
           RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
-          return re.hasMatch(suggestion);
+          return re.hasMatch(suggestion.toLowerCase());
         },
         itemSorter: (String a, String b) {
           if (a.length < b.length)
