@@ -215,6 +215,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         textSubmitted: (value) {},
         itemSubmitted: (data) {
           setState(() {
+            _formkey.currentState.save();
             if (!_chipsData.contains(data))
               {
                 _chipsData.add(data);
@@ -266,6 +267,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         ),
         onDeleted: () {
           setState(() {
+            _formkey.currentState.save();
             _chipsData.removeWhere((data) {
               return item == data;
             });

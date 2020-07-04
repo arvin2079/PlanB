@@ -110,6 +110,14 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
       fontWeight: FontWeight.w500,
     ),
 
+    //drawer name and lastname
+    headline6: TextStyle(
+      fontFamily: 'vazir',
+      fontSize: 16,
+      color: Colors.white,
+      fontWeight: FontWeight.w500,
+    ),
+
     caption: TextStyle(
       fontFamily: 'vazir',
       fontSize: 14,

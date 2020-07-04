@@ -104,6 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
             title,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.right,
+            style: Theme.of(context).textTheme.headline6.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.w100
+            )
           ),
           trailing: Icon(
             iconData,
@@ -138,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   firstName,
                                   textDirection: TextDirection.rtl,
                                   textAlign: TextAlign.right,
+                                  style: Theme.of(context).textTheme.headline6,
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -146,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   lastName,
                                   textDirection: TextDirection.rtl,
                                   textAlign: TextAlign.right,
+                                  style: Theme.of(context).textTheme.headline6,
                                 ),
                               ],
                             ),

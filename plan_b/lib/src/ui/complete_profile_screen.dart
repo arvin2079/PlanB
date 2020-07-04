@@ -159,6 +159,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               ),
               onChanged: (value) {
                 setState(() {
+                  _formkey.currentState.save();
                   requestUser.gender = value == 'مرد';
                   _genderTitle = value;
                 });
@@ -182,6 +183,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               ),
               onChanged: (value) {
                 setState(() {
+                  _formkey.currentState.save();
                   requestUser.cityCode =
                       cityRepository.findCityCodeByTitle(value);
                   _cityTitle = value;
@@ -207,6 +209,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               ),
               onChanged: (value) {
                 setState(() {
+                  _formkey.currentState.save();
                   requestUser.universityCode =
                       universityRepository.findUniversityCodeByName(value);
                   _universityTitle = value;
@@ -430,6 +433,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         textSubmitted: (value) {},
         itemSubmitted: (data) {
           setState(() {
+            _formkey.currentState.save();
             if (!_chipsData.contains(data)) {
               _chipsData.add(data);
             } else {
@@ -478,6 +482,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         ),
         onDeleted: () {
           setState(() {
+            _formkey.currentState.save();
             _chipsData.removeWhere((data) {
               return item == data;
             });
@@ -494,7 +499,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     File finalFile = await compressAndGetFile(file);
     var bytes = await finalFile.readAsBytes();
     _image = MemoryImage(bytes);
-    setState(() {});
+    setState(() {
+      _formkey.currentState.save();
+    });
   }
 
   void _pickImage() {
