@@ -346,7 +346,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 }
                 requestUser.skillCodes = skillCodes;
               }
-              userBloc.completeProfile(requestUser);
               if (_chipsData.isNotEmpty) {
                 List skillCodes = List();
                 for (String item in _chipsData) {
@@ -354,6 +353,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 }
                 requestUser.skillCodes = skillCodes;
               }
+              print(requestUser.toString());
+              userBloc.completeProfile(requestUser);
               _showAlert(context);
             }
           },
