@@ -75,27 +75,25 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 : Container()
           ],
         ),
-        body: Builder(
-          builder: (context) => LimitedBox(
-            maxHeight: double.maxFinite,
-            maxWidth: double.maxFinite,
-            child: Form(
-              key: _formkey,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(25),
-                    child: StreamBuilder<User>(
-                        stream: userBloc.userInfoStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return _buildScreenWidget(snapshot.data);
-                          }
-                          return LinearProgressIndicator(
-                            backgroundColor: Colors.transparent,
-                          );
-                        }),
-                  ),
+        body: LimitedBox(
+          maxHeight: double.maxFinite,
+          maxWidth: double.maxFinite,
+          child: Form(
+            key: _formkey,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(25),
+                  child: StreamBuilder<User>(
+                      stream: userBloc.userInfoStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return _buildScreenWidget(snapshot.data);
+                        }
+                        return LinearProgressIndicator(
+                          backgroundColor: Colors.transparent,
+                        );
+                      }),
                 ),
               ),
             ),
@@ -421,54 +419,56 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             }));
   }
 
-  Padding _buildSearchTextField(BuildContext context) {
+  Widget _buildSearchTextField(BuildContext context) {
     bool _isPersian = true;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: AutoCompleteTextField<String>(
-        style: Theme.of(context).textTheme.headline1,
-        controller: _searchInputController,
-        clearOnSubmit: true,
-        textSubmitted: (value) {},
-        itemSubmitted: (data) {
-          setState(() {
-            _formkey.currentState.save();
-            if (!_chipsData.contains(data)) {
-              _chipsData.add(data);
-            } else {
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  'این مهارت قبلا اضافه شده',
-                ),
-                backgroundColor: Colors.red,
-                duration: Duration(milliseconds: 500),
-              ));
-            }
-          });
-        },
-        suggestions: _getSearchFieldSuggestion(),
-        key: GlobalKey(),
-        decoration: InputDecoration(labelText: 'مهارت های شما'),
-        itemFilter: (String suggestion, String query) {
-          RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
-          return re.hasMatch(suggestion.toLowerCase());
-        },
-        itemSorter: (String a, String b) {
-          if (a.length < b.length)
-            return -1;
-          else
-            return 1;
-        },
-        itemBuilder: (BuildContext context, String suggestion) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-            child: Text(
-              suggestion,
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          );
-        },
+    return Builder(
+      builder: (context) => Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        child: AutoCompleteTextField<String>(
+          style: Theme.of(context).textTheme.headline1,
+          controller: _searchInputController,
+          clearOnSubmit: true,
+          textSubmitted: (value) {},
+          itemSubmitted: (data) {
+            setState(() {
+              _formkey.currentState.save();
+              if (!_chipsData.contains(data)) {
+                _chipsData.add(data);
+              } else {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                    'این مهارت قبلا اضافه شده',
+                  ),
+                  backgroundColor: Colors.red,
+                  duration: Duration(milliseconds: 500),
+                ));
+              }
+            });
+          },
+          suggestions: _getSearchFieldSuggestion(),
+          key: GlobalKey(),
+          decoration: InputDecoration(labelText: 'مهارت های شما'),
+          itemFilter: (String suggestion, String query) {
+            RegExp re = RegExp(r'^' + query.toLowerCase() + r'.*');
+            return re.hasMatch(suggestion.toLowerCase());
+          },
+          itemSorter: (String a, String b) {
+            if (a.length < b.length)
+              return -1;
+            else
+              return 1;
+          },
+          itemBuilder: (BuildContext context, String suggestion) {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              child: Text(
+                suggestion,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -10,7 +10,7 @@ class APIProvider {
   final Client client = Client();
 
   // Header parameters for request
-  String _baseUrl = "http://192.168.43.147:8000/";
+  String _baseUrl = "http://192.168.43.139:8000/";
   Map<String, String> headers = {
     "Content-type": "application/json",
     "Accept": "application/json"
