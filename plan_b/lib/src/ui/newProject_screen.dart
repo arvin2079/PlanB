@@ -47,7 +47,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         if(snapshot.hasData){
           return _buildScreenWidget();
         }
-        return Center(child: CircularProgressIndicator(),);
+        return Scaffold(body: Center(child: CircularProgressIndicator(),));
       },
     );
   }
