@@ -19,7 +19,7 @@ class User {
   String phoneNumber;
   bool isSuperUser;
   bool isStaff;
-  String descriptions;
+  String description;
 
   User(
       {this.studentCode,
@@ -38,7 +38,7 @@ class User {
       this.phoneNumber,
       this.isSuperUser,
       this.isStaff,
-      this.descriptions});
+      this.description});
 
   factory User.fromJson(Map<String, dynamic> json) {
     if (json == null) {print("object");return null;}
@@ -64,7 +64,7 @@ class User {
         cityCode: json['city'].toString(),
         phoneNumber: json['phone_number'],
         isSuperUser: json['is_super_user'],
-        descriptions: json['descriptions'],
+        description: json['description'],
         isStaff: json['is_staff']);
     return user;
   }
@@ -91,13 +91,13 @@ class User {
     data['phone_number'] = this.phoneNumber;
     data['is_super_user'] = this.isSuperUser;
     data['is_staff'] = this.isStaff;
-    data['descriptions'] = this.descriptions;
+    data['description'] = this.description;
 
     return data;
   }
 
   @override
   String toString() {
-    return 'User{studentCode: $studentCode, username: $username, email: $email, firstName: $firstName, lastName: $lastName, avatar: $avatar, gender: $gender, skills: $skillCodes, projects: $projects, university: $universityCode, city: $cityCode, phoneNumber: $phoneNumber, desc : $descriptions}';
+    return 'User{studentCode: $studentCode, username: $username, email: $email, firstName: $firstName, lastName: $lastName, avatar: $avatar, gender: $gender, skills: $skillCodes, projects: $projects, university: $universityCode, city: $cityCode, phoneNumber: $phoneNumber, desc : $description}';
   }
 }

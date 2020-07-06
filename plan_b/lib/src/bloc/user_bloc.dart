@@ -76,7 +76,6 @@ class UserBloc extends Bloc {
   getCompleteProfileFields() async {
     try {
       Map response = await repository.getCompleteProfileFields();
-      print(response.toString());
       Map user = response['username'];
       _userInfoStreamController.sink.add(User.fromJson(user));
       List list = response['skills'];

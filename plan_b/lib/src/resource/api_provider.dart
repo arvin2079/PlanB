@@ -64,8 +64,6 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
     final response = await client.get(url, headers: headers);
-    print("status ; " + response.statusCode.toString());
-    print("body ; " + response.body);
     if (response.statusCode == 200) {
       // Return data on successful request
       Map map = jsonDecode(utf8.decode(response.bodyBytes));

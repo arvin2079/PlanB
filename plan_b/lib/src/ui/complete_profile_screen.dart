@@ -309,7 +309,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         SizedBox(height: 30),
 
         TextArea(
-          controller: TextEditingController(text: user.descriptions),
+          controller: TextEditingController(text: user.description),
           labelText: 'خلاصه‌ای از سوابق خود بنویسید',
           validator: (value) {
             return descriptionValidator.isValid(value)
@@ -317,7 +317,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 : notValidDescriptionErrorMassage;
           },
           onSaved: (text) {
-            requestUser.descriptions = text;
+            requestUser.description = text;
           },
         ),
         SizedBox(height: 30),
@@ -353,7 +353,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 }
                 requestUser.skillCodes = skillCodes;
               }
-              print(requestUser.toString());
               userBloc.completeProfile(requestUser);
               _showAlert(context);
             }
