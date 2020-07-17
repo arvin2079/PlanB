@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/resumeButton.dart';
@@ -136,11 +137,32 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
   ];
 
   @override
+  void initState() {
+    projectBloc.getProjects();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    projectBloc.getProjects();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: _getProjectCards.toList(),
-      ),
+    return StreamBuilder(
+      stream: projectBloc.projectStream,
+      builder: (context, snapshot) {
+
+        if(snapshot.hasData){
+          return SingleChildScrollView(
+            child: Column(
+              children: _getProjectCards.toList(),
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator(),);
+      }
     );
   }
 

@@ -30,7 +30,6 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
 
   @override
   void initState() {
-    projectBloc.getProjects();
     super.initState();
   }
 
