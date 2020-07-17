@@ -87,7 +87,7 @@ class User {
       data['projects'] = this.projects.map((v) => v.toJson()).toList();
     }
     data['university'] = this.universityCode;
-    data['city'] = this.cityCode;
+    data['city'] = this.cityCode == 'null' ? null : this.cityCode;
     data['phone_number'] = this.phoneNumber;
     data['is_super_user'] = this.isSuperUser;
     data['is_staff'] = this.isStaff;
