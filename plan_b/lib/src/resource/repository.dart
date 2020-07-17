@@ -3,11 +3,12 @@ import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/resource/api_provider.dart';
 
 class Repository {
+
   APIProvider _provider = APIProvider();
 
-  Future<String> getNewToken(User user) => _provider.signUpNewUser(user);
+  getNewToken(User user) => _provider.signUpNewUser(user);
 
-  Future<Map<String, dynamic>> login(String username, String password) =>
+  login(String username, String password) =>
       _provider.loginUser(username, password);
 
   getCompleteProfileFields() => _provider.getCompleteProfileFields();
@@ -15,4 +16,7 @@ class Repository {
   completeProfile(User user) => _provider.completeProfile(user);
 
   createNewProject(Project project) => _provider.createNewProject(project);
+
+  getProjects() => _provider.getProjects();
+
 }

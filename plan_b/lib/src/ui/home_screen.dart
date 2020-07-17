@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
             tabs: <Widget>[
               _buildTabName(context, 'ایجادشده‌ها'),
               _buildTabName(context, 'مشارکت‌ها'),
-//              _buildTabName(context, 'در حال انجام'),
               _buildTabName(context, 'جستجو'),
             ],
           ),

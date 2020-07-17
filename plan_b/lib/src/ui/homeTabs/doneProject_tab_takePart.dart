@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/resumeButton.dart';
@@ -26,6 +27,12 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
 //      ],
 //    ),
   ];
+
+  @override
+  void initState() {
+    projectBloc.getProjects();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

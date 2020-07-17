@@ -6,19 +6,28 @@ import 'package:rxdart/rxdart.dart';
 
 class ProjectBloc extends Bloc {
   Repository _repository = Repository();
-  PublishSubject<Project> _projectStreamController = PublishSubject();
+  PublishSubject<List<Project>> _projectStreamController = PublishSubject();
   PublishSubject<String> _errorsStreamController = PublishSubject();
 
-  Stream<Project> get projectStream => _projectStreamController.stream;
+  Stream<List<Project>> get projectStream => _projectStreamController.stream;
   Stream<String> get errorsStream => _errorsStreamController.stream;
 
   createNewProject(Project requestProject) async{
     try{
       Project project = await _repository.createNewProject(requestProject);
-      _projectStreamController.sink.add(project);
     }
     on MessagedException catch(e){
-//      _errorsStreamController.sink.add(e.message);
+      _errorsStreamController.sink.add(e.message);
+    }
+  }
+
+  getProjects() async {
+    try{
+      List<Project> projects = await _repository.getProjects();
+      _projectStreamController.sink.add(projects);
+    }
+    on MessagedException catch(e){
+      _errorsStreamController.sink.add(e.message);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
@@ -111,6 +112,30 @@ class APIProvider {
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       Project project = Project.fromJson(map);
       return project;
+    } else {
+      throw MessagedException("Something went wrong");
+    }
+  }
+
+  Future<List> getProjects() async{
+    // Load token for place in request
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/projects/";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+    // Sending request
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+
+      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+      List list = map['projects'];
+      List<Project> projects = List();
+      for (var p in list){
+        projects.add(Project.fromJson(p));
+      }
+      return projects;
+
     } else {
       throw MessagedException("Something went wrong");
     }
