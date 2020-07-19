@@ -21,7 +21,7 @@ class _GoingProjectsTabState extends State<GoingProjectsTab> {
 
   Iterable<Widget> get _getProjectCards sync* {
     for (ProjectItem item in _goingProjectsTabList) {
-      yield ProjectCard(
+      yield AbstractProjectCard(
         title: item.title,
         caption: item.caption,
         buttonOpenText: 'مدیریت',

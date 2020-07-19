@@ -21,8 +21,8 @@ final Color backgroundColor = Color(0xFFeeeeee);
 final Color cardBackgroundColor = Colors.white;
 final Color button1Color = Color(0xFF3A9BBF);
 final Color errorColor = Color(0xFFCD1C1C);
-final Color green1Color = Color(0xFF05A719);
-final Color green2Color = Color(0xFFCFF82A);
+final Color green1Color = Color(0xFF2DC718);
+final Color green2Color = Color(0xFFAEEA00);
 
 //themes light
 final ThemeData lightTheme = ThemeData.light().copyWith(
