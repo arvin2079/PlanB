@@ -114,7 +114,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
     headline6: TextStyle(
       fontFamily: 'vazir',
       fontSize: 16,
-      color: Colors.white,
+      color: Colors.black,
       fontWeight: FontWeight.w500,
     ),
 

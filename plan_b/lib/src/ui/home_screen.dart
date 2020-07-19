@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/authenticatin_bloc.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab_created.dart';
 import 'package:planb/src/ui/homeTabs/doneProject_tab_takePart.dart';
 import 'package:planb/src/ui/homeTabs/searchProject_tab.dart';
+import 'package:planb/src/ui/project_search_delegate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text(
             'پروژه ها',
           ),
+          leading:
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: (){
+                showSearch(context: context, delegate: ProjectSearchDelegate());
+              },
+            ),
           bottom: TabBar(
             indicatorColor: secondaryColor,
             indicatorWeight: 5,
@@ -103,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 14,
               fontWeight: FontWeight.w100
             )
@@ -141,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   firstName,
                                   textDirection: TextDirection.rtl,
                                   textAlign: TextAlign.right,
-                                  style: Theme.of(context).textTheme.headline6,
+                                  style: Theme.of(context).textTheme.headline5,
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -150,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   lastName,
                                   textDirection: TextDirection.rtl,
                                   textAlign: TextAlign.right,
-                                  style: Theme.of(context).textTheme.headline6,
+                                  style: Theme.of(context).textTheme.headline5,
                                 ),
                               ],
                             ),
