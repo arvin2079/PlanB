@@ -7,17 +7,15 @@ import 'package:rxdart/rxdart.dart';
 class ProjectBloc extends Bloc {
   Repository _repository = Repository();
   PublishSubject<List<Project>> _projectStreamController = PublishSubject();
-  PublishSubject<String> _errorsStreamController = PublishSubject();
 
   Stream<List<Project>> get projectStream => _projectStreamController.stream;
-  Stream<String> get errorsStream => _errorsStreamController.stream;
 
   createNewProject(Project requestProject) async{
     try{
       Project project = await _repository.createNewProject(requestProject);
     }
     on MessagedException catch(e){
-      _errorsStreamController.sink.add(e.message);
+      _projectStreamController.addError(e);
     }
   }
 
@@ -27,13 +25,12 @@ class ProjectBloc extends Bloc {
       _projectStreamController.sink.add(projects);
     }
     on MessagedException catch(e){
-      _errorsStreamController.sink.add(e.message);
+      _projectStreamController.addError(e);
     }
   }
 
   @override
   void dispose() {
-    _errorsStreamController.close();
     _projectStreamController.close();
   }
 }
