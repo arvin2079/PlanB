@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/ui/project_screen.dart';
 import 'package:planb/src/ui/resume_screen.dart';
-import 'package:planb/src/ui/search_person_screen.dart';
+
+import 'newProject_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if(_selected == 0)
       return ProjectScreen(onNavButtTab: onNavButtSelected);
     if(_selected == 1)
-      return SearchPersonScreen(onNavButtTab: onNavButtSelected);
+      return NewProjectScreen(onNavButtTab: onNavButtSelected);
     return ResumeScreen(onNavButtTab: onNavButtSelected);
   }
 
