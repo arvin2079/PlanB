@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
+import 'package:planb/src/ui/constants/constants.dart';
 
 List requestedSkills;
 List allUserSKills;
@@ -10,9 +11,17 @@ class ProjectSearchDelegate extends SearchDelegate {
 
   SkillRepository _skillRepository;
 
+
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
+      IconButton(
+        icon: Icon(Icons.search),
+        onPressed: (){
+          showResults(context);
+        },
+      ),
       IconButton(
         icon: Icon(Icons.tune),
         onPressed: () {
@@ -27,12 +36,24 @@ class ProjectSearchDelegate extends SearchDelegate {
                   ),
                   scrollable: true,
                   actions: <Widget>[
-                    IconButton(icon: Icon(Icons.print),)
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          child: Row(
+                            children: <Widget>[
+                              Text('ادامه', style: Theme.of(context).textTheme.headline6,),
+                            ],
+                          ),
+                          onPressed: (){
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    )
                   ],
                   content: StreamBuilder(
                       stream: userBloc.userInfoStream,
                       builder: (context, snapshot) {
-                        print(snapshot);
                         if (snapshot.hasData) {
                           User user = snapshot.data;
                           if (requestedSkills == null){
@@ -40,7 +61,6 @@ class ProjectSearchDelegate extends SearchDelegate {
                           }
                           allUserSKills = user.skillCodes;
                           return Container(
-                            height: 300.0,
                             width: 300.0,
                             child: ChipWrapper(_skillRepository),
                           );
@@ -49,6 +69,7 @@ class ProjectSearchDelegate extends SearchDelegate {
                       })));
         },
       )
+
     ];
   }
 
@@ -64,9 +85,15 @@ class ProjectSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    print(requestedSkills);
-    return ListView(
-      children: <Widget>[],
+    return StreamBuilder(
+      stream: null,
+      builder: (context, snapshot) {
+        return ListView(
+          children: <Widget>[
+            Placeholder(),
+          ],
+        );
+      }
     );
   }
 
@@ -75,7 +102,7 @@ class ProjectSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _buildNoResult(context);
     }
-    return Container();
+    return Center(child: CircularProgressIndicator());
   }
 
   Widget _buildNoResult(BuildContext context) {
@@ -105,6 +132,8 @@ class ProjectSearchDelegate extends SearchDelegate {
       }
     });
   }
+
+
 }
 
 class ChipWrapper extends StatefulWidget {
@@ -156,7 +185,7 @@ class _ChipWrapperState extends State<ChipWrapper> {
           });
         },
         label: Text(skillRepository.findSkillNameByCode(item)),
-        backgroundColor: _isDeleted ? Colors.grey : Colors.blueAccent,
+        backgroundColor: _isDeleted ? Colors.grey : Colors.lightBlue,
         deleteIcon: Icon(_isDeleted ? Icons.add_circle_outline : Icons.remove_circle_outline, size: 20,),
       );
       list.add(ch);
