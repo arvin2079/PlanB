@@ -19,4 +19,8 @@ class Repository {
 
   getProjects() => _provider.getProjects();
 
+  searchProject(requestedSkills) => _provider.searchProject(requestedSkills);
+
+  searchUser(requestedSkills) => _provider.searchUser(requestedSkills);
+
 }

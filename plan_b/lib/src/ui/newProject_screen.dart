@@ -49,16 +49,19 @@ class _NewProjectScreenState extends State<NewProjectScreen>
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: userBloc.skillsStream,
-      builder: (context, snapshot){
-        if(snapshot.hasData){
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
           return _buildScreenWidget();
         }
-        return Scaffold(body: Center(child: CircularProgressIndicator(),));
+        return Scaffold(
+            body: Center(
+          child: CircularProgressIndicator(),
+        ));
       },
     );
   }
 
-  _buildScreenWidget(){
+  _buildScreenWidget() {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -122,85 +125,90 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           ),
         ),
         body: LimitedBox(
-            maxHeight: double.maxFinite,
-            maxWidth: double.maxFinite,
-            child: Form(
-              key: _formkey,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: ScrollConfiguration(
-                  behavior: NoGlowScrollBehavior(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        TextFormField(
-                          autofocus: true,
-                          style: Theme.of(context).textTheme.headline1,
-                          decoration: InputDecoration(
-                            labelText: "نام پروژه",
-                          ),
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.right,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            return projectNameValidator.isValid(value) ? null : notValidProjectNameErrorMassage;
-                          },
-                          onSaved: (value) {
-                            requestProject.name = value;
-                          },
-                          onEditingComplete: () =>
-                              FocusScope.of(context).nextFocus(),
+          maxHeight: double.maxFinite,
+          maxWidth: double.maxFinite,
+          child: Form(
+            key: _formkey,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: ScrollConfiguration(
+                behavior: NoGlowScrollBehavior(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      TextFormField(
+                        autofocus: true,
+                        style: Theme.of(context).textTheme.headline1,
+                        decoration: InputDecoration(
+                          labelText: "نام پروژه",
                         ),
-                        SizedBox(height: 15),
-                        _buildSearchTextField(context),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Wrap(
-                            children: _chipWidgets.toList(),
-                            spacing: 10.0,
-                          ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          return projectNameValidator.isValid(value)
+                              ? null
+                              : notValidProjectNameErrorMassage;
+                        },
+                        onSaved: (value) {
+                          requestProject.name = value;
+                        },
+                        onEditingComplete: () =>
+                            FocusScope.of(context).nextFocus(),
+                      ),
+                      SizedBox(height: 15),
+                      _buildSearchTextField(context),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Wrap(
+                          children: _chipWidgets.toList(),
+                          spacing: 10.0,
                         ),
-                        SizedBox(height: 15),
-                        TitleText(text: 'شرح پروژه'),
-                        TextArea(
-                          validator: (value) {
-                            return descriptionValidator.isValid(value) ? null : notValidDescriptionErrorMassage;
-                          },
-                          onSaved: (value) {
-                            requestProject.descriptions = value;
-                          },
+                      ),
+                      SizedBox(height: 15),
+                      TitleText(text: 'شرح پروژه'),
+                      TextArea(
+                        validator: (value) {
+                          return descriptionValidator.isValid(value)
+                              ? null
+                              : notValidDescriptionErrorMassage;
+                        },
+                        onSaved: (value) {
+                          requestProject.descriptions = value;
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      RaisedButton(
+                        child: Text(
+                          'ایجاد پروژه',
+                          style: Theme.of(context).textTheme.button,
                         ),
-                        SizedBox(height: 15),
-                        RaisedButton(
-                          child: Text(
-                            'ایجاد پروژه',
-                            style: Theme.of(context).textTheme.button,
-                          ),
-                          onPressed: () {
-                            if(_formkey.currentState.validate()) {
-                              _formkey.currentState.save();
-                              if (_chipsData.isNotEmpty) {
-                                List skillCodes = List();
-                                for (String item in _chipsData) {
-                                  skillCodes.add(skillRepository.findSkillCodeByName(item));
-                                }
-                                requestProject.skillCodes = skillCodes;
+                        onPressed: () {
+                          if (_formkey.currentState.validate()) {
+                            _formkey.currentState.save();
+                            if (_chipsData.isNotEmpty) {
+                              List skillCodes = List();
+                              for (String item in _chipsData) {
+                                skillCodes.add(
+                                    skillRepository.findSkillCodeByName(item));
                               }
-                              projectBloc.createNewProject(requestProject);
-                              _showAlert(context);
+                              requestProject.skillCodes = skillCodes;
                             }
-                          },
-                        ),
-                      ],
-                    ),
+                            projectBloc.createNewProject(requestProject);
+                            _showAlert(context);
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
         ),
+      ),
     );
   }
 
@@ -208,55 +216,58 @@ class _NewProjectScreenState extends State<NewProjectScreen>
     showDialog(
         context: context,
         builder: (context) => StreamBuilder(
-            stream: projectBloc.errorsStream,
+            stream: projectBloc.projectStream,
             builder: (context, snapshot) {
-              bool _hasError = snapshot.hasData;
-              Widget widget = AlertDialog(
-                title: Container(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      "تکمیل اطلاعات",
-                      style: Theme.of(context).textTheme.headline4,
-                      textAlign: TextAlign.right,
-                    )),
-                content: Row(
-                  children: <Widget>[
-                    !_hasError
-                        ? Icon(
-                      Icons.done_outline,
-                      color: Colors.green,
-                    )
-                        : Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: Text(
-                          _hasError
-                              ? "خطا در ثبت پروژه!"
-                              : "پروژه جدید شما ثبت شد",
-                          style: Theme.of(context).textTheme.headline1,
-                        ))
-                  ],
-                ),
-                actions: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              bool _hasError = snapshot.hasError;
+              Widget widget = AlertDialog(content: LinearProgressIndicator(backgroundColor: Colors.transparent,),);
+              if (snapshot.hasData || snapshot.hasError) {
+                widget = AlertDialog(
+                  title: Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        "تکمیل اطلاعات",
+                        style: Theme.of(context).textTheme.headline4,
+                        textAlign: TextAlign.right,
+                      )),
+                  content: Row(
                     children: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(_hasError ? "بیخیال" : "باشه"),
+                      !_hasError
+                          ? Icon(
+                              Icons.done_outline,
+                              color: Colors.green,
+                            )
+                          : Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                            ),
+                      SizedBox(
+                        width: 10,
                       ),
+                      Expanded(
+                          child: Text(
+                        _hasError
+                            ? "خطا در ثبت پروژه!"
+                            : "پروژه جدید شما ثبت شد",
+                        style: Theme.of(context).textTheme.headline1,
+                      ))
                     ],
-                  )
-                ],
-              );
+                  ),
+                  actions: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(_hasError ? "بیخیال" : "باشه"),
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              }
               return widget;
             }));
   }
@@ -275,11 +286,9 @@ class _NewProjectScreenState extends State<NewProjectScreen>
           itemSubmitted: (data) {
             setState(() {
               _formkey.currentState.save();
-              if (!_chipsData.contains(data))
-                {
-                  _chipsData.add(data);
-                }
-              else {
+              if (!_chipsData.contains(data)) {
+                _chipsData.add(data);
+              } else {
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(
                     'این مهارت قبلا اضافه شده',
@@ -338,7 +347,6 @@ class _NewProjectScreenState extends State<NewProjectScreen>
   }
 
   void initializeItems() async {
-
     userBloc.skillsStream.first.then((value) {
       if (value != null) {
         List<Skill> _skillObjects = [];
