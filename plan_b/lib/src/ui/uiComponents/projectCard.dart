@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const Duration _kExpand = Duration(milliseconds: 200);
+const Duration _kExpand = Duration(milliseconds: 600);
 
-class ProjectCard extends StatefulWidget {
-  const ProjectCard({
+class AbstractProjectCard extends StatefulWidget {
+  const AbstractProjectCard({
     this.onExpansionChanged,
     this.initiallyExpanded = false,
     this.children = const <Widget>[],
@@ -24,10 +24,10 @@ class ProjectCard extends StatefulWidget {
   final bool initiallyExpanded;
 
   @override
-  _ProjectCardState createState() => _ProjectCardState();
+  _AbstractProjectCardState createState() => _AbstractProjectCardState();
 }
 
-class _ProjectCardState extends State<ProjectCard>
+class _AbstractProjectCardState extends State<AbstractProjectCard>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);

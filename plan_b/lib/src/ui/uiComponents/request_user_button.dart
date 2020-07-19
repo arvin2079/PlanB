@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
-  const CustomButton(
+class RequestUserButton extends StatelessWidget {
+  const RequestUserButton(
       {this.onPressed,
       this.solidColor,
       this.image,
       this.fontColor = Colors.white,
       this.iconShadow = true,
-      this.showArrow = false,
-      this.arrowColor = Colors.white,
+      @required this.onAccept,
+      @required this.onReject,
       this.trailingIcon,
       @required this.name,
       @required this.lastname,
@@ -21,13 +21,13 @@ class CustomButton extends StatelessWidget {
   final String name;
   final String lastname;
   final Color fontColor;
-  final Color arrowColor;
   final Color rightColor;
   final Color leftColor;
   final Function onPressed;
   final Color solidColor;
   final bool iconShadow;
-  final bool showArrow;
+  final Function onAccept;
+  final Function onReject;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +67,6 @@ class CustomButton extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                _buildIconShadow(),
-                _buildArrowForward(),
                 Positioned(
                   right: 80,
                   child: Column(
@@ -76,11 +74,15 @@ class CustomButton extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         name,
-                        style: Theme.of(context).textTheme.button,
+                        style: Theme.of(context).textTheme.headline1.copyWith(
+                          color: Colors.white
+                        ),
                       ),
                       Text(
                         lastname,
-                        style: Theme.of(context).textTheme.button,
+                        style: Theme.of(context).textTheme.headline1.copyWith(
+                          color: Colors.white
+                        ),
                       ),
                     ],
                   ),
@@ -89,11 +91,17 @@ class CustomButton extends StatelessWidget {
                   right: 15,
                   child: CircleAvatar(
                     radius: 24,
+                    backgroundImage: image != null ? image.image : null,
                     child: image == null
                         ? Icon(Icons.person, color: Colors.black26)
-                        : image,
+                        : null,
                     backgroundColor: Colors.white,
                   ),
+                ),
+                _buildIconShadow(),
+                Positioned(
+                  left: 10,
+                    child: _buildDecisionButtons(context),
                 ),
               ],
             ),
@@ -103,16 +111,55 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  Widget _buildArrowForward() {
-    return showArrow
-        ? Positioned(
-            left: 25,
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: arrowColor,
+  Widget _buildDecisionButtons(BuildContext context) {
+    final double radius = 30;
+    return Row(
+      children: <Widget>[
+        ButtonTheme(
+          height: 35,
+          minWidth: 70,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topRight: Radius.circular(radius), topLeft: Radius.circular(radius), bottomRight: Radius.circular(radius)),
+          ),
+          child: RaisedButton(
+            elevation: 2,
+            child: Text(
+              'قبول',
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          )
-        : Container();
+            color: Colors.lightGreen,
+            onPressed: onAccept,
+          ),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        ButtonTheme(
+          height: 35,
+          minWidth: 80,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(radius), topLeft: Radius.circular(radius), bottomLeft: Radius.circular(radius)),
+          ),
+          child: RaisedButton(
+            elevation: 2,
+            child: Text(
+              'رد',
+              style: Theme.of(context).textTheme.caption.copyWith(
+                  fontSize: 14,
+                  color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            color: Colors.red,
+            onPressed: onReject,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildIconShadow() {
