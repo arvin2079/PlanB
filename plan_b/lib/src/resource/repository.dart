@@ -21,4 +21,6 @@ class Repository {
 
   searchProject(requestedSkills) => _provider.searchProject(requestedSkills);
 
+  searchUser(requestedSkills) => _provider.searchUser(requestedSkills);
+
 }

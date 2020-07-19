@@ -168,4 +168,30 @@ class APIProvider {
     }
   }
 
+  Future<List> searchUser(List requestedSkills) async{
+    // Load token for place in request
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/searchperson/?skills=${requestedSkills.toString()}";
+    print(url);
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+    // Sending request
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+
+      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+      List list = map['username'];
+      print(list);
+      List<User> users = List();
+      for (var p in list){
+        users.add(User.fromJson(p));
+      }
+      return users;
+
+    } else {
+      throw MessagedException("Something went wrong");
+    }
+  }
+
 }

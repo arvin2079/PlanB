@@ -24,12 +24,6 @@ class ProjectScreen extends StatelessWidget {
           title: Text(
             'پروژه ها',
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: (){showSearch(context: context, delegate: UserSearchDelegate());},
-            ),
-          ],
           bottom: TabBar(
             indicatorColor: secondaryColor,
             indicatorWeight: 5,

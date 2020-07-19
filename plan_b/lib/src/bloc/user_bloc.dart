@@ -104,6 +104,8 @@ class UserBloc extends Bloc {
     sharedPreferences.setString('lastName', user.lastName);
   }
 
+
+
   @override
   void dispose() {
     _skillsStreamController.close();
