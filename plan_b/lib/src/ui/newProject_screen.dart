@@ -160,7 +160,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
             builder: (context, snapshot) {
               bool _hasError = snapshot.hasError;
               Widget widget = AlertDialog(content: LinearProgressIndicator(backgroundColor: Colors.transparent,),);
-              if (_hasError) {
+              if (snapshot.hasData || snapshot.hasError) {
                 widget = AlertDialog(
                   title: Container(
                       alignment: Alignment.topRight,

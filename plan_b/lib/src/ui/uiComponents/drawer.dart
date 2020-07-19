@@ -40,7 +40,7 @@ class HomeDrawer extends StatelessWidget {
                               firstName != null && firstName.isNotEmpty ? firstName : 'first name',
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.headline5,
                             ),
                             SizedBox(
                               height: 10,
@@ -49,7 +49,7 @@ class HomeDrawer extends StatelessWidget {
                               lastName != null && lastName.isNotEmpty ? lastName : 'last name',
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.headline5,
                             ),
                           ],
                         ),
@@ -98,7 +98,7 @@ class HomeDrawer extends StatelessWidget {
               textAlign: TextAlign.right,
               style: Theme.of(context)
                   .textTheme
-                  .headline6
+                  .headline5
                   .copyWith(fontSize: 14, fontWeight: FontWeight.w100)),
           trailing: Icon(
             iconData,

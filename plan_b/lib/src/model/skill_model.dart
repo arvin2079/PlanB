@@ -55,4 +55,13 @@ class SkillRepository{
     }
     return result;
   }
+
+  List<int> getCodes(){
+    List result = <int>[];
+    for (Skill s in skills){
+      result.add(s.code);
+    }
+    return result;
+  }
+
 }

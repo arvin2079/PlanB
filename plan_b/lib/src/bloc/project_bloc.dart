@@ -7,8 +7,10 @@ import 'package:rxdart/rxdart.dart';
 class ProjectBloc extends Bloc {
   Repository _repository = Repository();
   PublishSubject<List<Project>> _projectStreamController = PublishSubject();
+  PublishSubject<List<Project>> _searchedProjectStreamController = PublishSubject();
 
   Stream<List<Project>> get projectStream => _projectStreamController.stream;
+  Stream<List<Project>> get searchedProjectStream => _projectStreamController.stream;
 
   createNewProject(Project requestProject) async{
     try{
@@ -29,8 +31,19 @@ class ProjectBloc extends Bloc {
     }
   }
 
+  searchProject(requestedSkills) async {
+    try{
+      List<Project> projects = await _repository.searchProject(requestedSkills);
+      _searchedProjectStreamController.sink.add(projects);
+    }
+    on MessagedException catch(e){
+      _searchedProjectStreamController.addError(e);
+    }
+  }
+
   @override
   void dispose() {
     _projectStreamController.close();
+    _searchedProjectStreamController.close();
   }
 }

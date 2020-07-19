@@ -11,8 +11,8 @@ class APIProvider {
   final Client client = Client();
 
   // Header parameters for request
-//  String _baseUrl = "http://192.168.43.139:8000/";
-  String _baseUrl = "http://192.168.1.4:8000/";
+  String _baseUrl = "http://192.168.43.147:8000/";
+//  String _baseUrl = "http://192.168.1.4:8000/";
   Map<String, String> headers = {
     "Content-type": "application/json",
     "Accept": "application/json"
@@ -117,7 +117,7 @@ class APIProvider {
     }
   }
 
-  Future<List> getProjects() async{
+  Future<List> getProjects() async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/projects/";
@@ -140,4 +140,32 @@ class APIProvider {
       throw MessagedException("Something went wrong");
     }
   }
+
+
+  Future<List> searchProject(List requestedSkills) async{
+    // Load token for place in request
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/searchproject/?skills=${requestedSkills.toString()}";
+    print(url);
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+    // Sending request
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+
+      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+      List list = map['projects'];
+      print(list);
+      List<Project> projects = List();
+      for (var p in list){
+        projects.add(Project.fromJson(p));
+      }
+      return projects;
+
+    } else {
+      throw MessagedException("Something went wrong");
+    }
+  }
+
 }

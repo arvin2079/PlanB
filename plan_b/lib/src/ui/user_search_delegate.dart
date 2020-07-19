@@ -3,23 +3,18 @@ import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
-import 'package:planb/src/ui/constants/constants.dart';
 
 List requestedSkills;
-List allUserSKills;
 
-class ProjectSearchDelegate extends SearchDelegate {
-
+class UserSearchDelegate extends SearchDelegate {
   SkillRepository _skillRepository;
-
-
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
       IconButton(
         icon: Icon(Icons.search),
-        onPressed: (){
+        onPressed: () {
           showResults(context);
         },
       ),
@@ -42,10 +37,13 @@ class ProjectSearchDelegate extends SearchDelegate {
                         FlatButton(
                           child: Row(
                             children: <Widget>[
-                              Text('ادامه', style: Theme.of(context).textTheme.headline6,),
+                              Text(
+                                'ادامه',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
                             ],
                           ),
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
@@ -57,20 +55,17 @@ class ProjectSearchDelegate extends SearchDelegate {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           User user = snapshot.data;
-                          if (requestedSkills == null){
-                            requestedSkills = user.skillCodes;
-                          }
-                          allUserSKills = user.skillCodes;
                           return Container(
                             width: 300.0,
                             child: ChipWrapper(_skillRepository),
                           );
                         }
-                        return LinearProgressIndicator(backgroundColor: Colors.transparent,);
+                        return LinearProgressIndicator(
+                          backgroundColor: Colors.transparent,
+                        );
                       })));
         },
       )
-
     ];
   }
 
@@ -88,18 +83,15 @@ class ProjectSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     projectBloc.searchProject(requestedSkills);
     return StreamBuilder(
-      stream: projectBloc.searchedProjectStream,
-      builder: (context, snapshot) {
-        if( snapshot.hasData ){
-          print(snapshot.data);
-        }
-        return ListView(
-          children: <Widget>[
-            Placeholder(),
-          ],
-        );
-      }
-    );
+        stream: projectBloc.searchedProjectStream,
+        builder: (context, snapshot) {
+
+          return ListView(
+            children: <Widget>[
+              Placeholder(),
+            ],
+          );
+        });
   }
 
   @override
@@ -115,7 +107,7 @@ class ProjectSearchDelegate extends SearchDelegate {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset("images/no_result_project.png"),
+          Image.asset("images/no_result_person.png"),
           Text(
             "!نتیجه ای یافت نشد",
             style: Theme.of(context).textTheme.headline1,
@@ -137,12 +129,9 @@ class ProjectSearchDelegate extends SearchDelegate {
       }
     });
   }
-
-
 }
 
 class ChipWrapper extends StatefulWidget {
-
   final SkillRepository skillRepository;
 
   ChipWrapper(this.skillRepository);
@@ -152,7 +141,6 @@ class ChipWrapper extends StatefulWidget {
 }
 
 class _ChipWrapperState extends State<ChipWrapper> {
-
   SkillRepository skillRepository;
   List permanentUserSkills = [];
 
@@ -160,13 +148,13 @@ class _ChipWrapperState extends State<ChipWrapper> {
 
   @override
   void initState() {
-    allUserSKills.forEach((element) {permanentUserSkills.add(element);});
+    requestedSkills = [];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: Wrap(
         children: _buildChipList(),
@@ -177,13 +165,18 @@ class _ChipWrapperState extends State<ChipWrapper> {
 
   _buildChipList() {
     List<Widget> list = [];
-    for(var item in permanentUserSkills){
-      bool _isDeleted = ! requestedSkills.contains(item);
+    for (var item in skillRepository.getCodes()) {
+      bool _isDeleted =
+          !requestedSkills.contains(item);
       Chip ch = Chip(
-        onDeleted: (){
+        onDeleted: () {
           setState(() {
-            if(_isDeleted){
-              requestedSkills.add(item);
+            if (_isDeleted) {
+              if(!requestedSkills.contains(item)){
+                requestedSkills.add(item);
+              }
+              print(requestedSkills);
+
             } else {
               requestedSkills.remove(item);
             }
@@ -191,11 +184,13 @@ class _ChipWrapperState extends State<ChipWrapper> {
         },
         label: Text(skillRepository.findSkillNameByCode(item)),
         backgroundColor: _isDeleted ? Colors.grey : Colors.lightBlue,
-        deleteIcon: Icon(_isDeleted ? Icons.add_circle_outline : Icons.remove_circle_outline, size: 20,),
+        deleteIcon: Icon(
+          _isDeleted ? Icons.add_circle_outline : Icons.remove_circle_outline,
+          size: 20,
+        ),
       );
       list.add(ch);
     }
     return list;
   }
-
 }

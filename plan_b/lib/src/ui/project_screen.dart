@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planb/src/ui/project_search_delegate.dart';
+import 'package:planb/src/ui/user_search_delegate.dart';
 
 import 'constants/constants.dart';
 import 'homeTabs/doneProject_tab_created.dart';
@@ -22,6 +24,12 @@ class ProjectScreen extends StatelessWidget {
           title: Text(
             'پروژه ها',
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: (){showSearch(context: context, delegate: UserSearchDelegate());},
+            ),
+          ],
           bottom: TabBar(
             indicatorColor: secondaryColor,
             indicatorWeight: 5,
