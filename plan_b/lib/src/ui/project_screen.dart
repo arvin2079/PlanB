@@ -1,7 +1,9 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planb/src/ui/project_search_delegate.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
+import 'package:planb/src/ui/user_search_delegate.dart';
 import 'constants/constants.dart';
 import 'homeTabs/doneProject_tab_created.dart';
 import 'homeTabs/doneProject_tab_takePart.dart';
@@ -21,23 +23,27 @@ class ProjectScreen extends StatelessWidget {
         floatingActionButton: FabCircularMenu(
           fabColor: secondaryColor,
           fabCloseIcon: Icon(Icons.close, color: Colors.white),
-          fabOpenIcon: Icon(Icons.bubble_chart, color: Colors.white),
+          fabOpenIcon: Icon(Icons.search, color: Colors.white),
           fabCloseColor: secondaryColor,
           fabOpenColor: secondaryColor.withOpacity(0.7),
-          fabElevation: 0,
           fabMargin: EdgeInsets.only(right: 35, bottom: 30),
           ringColor: Colors.black12,
           ringDiameter: 400,
           children: <Widget>[
             RaisedButton.icon(
               label: Text('افراد' , style: Theme.of(context).textTheme.button),
-              icon: Icon(Icons.search, color: Colors.white),
-              onPressed: (){},
+              icon: Icon(Icons.perm_identity, color: Colors.white),
+              onPressed: (){
+                showSearch(context: context, delegate: UserSearchDelegate());
+              },
             ),
             RaisedButton.icon(
               label: Text('پروژه ها', style: Theme.of(context).textTheme.button),
-              icon: Icon(Icons.insert_drive_file, color: Colors.white),
-              onPressed: (){},
+              icon: Icon(Icons.description, color: Colors.white),
+              onPressed: (){
+                showSearch(context: context, delegate: ProjectSearchDelegate());
+
+              },
             ),
           ],
         ),
