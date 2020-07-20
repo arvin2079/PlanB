@@ -1,5 +1,6 @@
 import 'package:planb/src/bloc/bloc.dart';
 import 'package:planb/src/model/project_model.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/resource/repository.dart';
 import 'package:planb/src/utility/message_exception.dart';
 import 'package:rxdart/rxdart.dart';
@@ -8,11 +9,11 @@ class ProjectBloc extends Bloc {
   Repository _repository = Repository();
   PublishSubject<List<Project>> _projectStreamController = PublishSubject();
   PublishSubject<List<Project>> _searchedProjectStreamController = PublishSubject();
-  PublishSubject<List<Project>> _searchedUserStreamController = PublishSubject();
+  PublishSubject<List<User>> _searchedUserStreamController = PublishSubject();
 
   Stream<List<Project>> get projectStream => _projectStreamController.stream;
   Stream<List<Project>> get searchedProjectStream => _searchedProjectStreamController.stream;
-  Stream<List<Project>> get searchedUserStream => _searchedUserStreamController.stream;
+  Stream<List<User>> get searchedUserStream => _searchedUserStreamController.stream;
 
   createNewProject(Project requestProject) async{
     try{
@@ -45,11 +46,11 @@ class ProjectBloc extends Bloc {
 
   searchUser(requestedSkills) async {
     try{
-      List<Project> projects = await _repository.searchUser(requestedSkills);
-      _searchedProjectStreamController.sink.add(projects);
+      List<User> users = await _repository.searchUser(requestedSkills);
+      _searchedUserStreamController.sink.add(users);
     }
     on MessagedException catch(e){
-      _searchedProjectStreamController.addError(e);
+      _searchedUserStreamController.addError(e);
     }
   }
 

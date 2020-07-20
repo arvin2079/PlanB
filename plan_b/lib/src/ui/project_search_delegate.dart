@@ -17,12 +17,7 @@ class ProjectSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
-      IconButton(
-        icon: Icon(Icons.search),
-        onPressed: (){
-          showResults(context);
-        },
-      ),
+
       IconButton(
         icon: Icon(Icons.tune),
         onPressed: () {
@@ -69,8 +64,13 @@ class ProjectSearchDelegate extends SearchDelegate {
                         return LinearProgressIndicator(backgroundColor: Colors.transparent,);
                       })));
         },
-      )
-
+      ),
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: (){
+          query = "";
+        },
+      ),
     ];
   }
 
@@ -107,20 +107,26 @@ class ProjectSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _buildNoResult(context);
     }
-    return Center(child: CircularProgressIndicator());
+    return buildResults(context);
   }
 
   Widget _buildNoResult(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset("images/no_result_project.png"),
-          Text(
-            "!نتیجه ای یافت نشد",
-            style: Theme.of(context).textTheme.headline1,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset("images/no_result_project.png", fit: BoxFit.fitWidth,),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                "!نتیجه ای یافت نشد\nاز انتخاب مهارت های مورد نظرت مطمئن شو",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

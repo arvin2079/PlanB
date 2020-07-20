@@ -1,10 +1,15 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
+import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 
-List requestedSkills;
+List requestedSkills = [];
 
 class UserSearchDelegate extends SearchDelegate {
   SkillRepository _skillRepository;
@@ -12,12 +17,6 @@ class UserSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
-      IconButton(
-        icon: Icon(Icons.search),
-        onPressed: () {
-          showResults(context);
-        },
-      ),
       IconButton(
         icon: Icon(Icons.tune),
         onPressed: () {
@@ -65,7 +64,14 @@ class UserSearchDelegate extends SearchDelegate {
                         );
                       })));
         },
-      )
+      ),
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+          buildResults(context);
+        },
+      ),
     ];
   }
 
@@ -81,16 +87,42 @@ class UserSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    projectBloc.searchProject(requestedSkills);
-    return StreamBuilder(
-        stream: projectBloc.searchedProjectStream,
+    print(requestedSkills);
+    if(requestedSkills == null){
+      return _buildNoResult(context);
+    }
+    projectBloc.searchUser(requestedSkills);
+    return StreamBuilder<List<User>>(
+        stream: projectBloc.searchedUserStream,
         builder: (context, snapshot) {
-
-          return ListView(
-            children: <Widget>[
-              Placeholder(),
-            ],
-          );
+          if (snapshot.hasData) {
+            List<User> users = snapshot.data;
+            if (users.isEmpty) {
+              return _buildNoResult(context);
+            }
+            return ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: CustomButton(
+                      leftColor: secondaryColor,
+                      rightColor: secondaryVariant,
+                      name: users[index].firstName,
+                      lastname: users[index].lastName,
+                      trailingIcon: Icon(Icons.search,
+                          color: Colors.white, size: 150),
+                      showArrow: false,
+                      onPressed: () {},
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          return Center(child: CircularProgressIndicator());
         });
   }
 
@@ -99,20 +131,26 @@ class UserSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _buildNoResult(context);
     }
-    return Center(child: CircularProgressIndicator());
+    return buildResults(context);
   }
 
   Widget _buildNoResult(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset("images/no_result_person.png"),
-          Text(
-            "!نتیجه ای یافت نشد",
-            style: Theme.of(context).textTheme.headline1,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset("images/no_result_person.png", fit: BoxFit.fitWidth,),
+            Container(
+              width: MediaQuery.of(context).size.width *4/5,
+              child: Text(
+                "!نتیجه ای یافت نشد\nاز درست بودن عبارت جستجو شده و مهارت های انتخاب شده مورد نظرت مطمئن شو",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -148,7 +186,6 @@ class _ChipWrapperState extends State<ChipWrapper> {
 
   @override
   void initState() {
-    requestedSkills = [];
     super.initState();
   }
 
@@ -166,17 +203,16 @@ class _ChipWrapperState extends State<ChipWrapper> {
   _buildChipList() {
     List<Widget> list = [];
     for (var item in skillRepository.getCodes()) {
-      bool _isDeleted =
-          !requestedSkills.contains(item);
+      bool _isDeleted = !requestedSkills.contains(item);
+//      print(skillRepository.findSkillNameByCode(item) + "  " + _isDeleted.toString()  + "\n");
       Chip ch = Chip(
         onDeleted: () {
           setState(() {
             if (_isDeleted) {
-              if(!requestedSkills.contains(item)){
+              if (!requestedSkills.contains(item)) {
                 requestedSkills.add(item);
               }
               print(requestedSkills);
-
             } else {
               requestedSkills.remove(item);
             }

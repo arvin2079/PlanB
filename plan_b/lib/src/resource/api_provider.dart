@@ -151,6 +151,7 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
     final response = await client.get(url, headers: headers);
+    print(response.body);
 
     if (response.statusCode == 200) {
 

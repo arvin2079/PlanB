@@ -209,7 +209,7 @@ class CreatorViewProjectCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'مهارت ها',
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Wrap(
@@ -245,6 +245,7 @@ class CreatorViewProjectCard extends StatelessWidget {
               lastname: item.team[index].lastname,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
+              onPressed: (){},
             );
           },
         ),
