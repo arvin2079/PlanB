@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> with LogInValidator {
                               TextFormField(
                                 style: Theme.of(context).textTheme.headline1,
                                 validator: (value) {
+                                  print(usernameValidator.isValid(value));
                                   return usernameValidator.isValid(value)
                                       ? null
                                       : notValidUsernameMessage;
