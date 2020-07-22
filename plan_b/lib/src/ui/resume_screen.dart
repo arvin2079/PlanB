@@ -127,32 +127,6 @@ class _ResumeScreenState extends State<ResumeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: HomeDrawer(),
-      floatingActionButton: FabCircularMenu(
-        fabColor: secondaryColor,
-        fabCloseIcon: Icon(Icons.close, color: Colors.white),
-        fabOpenIcon: Icon(Icons.search, color: Colors.white),
-        fabCloseColor: secondaryColor,
-        fabOpenColor: secondaryColor.withOpacity(0.7),
-        fabMargin: EdgeInsets.only(right: 35, bottom: 30),
-        ringColor: Colors.black12,
-        ringDiameter: 400,
-        children: <Widget>[
-          RaisedButton.icon(
-            label: Text('افراد', style: Theme.of(context).textTheme.button),
-            icon: Icon(Icons.perm_identity, color: Colors.white),
-            onPressed: () {
-              showSearch(context: context, delegate: UserSearchDelegate());
-            },
-          ),
-          RaisedButton.icon(
-            label: Text('پروژه ها', style: Theme.of(context).textTheme.button),
-            icon: Icon(Icons.description, color: Colors.white),
-            onPressed: () {
-              showSearch(context: context, delegate: ProjectSearchDelegate());
-            },
-          ),
-        ],
-      ),
       appBar: AppBar(
         title: Text(
           'رزومه',
