@@ -15,6 +15,7 @@ class UserBloc extends Bloc {
   PublishSubject<List> _citiesStreamController = PublishSubject();
   PublishSubject<List> _universitiesStreamController = PublishSubject();
   PublishSubject<User> _userInfoStreamController = PublishSubject();
+  PublishSubject<User> _resumeStreamController = PublishSubject();
   dynamic _lastStatus;
 
   UserBloc() {
@@ -33,6 +34,8 @@ class UserBloc extends Bloc {
   Stream<List> get universitiesStream => _universitiesStreamController.stream;
 
   Stream<User> get userInfoStream => _userInfoStreamController.stream;
+
+  Stream<User> get resumeStream => _resumeStreamController.stream;
 
   AuthStatus get lastStatus => _lastStatus.value;
 
@@ -98,11 +101,25 @@ class UserBloc extends Bloc {
     }
   }
 
+  getResume(id) async{
+    try{
+      print(id);
+      User user = await repository.getResume(id);
+      print(user);
+      _resumeStreamController.sink.add(user);
+    }
+    on MessagedException catch (e){
+      _resumeStreamController.addError(e);
+    }
+  }
+
   _saveUsersInfoInSharedPreferences(User user) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString('firstName', user.firstName);
     sharedPreferences.setString('lastName', user.lastName);
+    sharedPreferences.setInt('id', user.id);
   }
+
 
 
 
@@ -114,6 +131,7 @@ class UserBloc extends Bloc {
     _authStatusStreamController.close();
     _errorsStreamController.close();
     _userInfoStreamController.close();
+    _resumeStreamController.close();
   }
 }
 

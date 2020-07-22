@@ -23,4 +23,6 @@ class Repository {
 
   searchUser(requestedSkills) => _provider.searchUser(requestedSkills);
 
+  getResume(id) => _provider.getResume(id);
+
 }

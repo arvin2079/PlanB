@@ -3,6 +3,7 @@ import 'package:planb/src/model/project_model.dart';
 enum AuthStatus { signedOut, loading, signedIn }
 
 class User {
+  int id;
   String studentCode;
   String username;
   String password;
@@ -20,9 +21,15 @@ class User {
   bool isSuperUser;
   bool isStaff;
   String description;
+  String instagram;
+  String linkedIn;
+  String github;
+  String telegram;
 
   User(
-      {this.studentCode,
+      {
+        this.id,
+        this.studentCode,
       this.username,
       this.password,
       this.email,
@@ -38,12 +45,17 @@ class User {
       this.phoneNumber,
       this.isSuperUser,
       this.isStaff,
-      this.description});
+      this.description,
+      this.instagram,
+      this.linkedIn,
+      this.github,
+      this.telegram});
 
   factory User.fromJson(Map<String, dynamic> json) {
     if (json == null) {print("object");return null;}
 
     User user = User(
+      id: json['id'],
         studentCode: json['student_code'],
         username: json['username'],
         password: json['password'],
@@ -65,12 +77,17 @@ class User {
         phoneNumber: json['phone_number'],
         isSuperUser: json['is_super_user'],
         description: json['description'],
+        instagram: json['instagram'],
+        linkedIn: json['linkedIn'],
+        github: json['github'],
+        telegram: json['telegram'],
         isStaff: json['is_staff']);
     return user;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['student_code'] = this.studentCode;
     data['username'] = this.username;
     data['password'] = this.password;
@@ -92,6 +109,10 @@ class User {
     data['is_super_user'] = this.isSuperUser;
     data['is_staff'] = this.isStaff;
     data['description'] = this.description;
+    data['instagram'] = this.instagram;
+    data['linkedIn'] = this.linkedIn;
+    data['github'] = this.github;
+    data['telegram'] = this.telegram;
 
     return data;
   }

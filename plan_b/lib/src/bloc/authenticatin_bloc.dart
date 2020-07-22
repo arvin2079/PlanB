@@ -25,6 +25,7 @@ class AuthenticationBloc extends Bloc {
     preferences.remove('token');
     preferences.remove('firstName');
     preferences.remove('lastName');
+    preferences.remove('id');
     _authStatusStreamController.sink.add(AuthStatus.signedOut);
   }
 

@@ -254,7 +254,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           },
         ),
         CustomTextField(
-          controller: TextEditingController(text: user.studentCode.toString()),
+          controller: TextEditingController(text: user.studentCode ?? ""),
           labelText: 'شماره دانشجویی',
           inputType: TextInputType.number,
           onSaved: (text) {

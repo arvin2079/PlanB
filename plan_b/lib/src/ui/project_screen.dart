@@ -49,6 +49,7 @@ class ProjectScreen extends StatelessWidget {
         ),
         endDrawer: HomeDrawer(),
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             'پروژه ها',
           ),

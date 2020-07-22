@@ -167,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
                                   decoration: InputDecoration(
                                     hintText: "ایمیل",
                                   ),
-                                  textDirection: TextDirection.rtl,
+
                                   textAlign: TextAlign.right,
                                   controller: _emailController,
                                   onSaved: (text) {

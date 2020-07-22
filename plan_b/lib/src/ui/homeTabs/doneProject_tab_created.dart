@@ -20,46 +20,46 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     ProjectItem(
       title: 'پروژه اول شما',
       caption: 'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-      requests: <User>[
-        User(
+      requests: <UserPr>[
+        UserPr(
           'آتنا',
           'گنجی',
         ),
-        User(
+        UserPr(
           'آتنا',
           'گنجی',
         ),
-        User(
+        UserPr(
           'آتنا',
           'گنجی',
         ),
       ],
-      creator: User(
+      creator: UserPr(
         'آتنا',
         'گنجی',
       ),
-      team: <User>[
-        User(
+      team: <UserPr>[
+        UserPr(
           'آروین',
           'صادقی',
         ),
-        User(
+        UserPr(
           'عرفان',
           'صبحایی',
         ),
-        User(
+        UserPr(
           'نیما',
           'پریفرد',
         ),
-        User(
+        UserPr(
           'آروین',
           'صادقی',
         ),
-        User(
+        UserPr(
           'عرفان',
           'صبحایی',
         ),
-        User(
+        UserPr(
           'نیما',
           'پریفرد',
         ),
@@ -73,32 +73,32 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     ProjectItem(
       title: 'پروژه اول شما',
       caption: 'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-      creator: User(
+      creator: UserPr(
         'آتنا',
         'گنجی',
       ),
-      team: <User>[
-        User(
+      team: <UserPr>[
+        UserPr(
           'آروین',
           'صادقی',
         ),
-        User(
+        UserPr(
           'عرفان',
           'صبحایی',
         ),
-        User(
+        UserPr(
           'نیما',
           'پریفرد',
         ),
-        User(
+        UserPr(
           'آروین',
           'صادقی',
         ),
-        User(
+        UserPr(
           'عرفان',
           'صبحایی',
         ),
-        User(
+        UserPr(
           'نیما',
           'پریفرد',
         ),
@@ -113,32 +113,32 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
       title: 'پروژه اول شما',
       caption:
           'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد.اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد.اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد.اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-      creator: User(
+      creator: UserPr(
         'آتنا',
         'گنجی',
       ),
-      team: <User>[
-        User(
+      team: <UserPr>[
+        UserPr(
           'آروین',
           'صادقی',
         ),
-        User(
+        UserPr(
           'عرفان',
           'صبحایی',
         ),
-        User(
+        UserPr(
           'نیما',
           'پریفرد',
         ),
-        User(
+        UserPr(
           'آروین',
           'صادقی',
         ),
-        User(
+        UserPr(
           'عرفان',
           'صبحایی',
         ),
-        User(
+        UserPr(
           'نیما',
           'پریفرد',
         ),

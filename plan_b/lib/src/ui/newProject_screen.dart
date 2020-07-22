@@ -63,6 +63,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
   _buildScreenWidget() {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'ایجاد پروژه جدید',
         ),
@@ -169,54 +170,50 @@ class _NewProjectScreenState extends State<NewProjectScreen>
                   backgroundColor: Colors.transparent,
                 ),
               );
-              if (snapshot.hasData || snapshot.hasError) {
-                widget = AlertDialog(
-                  title: Container(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        "تکمیل اطلاعات",
-                        style: Theme.of(context).textTheme.headline4,
-                        textAlign: TextAlign.right,
-                      )),
-                  content: Row(
-                    children: <Widget>[
-                      !_hasError
-                          ? Icon(
-                              Icons.done_outline,
-                              color: Colors.green,
-                            )
-                          : Icon(
-                              Icons.error_outline,
-                              color: Colors.red,
-                            ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                          child: Text(
-                        _hasError
-                            ? "خطا در ثبت پروژه!"
-                            : "پروژه جدید شما ثبت شد",
-                        style: Theme.of(context).textTheme.headline1,
-                      ))
-                    ],
-                  ),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(_hasError ? "بیخیال" : "باشه"),
-                        ),
-                      ],
-                    )
+              widget = AlertDialog(
+                title: Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      "تکمیل اطلاعات",
+                      style: Theme.of(context).textTheme.headline4,
+                      textAlign: TextAlign.right,
+                    )),
+                content: Row(
+                  children: <Widget>[
+                    !_hasError
+                        ? Icon(
+                            Icons.done_outline,
+                            color: Colors.green,
+                          )
+                        : Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                          ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: Text(
+                      _hasError ? "خطا در ثبت پروژه!" : "پروژه جدید شما ثبت شد",
+                      style: Theme.of(context).textTheme.headline1,
+                    ))
                   ],
-                );
-              }
+                ),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _formkey.currentState.reset();
+                        },
+                        child: Text(_hasError ? "بیخیال" : "باشه"),
+                      ),
+                    ],
+                  )
+                ],
+              );
               return widget;
             }));
   }

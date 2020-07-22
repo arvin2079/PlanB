@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/skill_model.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
@@ -8,27 +11,28 @@ import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'constants/constants.dart';
 
 class ResumeScreen extends StatefulWidget {
-  User user;
+  final int id;
 
-  ResumeScreen({this.onNavButtTab, this.user});
-
-  final Function onNavButtTab;
+  ResumeScreen({this.id});
 
   @override
-  _ResumeScreenState createState() => _ResumeScreenState();
+  _ResumeScreenState createState() => _ResumeScreenState(id: id);
 }
 
 class _ResumeScreenState extends State<ResumeScreen> {
-  int _selectedIndex = 2;
+  _ResumeScreenState({this.id});
 
-  User users;
-  ResumeUserModel user;
+  int id;
+  SkillRepository _skillRepository;
+  User user;
 
   @override
   void initState() {
+    userBloc.getCompleteProfileFields();
+    initializeItems();
+    userBloc.getResume(id);
     super.initState();
-    // TODO : initialize userModer
-    user = ResumeUserModel(
+    /*user2w = ResumeUserModel(
       firstname: 'عرفان',
       lastname: 'صبحایی',
       username: 'sobhaii_khatar',
@@ -121,7 +125,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
         'python',
         'java',
       ],
-    );
+    );*/
   }
 
   @override
@@ -134,212 +138,234 @@ class _ResumeScreenState extends State<ResumeScreen> {
           'رزومه',
         ),
       ),
-      body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: SingleChildScrollView(
-              child: Column(
+      body: StreamBuilder(
+        stream: userBloc.resumeStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            print(snapshot.data);
+            user = snapshot.data;
+            return _buildScreenWidget();
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildScreenWidget() {
+    return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              SizedBox(height: 10),
+              Stack(
+                alignment: Alignment.topCenter,
                 children: <Widget>[
-                      SizedBox(height: 10),
-                      Stack(
-                        alignment: Alignment.topCenter,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(top: 48),
-                            child: Card(
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6)),
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(12, 56, 12, 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                    ),
-                                    Text(
-                                      user.firstname + " " + user.lastname,
-                                      textDirection: TextDirection.rtl,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "@" + user.username,
-                                      textDirection: TextDirection.ltr,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(fontSize: 18),
-                                    ),
-                                    Text(
-                                      'شماره دانشجویی : ' + user.studentCode,
-                                      textDirection: TextDirection.rtl,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                  Container(
+                    margin: EdgeInsets.only(top: 48),
+                    child: Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(12, 56, 12, 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width,
                             ),
-                          ),
-                          Container(
-                            width: 110,
-                            height: 110,
-                            decoration: ShapeDecoration(
-                                shape: CircleBorder(), color: Colors.white),
-                            child: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: DecoratedBox(
-                                decoration: ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        //fixme: if user.avatar == null then use Image.Asset
-                                        image: NetworkImage(
-                                          'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bill_Gates_2018.jpg',
-                                        ))),
-                              ),
+                            Text(
+                              "${user.firstName} ${user.lastName}",
+                              textDirection: TextDirection.rtl,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                             ),
-                          )
-                        ],
-                      ),
-                      Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              TitleText(text: 'اطلاعات تماس'),
-                              Text(
-                                'ایمیل : ' + user.email,
+                            Text(
+                              "@" + user.username,
+                              textDirection: TextDirection.ltr,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(fontSize: 18),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                user.description,
                                 textDirection: TextDirection.rtl,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline1
-                                    .copyWith(fontSize: 18),
-                              ),
-                              user.instagram != null
-                                  ? Text(
-                                      'اینستاگرام : ' + user.instagram,
-                                      textDirection: TextDirection.rtl,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(fontSize: 18),
-                                    )
-                                  : Container(),
-                              user.git != null
-                                  ? Text(
-                                      'گیت : ' + user.git,
-                                      textDirection: TextDirection.rtl,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(fontSize: 18),
-                                    )
-                                  : Container(),
-                              user.telegram != null
-                                  ? Text(
-                                      'تلگرام : ' + user.telegram,
-                                      textDirection: TextDirection.rtl,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(fontSize: 18),
-                                    )
-                                  : Container(),
-                              user.linkdin != null
-                                  ? Text(
-                                      'لینکدین : ' + user.linkdin,
-                                      textDirection: TextDirection.rtl,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          .copyWith(fontSize: 18),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              TitleText(text: 'مهارت ها'),
-                              Wrap(
-                                children:
-                                    user.skills.map<Widget>((String skill) {
-                                  return Padding(
-                                    padding: EdgeInsets.all(3),
-                                    child: Chip(
-                                      label: Text(
-                                        skill,
-                                        style:
-                                            Theme.of(context).textTheme.caption,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                color: Colors.black12,
-                                height: 1,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: TitleText(text: 'پروژه ها'),
-                            ),
-                            Expanded(
-                              child: Container(
-                                color: Colors.black12,
-                                height: 1,
+                                    .copyWith(fontSize: 16),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ] +
-                    _getProjectCards.toList(),
+                    ),
+                  ),
+                  Container(
+                    width: 110,
+                    height: 110,
+                    decoration: ShapeDecoration(
+                        shape: CircleBorder(), color: Colors.white),
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: DecoratedBox(
+                        decoration: ShapeDecoration(
+                            shape: CircleBorder(),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                //fixme: if user.avatar == null then use Image.Asset
+                                image: user.avatar == null ? AssetImage('images/noImage.png') : NetworkImage(user.avatar))),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ),
-          )),
-    );
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      TitleText(text: 'اطلاعات تماس'),
+                      Text(
+                        'ایمیل : ' + user.email,
+                        textDirection: TextDirection.rtl,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1
+                            .copyWith(fontSize: 18),
+                      ),
+                      user.instagram != null
+                          ? Text(
+                              'اینستاگرام : ' + user.instagram,
+                              textDirection: TextDirection.rtl,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(fontSize: 18),
+                            )
+                          : Container(),
+                      user.github != null
+                          ? Text(
+                              'گیت : ' + user.github,
+                              textDirection: TextDirection.rtl,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(fontSize: 18),
+                            )
+                          : Container(),
+                      user.telegram != null
+                          ? Text(
+                              'تلگرام : ' + user.telegram,
+                              textDirection: TextDirection.rtl,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(fontSize: 18),
+                            )
+                          : Container(),
+                      user.linkedIn != null
+                          ? Text(
+                              'لینکدین : ' + user.linkedIn,
+                              textDirection: TextDirection.rtl,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(fontSize: 18),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      TitleText(text: 'مهارت ها'),
+                      Wrap(
+                            children: _buildSkillChips(user.skillCodes)
+                          ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: Colors.black12,
+                        height: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: TitleText(text: 'پروژه ها'),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.black12,
+                        height: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+        ));
   }
 
-  Iterable<Widget> get _getProjectCards sync* {
+  /*Iterable<Widget> get _getProjectCards sync* {
     for (ProjectItem item in user.projects) {
       yield FinishedProjectCard(item: item, context: context);
     }
+  }*/
+
+  void initializeItems() async {
+    userBloc.skillsStream.first.then((value) {
+      if (value != null) {
+        List<Skill> _skillObjects = [];
+        for (int i = 0; i < value.length; i++) {
+          Skill skill = Skill.fromJson(value[i]);
+          _skillObjects.add(skill);
+        }
+        _skillRepository = SkillRepository(skills: _skillObjects);
+      }
+    });
+  }
+
+  _buildSkillChips(List skillCodes){
+    List<Widget> result = [];
+    for (int i in skillCodes){
+      result.add(Chip(label: Text(_skillRepository.findSkillNameByCode(i)),));
+      result.add(SizedBox(width: 5,));
+    }
+    return result;
   }
 }
 
@@ -353,7 +379,7 @@ class ResumeUserModel {
   final String instagram;
   final String linkdin;
   final String studentCode;
-  final List<ProjectItem> projects;
+  final List projects;
   final List<String> skills;
 
   ResumeUserModel(

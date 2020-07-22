@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/ui/project_screen.dart';
 import 'package:planb/src/ui/resume_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'newProject_screen.dart';
 
@@ -13,11 +14,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selected = 0;
-  List<Widget> _tabs = [ProjectScreen(), NewProjectScreen(), ResumeScreen()];
+  int id;
+  List<Widget> _tabs;
 
   @override
   void initState() {
     userBloc.getCompleteProfileFields();
+    _getUserId();
+    _tabs = [
+      ProjectScreen(),
+      NewProjectScreen(),
+      FutureBuilder(
+        future: _getUserId(),
+        builder: (context, snapshot) {
+          return ResumeScreen(
+            id: id,
+          );
+        },
+      )
+    ];
     super.initState();
   }
 
@@ -28,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: onNavButtSelected,
         currentIndex: _selected,
+        backgroundColor: Colors.white,
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
@@ -62,6 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  _getUserId() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    id = sharedPreferences.getInt('id');
+  }
+}
+
 //  Widget _buildSolidCircle(double radius, Color color) {
 //    return ClipOval(
 //      child: Container(
@@ -71,4 +93,3 @@ class _HomeScreenState extends State<HomeScreen> {
 //      ),
 //    );
 //  }
-}

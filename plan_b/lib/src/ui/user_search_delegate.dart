@@ -102,6 +102,7 @@ class UserSearchDelegate extends SearchDelegate {
             return ListView.builder(
               itemCount: users.length,
               itemBuilder: (context, index) {
+                User item = users[index];
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
                   child: Directionality(
@@ -109,8 +110,8 @@ class UserSearchDelegate extends SearchDelegate {
                     child: CustomButton(
                       leftColor: secondaryColor,
                       rightColor: secondaryVariant,
-                      name: users[index].firstName,
-                      lastname: users[index].lastName,
+                      name: item.firstName,
+                      lastname: item.lastName,
                       trailingIcon:
                           Icon(Icons.search, color: Colors.white, size: 150),
                       showArrow: false,
@@ -118,7 +119,7 @@ class UserSearchDelegate extends SearchDelegate {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ResumeScreen()));
+                                builder: (context) => ResumeScreen(id: item.id)));
                       },
                     ),
                   ),

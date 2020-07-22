@@ -171,14 +171,14 @@ class ProjectItem {
   final String title;
   final String caption;
   final List<String> skills;
-  final List<User> team;
-  final List<User> requests;
-  final User creator;
+  final List<UserPr> team;
+  final List<UserPr> requests;
+  final UserPr creator;
 }
 
-class User {
+class UserPr {
   var name;
   var lastname;
 
-  User(this.name, this.lastname);
+  UserPr(this.name, this.lastname);
 }
