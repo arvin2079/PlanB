@@ -197,43 +197,73 @@ class _ResumeScreenState extends State<ResumeScreen> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 10),
-                  Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          TitleText(text: 'مشخصات فردی'),
-                          Text(
-                            'نام کامل : ' + user.firstname + " " + user.lastname,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
+                  Stack(
+                    alignment: Alignment.topCenter,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(top: 48),
+                        child: Card(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6)),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(12, 56, 12 , 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                                Text(
+                                  user.firstname + " " + user.lastname,
+                                  textDirection: TextDirection.rtl,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "@" + user.username,
+                                  textDirection: TextDirection.ltr,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .copyWith(fontSize: 18),
+                                ),
+                                Text(
+                                  'شماره دانشجویی : ' + user.studentCode,
+                                  textDirection: TextDirection.rtl,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .copyWith(fontSize: 18),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            'نام کاربری :‌ ' + user.username,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ),
-                          Text(
-                            'شماره دانشجویی : ' + user.studentCode,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Container(
+                        width: 110,
+                        height: 110,
+                        decoration:
+                        ShapeDecoration(shape: CircleBorder(), color: Colors.white),
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: DecoratedBox(
+                            decoration: ShapeDecoration(
+                                shape: CircleBorder(),
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    //fixme: if user.avatar == null then use Image.Asset
+                                    image: NetworkImage(
+                                      'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bill_Gates_2018.jpg',
+                                    ))),
+                          ),
+                        ),
+                      )
+
+                    ],
                   ),
                   Card(
                     elevation: 0,
