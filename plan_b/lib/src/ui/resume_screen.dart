@@ -1,16 +1,16 @@
-import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:planb/src/ui/project_search_delegate.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
-import 'package:planb/src/ui/user_search_delegate.dart';
+
 import 'constants/constants.dart';
 
 class ResumeScreen extends StatefulWidget {
-  ResumeScreen({@required this.onNavButtTab});
+  User user;
+
+  ResumeScreen({this.onNavButtTab, this.user});
 
   final Function onNavButtTab;
 
@@ -21,6 +21,7 @@ class ResumeScreen extends StatefulWidget {
 class _ResumeScreenState extends State<ResumeScreen> {
   int _selectedIndex = 2;
 
+  User users;
   ResumeUserModel user;
 
   @override
@@ -128,40 +129,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
     return Scaffold(
       endDrawer: HomeDrawer(),
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'رزومه',
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business_center),
-            title: Text('پروژه ها',
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                      fontSize: 15,
-                    )),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.control_point),
-            title: Text('ایجاد پروژه',
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                      fontSize: 15,
-                    )),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_file),
-            title: Text('رزومه',
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                      fontSize: 15,
-                    )),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        onTap: (int index) {
-          widget.onNavButtTab(index);
-        },
       ),
       body: Directionality(
           textDirection: TextDirection.rtl,
@@ -170,181 +141,195 @@ class _ResumeScreenState extends State<ResumeScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 10),
-                  Stack(
-                    alignment: Alignment.topCenter,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(top: 48),
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(12, 56, 12 , 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
+                      SizedBox(height: 10),
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 48),
+                            child: Card(
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(12, 56, 12, 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                    ),
+                                    Text(
+                                      user.firstname + " " + user.lastname,
+                                      textDirection: TextDirection.rtl,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "@" + user.username,
+                                      textDirection: TextDirection.ltr,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(fontSize: 18),
+                                    ),
+                                    Text(
+                                      'شماره دانشجویی : ' + user.studentCode,
+                                      textDirection: TextDirection.rtl,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(fontSize: 18),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  user.firstname + " " + user.lastname,
-                                  textDirection: TextDirection.rtl,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "@" + user.username,
-                                  textDirection: TextDirection.ltr,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      .copyWith(fontSize: 18),
-                                ),
-                                Text(
-                                  'شماره دانشجویی : ' + user.studentCode,
-                                  textDirection: TextDirection.rtl,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      .copyWith(fontSize: 18),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        width: 110,
-                        height: 110,
-                        decoration:
-                        ShapeDecoration(shape: CircleBorder(), color: Colors.white),
-                        child: Padding(
-                          padding: EdgeInsets.all(5),
-                          child: DecoratedBox(
+                          Container(
+                            width: 110,
+                            height: 110,
                             decoration: ShapeDecoration(
-                                shape: CircleBorder(),
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    //fixme: if user.avatar == null then use Image.Asset
-                                    image: NetworkImage(
-                                      'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bill_Gates_2018.jpg',
-                                    ))),
-                          ),
-                        ),
-                      )
-
-                    ],
-                  ),
-                  Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          TitleText(text: 'اطلاعات تماس'),
-                          Text(
-                            'ایمیل : ' + user.email,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ),
-                          user.instagram != null ? Text(
-                            'اینستاگرام : ' + user.instagram,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ) : Container(),
-                          user.git != null ? Text(
-                            'گیت : ' + user.git,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ) : Container(),
-                          user.telegram != null ? Text(
-                            'تلگرام : ' + user.telegram,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ) : Container(),
-                          user.linkdin != null ? Text(
-                            'لینکدین : ' + user.linkdin,
-                            textDirection: TextDirection.rtl,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .copyWith(fontSize: 18),
-                          ) : Container(),
+                                shape: CircleBorder(), color: Colors.white),
+                            child: Padding(
+                              padding: EdgeInsets.all(5),
+                              child: DecoratedBox(
+                                decoration: ShapeDecoration(
+                                    shape: CircleBorder(),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        //fixme: if user.avatar == null then use Image.Asset
+                                        image: NetworkImage(
+                                          'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bill_Gates_2018.jpg',
+                                        ))),
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                    ),
-                  ),
-                  Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          TitleText(text: 'مهارت ها'),
-                          Wrap(
-                            children: user.skills.map<Widget>((String skill) {
-                              return Padding(
-                                padding: EdgeInsets.all(3),
-                                child: Chip(
-                                  label: Text(
-                                    skill,
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                      Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              TitleText(text: 'اطلاعات تماس'),
+                              Text(
+                                'ایمیل : ' + user.email,
+                                textDirection: TextDirection.rtl,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .copyWith(fontSize: 18),
+                              ),
+                              user.instagram != null
+                                  ? Text(
+                                      'اینستاگرام : ' + user.instagram,
+                                      textDirection: TextDirection.rtl,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(fontSize: 18),
+                                    )
+                                  : Container(),
+                              user.git != null
+                                  ? Text(
+                                      'گیت : ' + user.git,
+                                      textDirection: TextDirection.rtl,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(fontSize: 18),
+                                    )
+                                  : Container(),
+                              user.telegram != null
+                                  ? Text(
+                                      'تلگرام : ' + user.telegram,
+                                      textDirection: TextDirection.rtl,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(fontSize: 18),
+                                    )
+                                  : Container(),
+                              user.linkdin != null
+                                  ? Text(
+                                      'لینکدین : ' + user.linkdin,
+                                      textDirection: TextDirection.rtl,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          .copyWith(fontSize: 18),
+                                    )
+                                  : Container(),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            color: Colors.black12,
-                            height: 1,
+                      Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              TitleText(text: 'مهارت ها'),
+                              Wrap(
+                                children:
+                                    user.skills.map<Widget>((String skill) {
+                                  return Padding(
+                                    padding: EdgeInsets.all(3),
+                                    child: Chip(
+                                      label: Text(
+                                        skill,
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: TitleText(text: 'پروژه ها'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                color: Colors.black12,
+                                height: 1,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: TitleText(text: 'پروژه ها'),
+                            ),
+                            Expanded(
+                              child: Container(
+                                color: Colors.black12,
+                                height: 1,
+                              ),
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          child: Container(
-                            color: Colors.black12,
-                            height: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ] + _getProjectCards.toList(),
+                      ),
+                    ] +
+                    _getProjectCards.toList(),
               ),
             ),
           )),
@@ -466,4 +451,3 @@ class FinishedProjectCard extends StatelessWidget {
     );
   }
 }
-

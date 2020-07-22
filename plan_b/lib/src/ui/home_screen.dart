@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selected = 0;
+  List<Widget> _tabs = [ProjectScreen(), NewProjectScreen(), ResumeScreen()];
 
   @override
   void initState() {
@@ -22,11 +23,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(_selected == 0)
-      return ProjectScreen(onNavButtTab: onNavButtSelected);
-    if(_selected == 1)
-      return NewProjectScreen(onNavButtTab: onNavButtSelected);
-    return ResumeScreen(onNavButtTab: onNavButtSelected);
+    return Scaffold(
+      body: _tabs[_selected],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onNavButtSelected,
+        currentIndex: _selected,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business_center),
+            title: Text('پروژه ها',
+                style: TextStyle(
+                  fontFamily: 'vazir',
+                )),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.control_point),
+            title: Text('ایجاد پروژه',
+                style: TextStyle(
+                  fontFamily: 'vazir',
+                )),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.attach_file),
+            title: Text('رزومه',
+                style: TextStyle(
+                  fontFamily: 'vazir',
+                )),
+          ),
+        ],
+      ),
+    );
   }
 
   void onNavButtSelected(int index) {

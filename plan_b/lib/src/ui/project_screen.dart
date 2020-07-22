@@ -62,37 +62,6 @@ class ProjectScreen extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor: Colors.grey,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business_center),
-              title: Text('پروژه ها',
-                  style: Theme.of(context).textTheme.headline1.copyWith(
-                    fontSize: 15,
-                  )),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.control_point),
-              title: Text('ایجاد پروژه',
-                  style: Theme.of(context).textTheme.headline1.copyWith(
-                    fontSize: 15,
-                  )),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.attach_file),
-              title: Text('رزومه',
-                  style: Theme.of(context).textTheme.headline1.copyWith(
-                    fontSize: 15,
-                  )),
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: primaryColor,
-          onTap: (int index) {
-            onNavButtTab(index);
-          },
-        ),
         body: TabBarView(
           children: <Widget>[
             DoneProjectsTabCreated(),

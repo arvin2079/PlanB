@@ -1,14 +1,11 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
-import 'package:planb/src/ui/project_search_delegate.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
-import 'package:planb/src/ui/user_search_delegate.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
 import 'package:planb/src/utility/validator.dart';
@@ -17,6 +14,7 @@ import 'constants/constants.dart';
 
 class NewProjectScreen extends StatefulWidget {
   const NewProjectScreen({this.onNavButtTab});
+
   final Function onNavButtTab;
 
   @override
@@ -55,47 +53,15 @@ class _NewProjectScreenState extends State<NewProjectScreen>
         if (snapshot.hasData) {
           return _buildScreenWidget();
         }
-        return Scaffold(
-            body: Center(
+        return Center(
           child: CircularProgressIndicator(),
-        ));
+        );
       },
     );
   }
 
   _buildScreenWidget() {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business_center),
-            title: Text('پروژه ها',
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                  fontSize: 15,
-                )),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.control_point),
-            title: Text('ایجاد پروژه',
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                  fontSize: 15,
-                )),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_file),
-            title: Text('رزومه',
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                  fontSize: 15,
-                )),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        onTap: (int index) {
-          widget.onNavButtTab(index);
-        },
-      ),
       appBar: AppBar(
         title: Text(
           'ایجاد پروژه جدید',
@@ -198,7 +164,11 @@ class _NewProjectScreenState extends State<NewProjectScreen>
             stream: projectBloc.projectStream,
             builder: (context, snapshot) {
               bool _hasError = snapshot.hasError;
-              Widget widget = AlertDialog(content: LinearProgressIndicator(backgroundColor: Colors.transparent,),);
+              Widget widget = AlertDialog(
+                content: LinearProgressIndicator(
+                  backgroundColor: Colors.transparent,
+                ),
+              );
               if (snapshot.hasData || snapshot.hasError) {
                 widget = AlertDialog(
                   title: Container(

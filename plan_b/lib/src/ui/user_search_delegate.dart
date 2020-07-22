@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
@@ -7,6 +5,7 @@ import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/resume_screen.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 
 List requestedSkills = [];
@@ -88,7 +87,7 @@ class UserSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     print(requestedSkills);
-    if(requestedSkills == null){
+    if (requestedSkills == null) {
       return _buildNoResult(context);
     }
     projectBloc.searchUser(requestedSkills);
@@ -112,10 +111,15 @@ class UserSearchDelegate extends SearchDelegate {
                       rightColor: secondaryVariant,
                       name: users[index].firstName,
                       lastname: users[index].lastName,
-                      trailingIcon: Icon(Icons.search,
-                          color: Colors.white, size: 150),
+                      trailingIcon:
+                          Icon(Icons.search, color: Colors.white, size: 150),
                       showArrow: false,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResumeScreen()));
+                      },
                     ),
                   ),
                 );
@@ -140,9 +144,12 @@ class UserSearchDelegate extends SearchDelegate {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset("images/no_result_person.png", fit: BoxFit.fitWidth,),
+            Image.asset(
+              "images/no_result_person.png",
+              fit: BoxFit.fitWidth,
+            ),
             Container(
-              width: MediaQuery.of(context).size.width *4/5,
+              width: MediaQuery.of(context).size.width * 4 / 5,
               child: Text(
                 "!نتیجه ای یافت نشد\nاز درست بودن عبارت جستجو شده و مهارت های انتخاب شده مورد نظرت مطمئن شو",
                 textAlign: TextAlign.center,
