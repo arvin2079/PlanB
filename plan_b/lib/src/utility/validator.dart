@@ -29,7 +29,7 @@ class UsernameValidator with LanguageDetector implements StringValidator {
 
   @override
   bool isValid(String value) {
-    return /*value.length >= 5 && */regExp.stringMatch(value) == value;
+    return /*value.length >= 5 && */regExp.stringMatch(value.trim()) == value.trim();
   }
 }
 
