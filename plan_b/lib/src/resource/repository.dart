@@ -25,4 +25,5 @@ class Repository {
 
   getResume(id) => _provider.getResume(id);
 
+  getDSDProjects() => _provider.getDSDProjects();
 }
