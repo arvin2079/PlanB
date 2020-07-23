@@ -11,6 +11,7 @@ class Project {
   String image;
   String descriptions;
   bool activation;
+  
 
   Project(
       {this.id,

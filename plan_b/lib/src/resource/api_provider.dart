@@ -144,6 +144,29 @@ class APIProvider {
     }
   }
 
+  Future<List> getDSDProjects() async {
+    // Load token for place in request
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/dsdprojects/";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+    // Sending request
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+
+      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+      List list = map['projects'];
+      List<Project> projects = List();
+      for (var p in list){
+        projects.add(Project.fromJson(p));
+      }
+      return projects;
+
+    } else {
+      throw MessagedException("Something went wrong");
+    }
+  }
 
   Future<List> searchProject(List requestedSkills) async{
     // Load token for place in request

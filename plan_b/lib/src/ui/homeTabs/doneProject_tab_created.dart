@@ -168,8 +168,7 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     return StreamBuilder(
       stream: projectBloc.projectStream,
       builder: (context, snapshot) {
-
-        if(/*snapshot.hasData*/true){
+        if(snapshot.hasData){
           return SingleChildScrollView(
             child: Column(
               children: _getProjectCards.toList(),
