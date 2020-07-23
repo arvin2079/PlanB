@@ -2,12 +2,11 @@
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
 
-enum Situation { R, S}
 
 
 class Cooperation{
   int id;
-  Situation situation;
+  String situation;
   User user;
   Project project;
 

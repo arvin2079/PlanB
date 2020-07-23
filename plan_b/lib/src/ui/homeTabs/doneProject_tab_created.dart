@@ -1,177 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:planb/src/bloc/dsd_project_bloc.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/project_model.dart';
+import 'package:planb/src/model/skill_model.dart';
+import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/request_user_button.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 
+
 class DoneProjectsTabCreated extends StatefulWidget {
-  // fixme : pass the list of items from home or each tab get its own items
-//  const DoneProjectsTab({this._doneProjectsTabList});
-//  final List<ProjectItem> _doneProjectsTabList;
+  SkillRepository skillRepository;
+
+  DoneProjectsTabCreated(this.skillRepository);
 
   @override
   _DoneProjectsTabCreatedState createState() => _DoneProjectsTabCreatedState();
 }
 
 class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
-  List<ProjectItem> _doneProjectsTabList = <ProjectItem>[
-    // example
-    ProjectItem(
-      title: 'پروژه اول شما',
-      caption: 'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-      requests: <UserPr>[
-        UserPr(
-          'آتنا',
-          'گنجی',
-        ),
-        UserPr(
-          'آتنا',
-          'گنجی',
-        ),
-        UserPr(
-          'آتنا',
-          'گنجی',
-        ),
-      ],
-      creator: UserPr(
-        'آتنا',
-        'گنجی',
-      ),
-      team: <UserPr>[
-        UserPr(
-          'آروین',
-          'صادقی',
-        ),
-        UserPr(
-          'عرفان',
-          'صبحایی',
-        ),
-        UserPr(
-          'نیما',
-          'پریفرد',
-        ),
-        UserPr(
-          'آروین',
-          'صادقی',
-        ),
-        UserPr(
-          'عرفان',
-          'صبحایی',
-        ),
-        UserPr(
-          'نیما',
-          'پریفرد',
-        ),
-      ],
-      skills: <String>[
-        'اندروید',
-        'جاوا',
-        'وزنه برداری',
-      ],
-    ),
-    ProjectItem(
-      title: 'پروژه اول شما',
-      caption: 'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-      creator: UserPr(
-        'آتنا',
-        'گنجی',
-      ),
-      team: <UserPr>[
-        UserPr(
-          'آروین',
-          'صادقی',
-        ),
-        UserPr(
-          'عرفان',
-          'صبحایی',
-        ),
-        UserPr(
-          'نیما',
-          'پریفرد',
-        ),
-        UserPr(
-          'آروین',
-          'صادقی',
-        ),
-        UserPr(
-          'عرفان',
-          'صبحایی',
-        ),
-        UserPr(
-          'نیما',
-          'پریفرد',
-        ),
-      ],
-      skills: <String>[
-        'اندروید',
-        'جاوا',
-        'وزنه برداری',
-      ],
-    ),
-    ProjectItem(
-      title: 'پروژه اول شما',
-      caption:
-          'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد.اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد.اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد.اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-      creator: UserPr(
-        'آتنا',
-        'گنجی',
-      ),
-      team: <UserPr>[
-        UserPr(
-          'آروین',
-          'صادقی',
-        ),
-        UserPr(
-          'عرفان',
-          'صبحایی',
-        ),
-        UserPr(
-          'نیما',
-          'پریفرد',
-        ),
-        UserPr(
-          'آروین',
-          'صادقی',
-        ),
-        UserPr(
-          'عرفان',
-          'صبحایی',
-        ),
-        UserPr(
-          'نیما',
-          'پریفرد',
-        ),
-      ],
-      skills: <String>[
-        'اندروید',
-        'جاوا',
-        'وزنه برداری',
-      ],
-    ),
-  ];
 
   @override
   void initState() {
-    projectBloc.getProjects();
+    dsdProjectBloc.getProjects();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    projectBloc.getProjects();
-    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: projectBloc.projectStream,
+      stream: dsdProjectBloc.projectStream,
       builder: (context, snapshot) {
+        print(snapshot.data);
         if(snapshot.hasData){
           return SingleChildScrollView(
             child: Column(
-              children: _getProjectCards.toList(),
+              children: _buildProjectCards(snapshot.data),
             ),
           );
         }
@@ -180,27 +46,35 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     );
   }
 
-  Iterable<Widget> get _getProjectCards sync* {
-    for (ProjectItem item in _doneProjectsTabList) {
-      yield CreatorViewProjectCard(item: item, context: context);
+  List<Widget> _buildProjectCards(items){
+    List<Widget> _result = [];
+
+    for(DSDProject item in items){
+      CreatorViewProjectCard card = CreatorViewProjectCard(item: item, context: context, skillRepository: widget.skillRepository,);
+      _result.add(card);
     }
+
+    return _result;
   }
 }
 
 class CreatorViewProjectCard extends StatelessWidget {
-  const CreatorViewProjectCard({
+  CreatorViewProjectCard({
     @required this.item,
     @required this.context,
+    @required this.skillRepository,
   });
 
-  final ProjectItem item;
+  final DSDProject item;
+  final ProjectItem item2 = null;
   final BuildContext context;
+  final SkillRepository skillRepository;
 
   @override
   Widget build(BuildContext context) {
     return AbstractProjectCard(
-      title: item.title,
-      caption: item.caption,
+      title: item.project.name,
+      caption: item.project.descriptions,
       buttonOpenText: 'جزئیات',
       children: <Widget>[
         SizedBox(height: 20),
@@ -212,17 +86,7 @@ class CreatorViewProjectCard extends StatelessWidget {
           ),
         ),
         Wrap(
-          children: item.skills.map<Widget>((String skill) {
-            return Padding(
-              padding: EdgeInsets.all(3),
-              child: Chip(
-                label: Text(
-                  skill,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ),
-            );
-          }).toList(),
+          children: _buildSkillChips(skillCodes: item.project.skillCodes, skillRepository: skillRepository),
         ),
         SizedBox(height: 20),
         Padding(
@@ -235,13 +99,13 @@ class CreatorViewProjectCard extends StatelessWidget {
         ListView.builder(
           shrinkWrap: true,
           primary: false,
-          itemCount: item.team.length,
+          itemCount: item.users.length,
           itemBuilder: (context, index) {
             return CustomButton(
               leftColor: button1Color,
               rightColor: primaryColor,
-              name: item.team[index].name,
-              lastname: item.team[index].lastname,
+              name: item.users[index].firstName,
+              lastname: item.users[index].lastName,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
               onPressed: (){},
@@ -256,22 +120,22 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        item.requests != null && item.requests.isNotEmpty ? ListView.builder(
+        item.cooperation != null && item.cooperation.isNotEmpty ? ListView.builder(
           shrinkWrap: true,
           primary: false,
-          itemCount: item.requests.length,
+          itemCount: item.cooperation.length,
           itemBuilder: (context, index) {
             return RequestUserButton(
               leftColor: green2Color,
               rightColor: green1Color,
-              name: item.requests[index].name,
-              lastname: item.requests[index].lastname,
+              name: item.cooperation[index].user.firstName,
+              lastname: item.cooperation[index].user.lastName,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               onReject: (){},
               onAccept: (){},
             );
           },
-        ) : Text('هیچ درخواستی ثبت نشده  :/', style: Theme.of(context).textTheme.headline1.copyWith(
+        ) : Text('هیچ درخواستی ثبت نشده!', style: Theme.of(context).textTheme.headline1.copyWith(
           color: Colors.grey[500]
         ),),
         SizedBox(height: 20),
@@ -282,13 +146,19 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        CustomButton(
-          leftColor: button1Color,
-          rightColor: primaryColor,
-          name: item.creator.name,
-          lastname: item.creator.lastname,
-          trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
-          showArrow: true,
+        StreamBuilder<User>(
+          stream: userBloc.resumeStream,
+          builder: (context, snapshot) {
+            userBloc.getResume(item.project.creatorId);
+            return CustomButton(
+              leftColor: button1Color,
+              rightColor: primaryColor,
+              name: item.project.creatorId.toString(),
+              lastname: item.project.creatorId.toString(),
+              trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
+              showArrow: true,
+            );
+          }
         ),
         SizedBox(height: 15),
         RaisedButton(
@@ -297,5 +167,14 @@ class CreatorViewProjectCard extends StatelessWidget {
         )
       ],
     );
+  }
+
+  _buildSkillChips({List skillCodes, SkillRepository skillRepository}){
+    List<Widget> result = [];
+    for (int i in skillCodes){
+      result.add(Chip(label: Text(skillRepository.findSkillNameByCode(i)),));
+      result.add(SizedBox(width: 5,));
+    }
+    return result;
   }
 }

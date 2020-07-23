@@ -6,24 +6,24 @@ import 'package:rxdart/rxdart.dart';
 
 class DSDProjectBloc extends Bloc {
   Repository _repository = Repository();
-  PublishSubject<List<DSDProject>> _dsdProjectStreamController =
+  PublishSubject<List<DSDProject>> _projectStreamController =
       PublishSubject();
 
-  Stream<List<DSDProject>> get dsdProjectStream =>
-      _dsdProjectStreamController.stream;
+  Stream<List<DSDProject>> get projectStream =>
+      _projectStreamController.stream;
 
   getProjects() async {
     try {
-      List<DSDProject> projects = await _repository.getProjects();
-      _dsdProjectStreamController.sink.add(projects);
+      List<DSDProject> projects = await _repository.getDSDProjects();
+      _projectStreamController.sink.add(projects);
     } on MessagedException catch (e) {
-      _dsdProjectStreamController.addError(e);
+      _projectStreamController.addError(e);
     }
   }
 
   @override
   void dispose() {
-    _dsdProjectStreamController.close();
+    _projectStreamController.close();
   }
 }
 

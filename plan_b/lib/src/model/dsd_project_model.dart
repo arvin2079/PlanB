@@ -11,7 +11,7 @@ class DSDProject {
 
   factory DSDProject.fromJson(Map<String, dynamic> json) {
     return DSDProject(
-        project: json['project'],
+        project: Project.fromJson(json['project']),
         users: json['users'] != null
             ? (json['users'] as List).map((i) => User.fromJson(i)).toList()
             : null,

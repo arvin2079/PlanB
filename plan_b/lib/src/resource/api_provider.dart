@@ -162,7 +162,6 @@ class APIProvider {
       for (var p in list){
         projects.add(DSDProject.fromJson(p));
       }
-      print(projects);
       return projects;
 
     } else {

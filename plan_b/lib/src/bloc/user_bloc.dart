@@ -103,7 +103,6 @@ class UserBloc extends Bloc {
 
   getResume(id) async{
     try{
-      print(id);
       User user = await repository.getResume(id);
       print(user);
       _resumeStreamController.sink.add(user);

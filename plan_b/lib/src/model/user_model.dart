@@ -62,16 +62,16 @@ class User {
         email: json['email'],
         firstName: json['first_name'],
         lastName: json['last_name'],
-        dateJoined: json['date_joined'],
+        dateJoined: json['date_joined'] != null ? DateTime.parse(json['date_joined']) : null,
         avatar: json['avatar'],
         gender: json['gender'],
         skillCodes:
         json['skills'] != null ? (json['skills'] as List) : null,
-        projects: json['projects'] != null
+        /*projects: json['projects'] != null
             ? (json['projects'] as List)
             .map((i) => Project.fromJson(i))
             .toList()
-            : null,
+            : null,*/
         universityCode: json['university'],
         cityCode: json['city'].toString(),
         phoneNumber: json['phone_number'],

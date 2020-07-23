@@ -1,6 +1,8 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/project_search_delegate.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/user_search_delegate.dart';
@@ -8,11 +10,25 @@ import 'constants/constants.dart';
 import 'homeTabs/doneProject_tab_created.dart';
 import 'homeTabs/doneProject_tab_takePart.dart';
 
-class ProjectScreen extends StatelessWidget {
+class ProjectScreen extends StatefulWidget {
   ProjectScreen({this.onNavButtTab});
   final Function onNavButtTab;
 
+  @override
+  _ProjectScreenState createState() => _ProjectScreenState();
+}
+
+class _ProjectScreenState extends State<ProjectScreen> {
   int _selectedIndex = 0;
+  SkillRepository _skillRepository;
+
+  @override
+  void initState() {
+//    userBloc.getCompleteProfileFields();
+//    initializeItems();
+    print(_skillRepository.toString() + "sd;kfjsd");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +81,7 @@ class ProjectScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            DoneProjectsTabCreated(),
+            DoneProjectsTabCreated(_skillRepository),
             DoneProjectsTabTakePart(),
           ],
         ),
@@ -85,5 +101,18 @@ class ProjectScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeItems() async {
+    userBloc.skillsStream.first.then((value) {
+      if (value != null) {
+        List<Skill> _skillObjects = [];
+        for (int i = 0; i < value.length; i++) {
+          Skill skill = Skill.fromJson(value[i]);
+          _skillObjects.add(skill);
+        }
+        _skillRepository = SkillRepository(skills: _skillObjects);
+      }
+    });
   }
 }
