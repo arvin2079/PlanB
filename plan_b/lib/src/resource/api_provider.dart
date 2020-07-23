@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/utility/message_exception.dart';
@@ -157,10 +158,11 @@ class APIProvider {
 
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       List list = map['projects'];
-      List<Project> projects = List();
+      List<DSDProject> projects = List();
       for (var p in list){
-        projects.add(Project.fromJson(p));
+        projects.add(DSDProject.fromJson(p));
       }
+      print(projects);
       return projects;
 
     } else {

@@ -32,4 +32,9 @@ class Cooperation{
 
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Cooperation{id: $id, situation: $situation, user: $user, project: $project}';
+  }
 }

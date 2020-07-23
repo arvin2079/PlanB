@@ -1,4 +1,5 @@
 import 'package:planb/src/bloc/project_bloc.dart';
+import 'package:planb/src/model/cooperation_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 
@@ -11,7 +12,7 @@ class Project {
   String image;
   String descriptions;
   bool activation;
-  
+
 
   Project(
       {this.id,
