@@ -17,11 +17,13 @@ class DoneProjectsTabCreated extends StatefulWidget {
 }
 
 class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
+
   @override
   void initState() {
     dsdProjectBloc.getProjects();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +144,16 @@ class CreatorViewProjectCard extends StatelessWidget {
                     lastname: item.cooperation[index].user.lastName,
                     trailingIcon:
                         Icon(Icons.group, color: Colors.white, size: 150),
-                    onReject: () {},
-                    onAccept: () {},
+                    onReject: () {
+                      int projectId = (item.project.id);
+                      int cooperId  = (item.cooperation[index].id);
+                      dsdProjectBloc.manageUserRequest(projectId, cooperId, false);
+                    },
+                    onAccept: () {
+                      int projectId = (item.project.id);
+                      int cooperId  = (item.cooperation[index].id);
+                      dsdProjectBloc.manageUserRequest(projectId, cooperId, true);
+                    },
                   );
                 },
               )

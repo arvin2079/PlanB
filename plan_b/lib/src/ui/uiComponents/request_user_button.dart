@@ -162,6 +162,10 @@ class RequestUserButton extends StatelessWidget {
     );
   }
 
+  void dispose(){
+    dispose();
+  }
+
   Widget _buildIconShadow() {
     return iconShadow
         ? Positioned(

@@ -8,6 +8,7 @@ class DSDProjectBloc extends Bloc {
   Repository _repository = Repository();
   PublishSubject<List<DSDProject>> _projectStreamController =
       PublishSubject();
+  PublishSubject _subject = PublishSubject();
 
   Stream<List<DSDProject>> get projectStream =>
       _projectStreamController.stream;
@@ -21,9 +22,18 @@ class DSDProjectBloc extends Bloc {
     }
   }
 
+  manageUserRequest(int projectId, int cooperId, bool flag) async{
+    try{
+      await _repository.manageUserRequest(projectId, cooperId, flag);
+    } on MessagedException catch (e){
+      _subject.addError(e);
+    }
+  }
+
   @override
   void dispose() {
     _projectStreamController.close();
+    _subject.close();
   }
 }
 

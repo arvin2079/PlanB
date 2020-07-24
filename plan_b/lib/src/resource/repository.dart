@@ -26,4 +26,6 @@ class Repository {
   getResume(id) => _provider.getResume(id);
 
   getDSDProjects() => _provider.getDSDProjects();
+
+  manageUserRequest(projectId, cooperId, flag) => _provider.manageUserRequest(projectId, cooperId, flag);
 }

@@ -26,9 +26,6 @@ class APIProvider {
 
     // Sending request
     final response = await client.post(url, headers: headers, body: json);
-    print(json);
-    print(response.headers);
-    print(response.body);
 
     if (response.statusCode == 200) {
       // Return new token on successful request
@@ -163,6 +160,28 @@ class APIProvider {
         projects.add(DSDProject.fromJson(p));
       }
       return projects;
+
+    } else {
+      throw MessagedException("Something went wrong");
+    }
+  }
+
+  manageUserRequest(int projectId, int cooperId, bool flag) async{
+    // Load token for place in request
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/dsdproject/$projectId/cooperation";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+    // if flag == true requested will be accepted else it will be rejected
+    String body = jsonEncode({
+      "html" : "false",
+      "isState" : "$flag",
+      "cooper_id" : cooperId
+    });
+    // Sending request
+    final response = await client.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
 
     } else {
       throw MessagedException("Something went wrong");
