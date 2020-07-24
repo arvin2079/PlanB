@@ -13,8 +13,9 @@ import 'constants/constants.dart';
 
 class ResumeScreen extends StatefulWidget {
   final int id;
+  SkillRepository skillRepository;
 
-  ResumeScreen({this.id});
+  ResumeScreen({this.id, this.skillRepository});
 
   @override
   _ResumeScreenState createState() => _ResumeScreenState(id: id);
@@ -24,13 +25,11 @@ class _ResumeScreenState extends State<ResumeScreen> {
   _ResumeScreenState({this.id});
 
   int id;
-  SkillRepository _skillRepository = defaultSkillRepository;
   User user;
 
   @override
   void initState() {
-    userBloc.getCompleteProfileFields();
-    initializeItems();
+    print(widget.skillRepository.toString() + "-----");
     userBloc.getResume(id);
     super.initState();
   }
@@ -45,19 +44,12 @@ class _ResumeScreenState extends State<ResumeScreen> {
           'رزومه',
         ),
       ),
-      body: StreamBuilder(
+      body: StreamBuilder<User>(
         stream: userBloc.resumeStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if(_skillRepository != null){
-              user = snapshot.data;
-              return _buildScreenWidget();
-            }
-            else{
-              //fixme: does not refresh!
-              initializeItems();
-              _refreshSkills();
-            }
+            user = snapshot.data;
+            return _buildScreenWidget();
           }
           return Center(
             child: CircularProgressIndicator(),
@@ -111,7 +103,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                   .copyWith(fontSize: 18),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
                                 user.description,
                                 textDirection: TextDirection.rtl,
@@ -138,8 +131,9 @@ class _ResumeScreenState extends State<ResumeScreen> {
                             shape: CircleBorder(),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                //fixme: if user.avatar == null then use Image.Asset
-                                image: user.avatar == null ? AssetImage('images/noImage.png') : NetworkImage(user.avatar))),
+                                image: user.avatar == null
+                                    ? AssetImage('images/noImage.png')
+                                    : NetworkImage(user.avatar))),
                       ),
                     ),
                   )
@@ -217,9 +211,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       TitleText(text: 'مهارت ها'),
-                      Wrap(
-                            children: _buildSkillChips(user.skillCodes)
-                          ),
+                      Wrap(children: _buildSkillChips(user.skillCodes)),
                     ],
                   ),
                 ),
@@ -253,37 +245,18 @@ class _ResumeScreenState extends State<ResumeScreen> {
         ));
   }
 
-  /*Iterable<Widget> get _getProjectCards sync* {
-    for (ProjectItem item in user.projects) {
-      yield FinishedProjectCard(item: item, context: context);
-    }
-  }*/
 
-  initializeItems() async {
-    await userBloc.skillsStream.first.then((value) {
-      if (value != null) {
-        List<Skill> _skillObjects = [];
-        for (int i = 0; i < value.length; i++) {
-          Skill skill = Skill.fromJson(value[i]);
-          _skillObjects.add(skill);
-        }
-        _skillRepository = SkillRepository(skills: _skillObjects);
-      }
-    });
-  }
-
-  _buildSkillChips(List skillCodes){
+  _buildSkillChips(List skillCodes) {
     List<Widget> result = [];
-    for (int i in skillCodes){
-      result.add(Chip(label: Text(_skillRepository.findSkillNameByCode(i)),));
-      result.add(SizedBox(width: 5,));
+    for (int i in skillCodes) {
+      result.add(Chip(
+        label: Text(widget.skillRepository.findSkillNameByCode(i)),
+      ));
+      result.add(SizedBox(
+        width: 5,
+      ));
     }
     return result;
-  }
-
-  void _refreshSkills() {
-    userBloc.getCompleteProfileFields();
-    initializeItems();
   }
 }
 

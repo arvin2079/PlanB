@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/dsd_project_bloc.dart';
-import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
-import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
-import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/request_user_button.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
-
 
 class DoneProjectsTabCreated extends StatefulWidget {
   SkillRepository skillRepository;
@@ -21,7 +17,6 @@ class DoneProjectsTabCreated extends StatefulWidget {
 }
 
 class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
-
   @override
   void initState() {
     dsdProjectBloc.getProjects();
@@ -31,32 +26,39 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: dsdProjectBloc.projectStream,
-      builder: (context, snapshot) {
-        if(snapshot.hasData){
-          return SingleChildScrollView(
-            child: Column(
-              children: _buildProjectCards(snapshot.data),
-            ),
+        stream: dsdProjectBloc.projectStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Column(
+                children: _buildProjectCards(snapshot.data),
+              ),
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        }
-        return Center(child: CircularProgressIndicator(),);
-      }
-    );
+        });
   }
 
-  List<Widget> _buildProjectCards(items){
+  List<Widget> _buildProjectCards(items) {
     List<Widget> _result = [];
 
-    for(DSDProject item in items){
-      print(item);
-      CreatorViewProjectCard card = CreatorViewProjectCard(item: item, context: context, skillRepository: widget.skillRepository,);
+    for (DSDProject item in items) {
+      CreatorViewProjectCard card = CreatorViewProjectCard(
+        item: item,
+        context: context,
+        skillRepository: widget.skillRepository,
+      );
       _result.add(card);
     }
-    if(_result == null || _result.isEmpty){
+    if (_result == null || _result.isEmpty) {
       _result.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50 , 0,0),
-        child: Text("!پروژه ای یافت نشد", style: Theme.of(context).textTheme.headline1,),
+        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+        child: Text(
+          "!پروژه ای یافت نشد",
+          style: Theme.of(context).textTheme.headline1,
+        ),
       ));
     }
     return _result;
@@ -90,9 +92,11 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        /*Wrap(
-          children: _buildSkillChips(skillCodes: item.project.skillCodes, skillRepository: skillRepository),
-        ),*/
+        Wrap(
+          children: _buildSkillChips(
+              skillCodes: item.project.skillCodes,
+              skillRepository: skillRepository),
+        ),
         SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -113,7 +117,7 @@ class CreatorViewProjectCard extends StatelessWidget {
               lastname: item.users[index].user.lastName,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
-              onPressed: (){},
+              onPressed: () {},
             );
           },
         ),
@@ -125,24 +129,31 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        item.cooperation != null && item.cooperation.isNotEmpty ? ListView.builder(
-          shrinkWrap: true,
-          primary: false,
-          itemCount: item.cooperation.length,
-          itemBuilder: (context, index) {
-            return RequestUserButton(
-              leftColor: green2Color,
-              rightColor: green1Color,
-              name: item.cooperation[index].user.firstName,
-              lastname: item.cooperation[index].user.lastName,
-              trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
-              onReject: (){},
-              onAccept: (){},
-            );
-          },
-        ) : Text('هیچ درخواستی ثبت نشده!', style: Theme.of(context).textTheme.headline1.copyWith(
-          color: Colors.grey[500]
-        ),),
+        item.cooperation != null && item.cooperation.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: item.cooperation.length,
+                itemBuilder: (context, index) {
+                  return RequestUserButton(
+                    leftColor: green2Color,
+                    rightColor: green1Color,
+                    name: item.cooperation[index].user.firstName,
+                    lastname: item.cooperation[index].user.lastName,
+                    trailingIcon:
+                        Icon(Icons.group, color: Colors.white, size: 150),
+                    onReject: () {},
+                    onAccept: () {},
+                  );
+                },
+              )
+            : Text(
+                'هیچ درخواستی ثبت نشده!',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1
+                    .copyWith(color: Colors.grey[500]),
+              ),
         SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -162,17 +173,26 @@ class CreatorViewProjectCard extends StatelessWidget {
         SizedBox(height: 15),
         RaisedButton(
           child: Text('اتمام پروژه', style: Theme.of(context).textTheme.button),
-          onPressed: (){},
+          onPressed: () {},
         )
       ],
     );
   }
 
-  _buildSkillChips({List skillCodes, SkillRepository skillRepository}){
+  _buildSkillChips({List skillCodes, SkillRepository skillRepository}) {
     List<Widget> result = [];
-    for (int i in skillCodes){
-      result.add(Chip(label: Text(skillRepository?.findSkillNameByCode(i)),));
-      result.add(SizedBox(width: 5,));
+    for (int i in skillCodes) {
+      result.add(Chip(
+        label: Text(skillRepository.findSkillNameByCode(i)),
+      ));
+      result.add(SizedBox(
+        width: 5,
+      ));
+    }
+    if (result == null) {
+      result.add(Center(
+        child: Text(""),
+      ));
     }
     return result;
   }

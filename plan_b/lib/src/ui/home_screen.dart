@@ -7,7 +7,7 @@ import 'package:planb/src/ui/resume_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'newProject_screen.dart';
-SkillRepository defaultSkillRepository;
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -17,28 +17,40 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selected = 0;
   int id;
   List<Widget> _tabs;
+  SkillRepository _skillRepository;
 
   @override
   void initState() {
     userBloc.getCompleteProfileFields();
+    _buildSkillRepository();
     _getUserId();
     _tabs = [
       ProjectScreen(),
       NewProjectScreen(),
-      FutureBuilder(
-        future: _getUserId(),
-        builder: (context, snapshot) {
-          return ResumeScreen(
-            id: id,
-          );
-        },
-      )
     ];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    userBloc.getCompleteProfileFields();
+    _tabs.add(FutureBuilder(
+      future: _getUserId(),
+      builder: (context, snapshot) {
+        return StreamBuilder(
+            stream: userBloc.skillsStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                print(_skillRepository.toString() + "++++++++");
+                return ResumeScreen(
+                  id: id,
+                  skillRepository: _skillRepository,
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            });
+      },
+    ));
     return Scaffold(
       body: _tabs[_selected],
       bottomNavigationBar: BottomNavigationBar(
@@ -84,26 +96,16 @@ class _HomeScreenState extends State<HomeScreen> {
     id = sharedPreferences.getInt('id');
   }
 
-  initializeItems() async {
-    await userBloc.skillsStream.first.then((value) {
+  _buildSkillRepository() {
+    userBloc.skillsStream.first.then((value) {
       if (value != null) {
         List<Skill> _skillObjects = [];
         for (int i = 0; i < value.length; i++) {
           Skill skill = Skill.fromJson(value[i]);
           _skillObjects.add(skill);
         }
-        defaultSkillRepository = SkillRepository(skills: _skillObjects);
+        _skillRepository = SkillRepository(skills: _skillObjects);
       }
     });
   }
 }
-
-//  Widget _buildSolidCircle(double radius, Color color) {
-//    return ClipOval(
-//      child: Container(
-//        width: radius * 2,
-//        height: radius * 2,
-//        color: color,
-//      ),
-//    );
-//  }

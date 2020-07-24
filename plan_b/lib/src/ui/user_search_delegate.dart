@@ -119,7 +119,7 @@ class UserSearchDelegate extends SearchDelegate {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ResumeScreen(id: item.id)));
+                                builder: (context) => ResumeScreen(id: item.id, skillRepository: _skillRepository,)));
                       },
                     ),
                   ),

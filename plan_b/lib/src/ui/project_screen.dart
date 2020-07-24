@@ -24,9 +24,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   @override
   void initState() {
-//    userBloc.getCompleteProfileFields();
-//    initializeItems();
-    print(_skillRepository.toString() + "sd;kfjsd");
+    userBloc.getCompleteProfileFields();
+    _buildSkillRepository();
     super.initState();
   }
 
@@ -81,7 +80,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
         ),
         body: TabBarView(
           children: <Widget>[
-            DoneProjectsTabCreated(_skillRepository),
+            StreamBuilder(
+              stream: userBloc.skillsStream,
+              builder: (context, snapshot){
+                if(snapshot.hasData){
+                  return DoneProjectsTabCreated(_skillRepository);
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
             DoneProjectsTabTakePart(),
           ],
         ),
@@ -103,7 +110,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
     );
   }
 
-  void initializeItems() async {
+  _buildSkillRepository() {
     userBloc.skillsStream.first.then((value) {
       if (value != null) {
         List<Skill> _skillObjects = [];

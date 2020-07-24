@@ -406,8 +406,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                     children: <Widget>[
                       FlatButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pushReplacementNamed('/home');
                         },
                         child: Text(_hasError ? "بیخیال" : "ادامه"),
                       ),
