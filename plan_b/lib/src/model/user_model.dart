@@ -52,7 +52,7 @@ class User {
       this.telegram});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    if (json == null) {print("object");return null;}
+    if (json == null) {print("json null");return null;}
 
     User user = User(
       id: json['id'],

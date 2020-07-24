@@ -33,7 +33,6 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     return StreamBuilder(
       stream: dsdProjectBloc.projectStream,
       builder: (context, snapshot) {
-        print(snapshot.data);
         if(snapshot.hasData){
           return SingleChildScrollView(
             child: Column(
@@ -50,6 +49,7 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     List<Widget> _result = [];
 
     for(DSDProject item in items){
+      print(item);
       CreatorViewProjectCard card = CreatorViewProjectCard(item: item, context: context, skillRepository: widget.skillRepository,);
       _result.add(card);
     }
@@ -85,9 +85,9 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        Wrap(
+        /*Wrap(
           children: _buildSkillChips(skillCodes: item.project.skillCodes, skillRepository: skillRepository),
-        ),
+        ),*/
         SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -104,8 +104,8 @@ class CreatorViewProjectCard extends StatelessWidget {
             return CustomButton(
               leftColor: button1Color,
               rightColor: primaryColor,
-              name: item.users[index].firstName,
-              lastname: item.users[index].lastName,
+              name: item.users[index].user.firstName,
+              lastname: item.users[index].user.lastName,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
               onPressed: (){},
