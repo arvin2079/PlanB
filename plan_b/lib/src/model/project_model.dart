@@ -5,7 +5,7 @@ import 'package:planb/src/model/user_model.dart';
 
 class Project {
   int id;
-  int creatorId;
+  User creator;
   String name;
   List skillCodes;
   DateTime startDate;
@@ -16,7 +16,7 @@ class Project {
 
   Project(
       {this.id,
-      this.creatorId,
+      this.creator,
       this.name,
       this.skillCodes,
       this.startDate,
@@ -28,7 +28,7 @@ class Project {
     if (json == null) return null;
     return Project(
         id: json['id'],
-        creatorId: json['creator'],
+        creator: User.fromJson(json['creator']),
         name: json['Project_name'],
         skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
         startDate: DateTime.parse(json['StartDate']),
@@ -41,7 +41,7 @@ class Project {
     final Map<String, dynamic> data = Map<String, dynamic>();
 
     data['id'] = this.id;
-    data['creator'] = this.creatorId;
+    data['creator'] = this.creator.toJson();
     data['Project_name'] = this.name;
     if (this.skillCodes != null) {
       data['skills'] = this.skillCodes.toList();
@@ -55,7 +55,7 @@ class Project {
 
   @override
   String toString() {
-    return 'Project{id: $id, creatorId: $creatorId, name: $name, skillCodes: $skillCodes, startDate: $startDate, image: $image, descriptions: $descriptions, activation: $activation}';
+    return 'Project{id: $id, creatorId: $creator, name: $name, skillCodes: $skillCodes, startDate: $startDate, image: $image, descriptions: $descriptions, activation: $activation}';
   }
 }
 

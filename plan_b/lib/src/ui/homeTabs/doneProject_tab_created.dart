@@ -53,7 +53,12 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
       CreatorViewProjectCard card = CreatorViewProjectCard(item: item, context: context, skillRepository: widget.skillRepository,);
       _result.add(card);
     }
-
+    if(_result == null || _result.isEmpty){
+      _result.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 50 , 0,0),
+        child: Text("!پروژه ای یافت نشد", style: Theme.of(context).textTheme.headline1,),
+      ));
+    }
     return _result;
   }
 }
@@ -146,19 +151,13 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        StreamBuilder<User>(
-          stream: userBloc.resumeStream,
-          builder: (context, snapshot) {
-            userBloc.getResume(item.project.creatorId);
-            return CustomButton(
-              leftColor: button1Color,
-              rightColor: primaryColor,
-              name: item.project.creatorId.toString(),
-              lastname: item.project.creatorId.toString(),
-              trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
-              showArrow: true,
-            );
-          }
+        CustomButton(
+          leftColor: button1Color,
+          rightColor: primaryColor,
+          name: item.project.creator.firstName,
+          lastname: item.project.creator.lastName,
+          trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
+          showArrow: true,
         ),
         SizedBox(height: 15),
         RaisedButton(
@@ -172,7 +171,7 @@ class CreatorViewProjectCard extends StatelessWidget {
   _buildSkillChips({List skillCodes, SkillRepository skillRepository}){
     List<Widget> result = [];
     for (int i in skillCodes){
-      result.add(Chip(label: Text(skillRepository.findSkillNameByCode(i)),));
+      result.add(Chip(label: Text(skillRepository?.findSkillNameByCode(i)),));
       result.add(SizedBox(width: 5,));
     }
     return result;

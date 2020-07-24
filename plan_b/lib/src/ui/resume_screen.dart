@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
+import 'package:planb/src/ui/home_screen.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
@@ -23,7 +24,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
   _ResumeScreenState({this.id});
 
   int id;
-  SkillRepository _skillRepository;
+  SkillRepository _skillRepository = defaultSkillRepository;
   User user;
 
   @override
@@ -32,100 +33,6 @@ class _ResumeScreenState extends State<ResumeScreen> {
     initializeItems();
     userBloc.getResume(id);
     super.initState();
-    /*user2w = ResumeUserModel(
-      firstname: 'عرفان',
-      lastname: 'صبحایی',
-      username: 'sobhaii_khatar',
-      linkdin: 'linkdin_linkdin',
-      email: 'sobhaii@khatar.balaa',
-      studentCode: '123456789',
-      projects: <ProjectItem>[
-        ProjectItem(
-          title: 'پروژه اول شما',
-          caption: 'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-          creator: User(
-            'آتنا',
-            'گنجی',
-          ),
-          team: <User>[
-            User(
-              'آروین',
-              'صادقی',
-            ),
-            User(
-              'عرفان',
-              'صبحایی',
-            ),
-            User(
-              'نیما',
-              'پریفرد',
-            ),
-            User(
-              'آروین',
-              'صادقی',
-            ),
-            User(
-              'عرفان',
-              'صبحایی',
-            ),
-            User(
-              'نیما',
-              'پریفرد',
-            ),
-          ],
-          skills: <String>[
-            'اندروید',
-            'جاوا',
-            'وزنه برداری',
-          ],
-        ),
-        ProjectItem(
-          title: 'پروژه اول شما',
-          caption: 'اینجا توضیح کوتاهی درمورد اولین پروژه شما نوشته خواهد شد',
-          creator: User(
-            'آتنا',
-            'گنجی',
-          ),
-          team: <User>[
-            User(
-              'آروین',
-              'صادقی',
-            ),
-            User(
-              'عرفان',
-              'صبحایی',
-            ),
-            User(
-              'نیما',
-              'پریفرد',
-            ),
-            User(
-              'آروین',
-              'صادقی',
-            ),
-            User(
-              'عرفان',
-              'صبحایی',
-            ),
-            User(
-              'نیما',
-              'پریفرد',
-            ),
-          ],
-          skills: <String>[
-            'اندروید',
-            'جاوا',
-            'وزنه برداری',
-          ],
-        ),
-      ],
-      skills: <String>[
-        'flutter',
-        'django',
-        'python',
-        'java',
-      ],
-    );*/
   }
 
   @override
@@ -142,9 +49,15 @@ class _ResumeScreenState extends State<ResumeScreen> {
         stream: userBloc.resumeStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data);
-            user = snapshot.data;
-            return _buildScreenWidget();
+            if(_skillRepository != null){
+              user = snapshot.data;
+              return _buildScreenWidget();
+            }
+            else{
+              //fixme: does not refresh!
+              initializeItems();
+              _refreshSkills();
+            }
           }
           return Center(
             child: CircularProgressIndicator(),
@@ -346,8 +259,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
     }
   }*/
 
-  void initializeItems() async {
-    userBloc.skillsStream.first.then((value) {
+  initializeItems() async {
+    await userBloc.skillsStream.first.then((value) {
       if (value != null) {
         List<Skill> _skillObjects = [];
         for (int i = 0; i < value.length; i++) {
@@ -366,6 +279,11 @@ class _ResumeScreenState extends State<ResumeScreen> {
       result.add(SizedBox(width: 5,));
     }
     return result;
+  }
+
+  void _refreshSkills() {
+    userBloc.getCompleteProfileFields();
+    initializeItems();
   }
 }
 

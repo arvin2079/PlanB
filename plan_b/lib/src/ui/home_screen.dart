@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/project_screen.dart';
 import 'package:planb/src/ui/resume_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'newProject_screen.dart';
-
+SkillRepository defaultSkillRepository;
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -81,6 +82,19 @@ class _HomeScreenState extends State<HomeScreen> {
   _getUserId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     id = sharedPreferences.getInt('id');
+  }
+
+  initializeItems() async {
+    await userBloc.skillsStream.first.then((value) {
+      if (value != null) {
+        List<Skill> _skillObjects = [];
+        for (int i = 0; i < value.length; i++) {
+          Skill skill = Skill.fromJson(value[i]);
+          _skillObjects.add(skill);
+        }
+        defaultSkillRepository = SkillRepository(skills: _skillObjects);
+      }
+    });
   }
 }
 

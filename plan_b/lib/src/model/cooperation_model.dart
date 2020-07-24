@@ -16,7 +16,7 @@ class Cooperation{
     return Cooperation(
       id: map['id'],
       situation: map['Situation'],
-      user: User.fromJson(map['user']),
+      user: User.fromJson(map['user_ser']),
       project: Project.fromJson(map['project']),
     );
   }
@@ -26,7 +26,7 @@ class Cooperation{
 
     data['id'] = this.id;
     data['Situation'] = this.situation;
-    data['user'] = this.user.toJson();
+    data['user_ser'] = this.user.toJson();
     data['project'] = this.project.toJson();
 
     return data;
