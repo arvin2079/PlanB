@@ -10,10 +10,12 @@ class ProjectBloc extends Bloc {
   PublishSubject<List<Project>> _projectStreamController = PublishSubject();
   PublishSubject<List<Project>> _searchedProjectStreamController = PublishSubject();
   PublishSubject<List<User>> _searchedUserStreamController = PublishSubject();
+  PublishSubject<List<User>> _corporateRequests = PublishSubject();
 
   Stream<List<Project>> get projectStream => _projectStreamController.stream;
   Stream<List<Project>> get searchedProjectStream => _searchedProjectStreamController.stream;
   Stream<List<User>> get searchedUserStream => _searchedUserStreamController.stream;
+  Stream<List<User>> get corporateRequestsStream => _corporateRequests.stream;
 
   createNewProject(Project requestProject) async{
     try{
@@ -54,10 +56,20 @@ class ProjectBloc extends Bloc {
     }
   }
 
+  corporateRequest(int projectId) async{
+    try{
+      await _repository.corporateRequest(projectId);
+    }
+    on MessagedException catch(e){
+      _corporateRequests.addError(e);
+    }
+  }
+
   @override
   void dispose() {
     _projectStreamController.close();
     _searchedProjectStreamController.close();
     _searchedUserStreamController.close();
+    _corporateRequests.close();
   }
 }

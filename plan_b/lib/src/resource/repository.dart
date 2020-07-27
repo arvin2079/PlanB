@@ -28,4 +28,6 @@ class Repository {
   getDSDProjects() => _provider.getDSDProjects();
 
   manageUserRequest(projectId, cooperId, flag) => _provider.manageUserRequest(projectId, cooperId, flag);
+
+  corporateRequest(projectId) => _provider.corporateRequest(projectId);
 }

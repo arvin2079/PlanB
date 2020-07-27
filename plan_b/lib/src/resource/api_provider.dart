@@ -188,6 +188,22 @@ class APIProvider {
     }
   }
 
+  corporateRequest(int projectId) async{
+    // Load token for place in request
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/project/$projectId/";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+    // Sending request
+    final response = await client.post(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      throw MessagedException("Something went wrong");
+    }
+  }
+
   Future<List> searchProject(List requestedSkills) async{
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();

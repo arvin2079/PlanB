@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:planb/src/bloc/dsd_project_bloc.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
+import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/uiComponents/projectCard.dart';
+import 'package:planb/src/ui/uiComponents/request_user_button.dart';
+import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 
 List requestedSkills;
 List allUserSKills;
@@ -11,7 +16,6 @@ List allUserSKills;
 class ProjectSearchDelegate extends SearchDelegate {
 
   SkillRepository _skillRepository;
-
 
 
   @override
@@ -37,10 +41,13 @@ class ProjectSearchDelegate extends SearchDelegate {
                         FlatButton(
                           child: Row(
                             children: <Widget>[
-                              Text('ادامه', style: Theme.of(context).textTheme.headline6,),
+                              Text('ادامه', style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .headline6,),
                             ],
                           ),
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
@@ -52,7 +59,7 @@ class ProjectSearchDelegate extends SearchDelegate {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           User user = snapshot.data;
-                          if (requestedSkills == null){
+                          if (requestedSkills == null) {
                             requestedSkills = user.skillCodes;
                           }
                           allUserSKills = user.skillCodes;
@@ -61,13 +68,14 @@ class ProjectSearchDelegate extends SearchDelegate {
                             child: ChipWrapper(_skillRepository),
                           );
                         }
-                        return LinearProgressIndicator(backgroundColor: Colors.transparent,);
+                        return LinearProgressIndicator(
+                          backgroundColor: Colors.transparent,);
                       })));
         },
       ),
       IconButton(
         icon: Icon(Icons.clear),
-        onPressed: (){
+        onPressed: () {
           query = "";
         },
       ),
@@ -88,17 +96,23 @@ class ProjectSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     projectBloc.searchProject(requestedSkills);
     return StreamBuilder(
-      stream: projectBloc.searchedProjectStream,
-      builder: (context, snapshot) {
-        if( snapshot.hasData ){
-          print(snapshot.data);
+        stream: projectBloc.searchedProjectStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            print(snapshot.data);
+            List<Project> projects = snapshot.data;
+            return ListView.builder(
+                itemCount: projects.length,
+                itemBuilder: (context, index){
+                  return ProjectCard(
+                    item: projects[index],
+                    context: context,
+                    skillRepository: _skillRepository,
+                  );
+                });
+          }
+          return LinearProgressIndicator();
         }
-        return ListView(
-          children: <Widget>[
-            Placeholder(),
-          ],
-        );
-      }
     );
   }
 
@@ -118,11 +132,17 @@ class ProjectSearchDelegate extends SearchDelegate {
           children: <Widget>[
             Image.asset("images/no_result_project.png", fit: BoxFit.fitWidth,),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               child: Text(
                 "!نتیجه ای یافت نشد\nاز انتخاب مهارت های مورد نظرت مطمئن شو",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline1,
               ),
             ),
           ],
@@ -166,13 +186,15 @@ class _ChipWrapperState extends State<ChipWrapper> {
 
   @override
   void initState() {
-    allUserSKills.forEach((element) {permanentUserSkills.add(element);});
+    allUserSKills.forEach((element) {
+      permanentUserSkills.add(element);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: Wrap(
         children: _buildChipList(),
@@ -183,12 +205,12 @@ class _ChipWrapperState extends State<ChipWrapper> {
 
   _buildChipList() {
     List<Widget> list = [];
-    for(var item in permanentUserSkills){
-      bool _isDeleted = ! requestedSkills.contains(item);
+    for (var item in permanentUserSkills) {
+      bool _isDeleted = !requestedSkills.contains(item);
       Chip ch = Chip(
-        onDeleted: (){
+        onDeleted: () {
           setState(() {
-            if(_isDeleted){
+            if (_isDeleted) {
               requestedSkills.add(item);
             } else {
               requestedSkills.remove(item);
@@ -197,11 +219,123 @@ class _ChipWrapperState extends State<ChipWrapper> {
         },
         label: Text(skillRepository.findSkillNameByCode(item)),
         backgroundColor: _isDeleted ? Colors.grey : Colors.lightBlue,
-        deleteIcon: Icon(_isDeleted ? Icons.add_circle_outline : Icons.remove_circle_outline, size: 20,),
+        deleteIcon: Icon(
+          _isDeleted ? Icons.add_circle_outline : Icons.remove_circle_outline,
+          size: 20,),
       );
       list.add(ch);
     }
     return list;
   }
-
 }
+
+class ProjectCard extends StatelessWidget {
+  const ProjectCard({
+    @required this.item,
+    @required this.context,
+    this.skillRepository
+  });
+
+  final Project item;
+  final BuildContext context;
+  final SkillRepository skillRepository;
+
+  @override
+  Widget build(BuildContext context) {
+    return AbstractProjectCard(
+      title: item.name,
+      caption: item.descriptions,
+      buttonOpenText: 'جزئیات',
+      children: <Widget>[
+        SizedBox(height: 20),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            'مهارت ها',
+            style: Theme
+                .of(context)
+                .textTheme
+                .subtitle,
+          ),
+        ),
+        Wrap(
+          children: _buildSkillChips(skillCodes: item.skillCodes, skillRepository: skillRepository),
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            'تیم این پروژه',
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline3,
+          ),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          primary: false,
+          itemCount: item.users.length,
+          itemBuilder: (context, index) {
+            return CustomButton(
+              leftColor: button1Color,
+              rightColor: primaryColor,
+              name: (item.users[index]).toString().split(" ").first,
+              lastname: (item.users[index]).toString().split(" ").last,
+              trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
+              showArrow: true,
+            );
+          },
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            'سازنده',
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline3,
+          ),
+        ),
+        CustomButton(
+          leftColor: button1Color,
+          rightColor: primaryColor,
+          name: item.creator.firstName,
+          lastname: item.creator.lastName,
+          trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
+          showArrow: true,
+        ),
+        SizedBox(height: 15),
+        RaisedButton(
+          child: Text('درخواست مشارکت', style: Theme
+              .of(context)
+              .textTheme
+              .button),
+          onPressed: () {
+            projectBloc.corporateRequest(item.id);
+            Scaffold.of(context).showSnackBar(SnackBar(content: Text("...در حال ارسال درخواست", textAlign: TextAlign.right,),));
+          },
+        )
+      ],
+    );
+  }
+  _buildSkillChips({List skillCodes, SkillRepository skillRepository}) {
+    List<Widget> result = [];
+    for (int i in skillCodes) {
+      result.add(Chip(
+        label: Text(skillRepository.findSkillNameByCode(i)),
+      ));
+      result.add(SizedBox(
+        width: 5,
+      ));
+    }
+    if (result == null) {
+      result.add(Center(
+        child: Text(""),
+      ));
+    }
+    return result;
+  }
+}
+

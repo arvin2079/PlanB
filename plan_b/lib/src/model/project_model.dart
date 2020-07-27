@@ -1,6 +1,4 @@
 import 'package:planb/src/bloc/project_bloc.dart';
-import 'package:planb/src/model/cooperation_model.dart';
-import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 
 class Project {
@@ -12,7 +10,7 @@ class Project {
   String image;
   String descriptions;
   bool activation;
-
+  List users;
 
   Project(
       {this.id,
@@ -22,7 +20,8 @@ class Project {
       this.startDate,
       this.image,
       this.descriptions,
-      this.activation});
+      this.activation,
+      this.users});
 
   factory Project.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
@@ -34,7 +33,8 @@ class Project {
         startDate: DateTime.parse(json['StartDate']),
         image: json['image'],
         descriptions: json['descriptions'],
-        activation: json['activation']);
+        activation: json['activation'],
+        users: json['user_set'] != null ? (json['user_set'] as List) : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -50,6 +50,7 @@ class Project {
     data['image'] = this.image;
     data['descriptions'] = this.descriptions;
     data['activation'] = this.activation;
+    data['user_set'] = this.users;
     return data;
   }
 
