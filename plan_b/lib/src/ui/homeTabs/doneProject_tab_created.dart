@@ -3,6 +3,7 @@ import 'package:planb/src/bloc/dsd_project_bloc.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/resume_screen.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/request_user_button.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
@@ -119,7 +120,11 @@ class CreatorViewProjectCard extends StatelessWidget {
               lastname: item.users[index].user.lastName,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ResumeScreen(id: item.users[index].user.id, skillRepository: skillRepository,)
+                ));
+              },
             );
           },
         ),
@@ -179,6 +184,11 @@ class CreatorViewProjectCard extends StatelessWidget {
           lastname: item.project.creator.lastName,
           trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
           showArrow: true,
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ResumeScreen(id: item.project.creator.id, skillRepository: skillRepository,)
+            ));
+          },
         ),
         SizedBox(height: 15),
         RaisedButton(

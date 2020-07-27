@@ -106,7 +106,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
-                                user.description,
+                                user.description ?? "",
                                 textDirection: TextDirection.rtl,
                                 style: Theme.of(context)
                                     .textTheme
