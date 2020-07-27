@@ -6,6 +6,7 @@ import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/resume_screen.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/request_user_button.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
@@ -110,6 +111,9 @@ class ProjectSearchDelegate extends SearchDelegate {
                     skillRepository: _skillRepository,
                   );
                 });
+          }
+          if(requestedSkills == null || requestedSkills.isEmpty){
+            return _buildNoResult(context);
           }
           return LinearProgressIndicator();
         }
@@ -284,6 +288,11 @@ class ProjectCard extends StatelessWidget {
               lastname: (item.users[index]).toString().split(" ").last,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ResumeScreen(id: item.users[index].user.id, skillRepository: skillRepository,)
+                ));
+              },
             );
           },
         ),
@@ -305,6 +314,11 @@ class ProjectCard extends StatelessWidget {
           lastname: item.creator.lastName,
           trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
           showArrow: true,
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ResumeScreen(id: item.creator.id, skillRepository: skillRepository,)
+            ));
+          },
         ),
         SizedBox(height: 15),
         RaisedButton(
