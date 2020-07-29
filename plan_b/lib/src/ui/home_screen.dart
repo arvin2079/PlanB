@@ -25,8 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _buildSkillRepository();
     _getUserId();
     _tabs = [
-      ProjectScreen(),
-      NewProjectScreen(),
     ];
     super.initState();
   }
@@ -34,22 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     userBloc.getCompleteProfileFields();
-    _tabs.add(FutureBuilder(
-      future: _getUserId(),
-      builder: (context, snapshot) {
-        return StreamBuilder(
-            stream: userBloc.skillsStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ResumeScreen(
-                  id: id,
-                  skillRepository: _skillRepository,
-                );
-              }
-              return Center(child: CircularProgressIndicator());
-            });
-      },
-    ));
+    _initializeTabs();
     return Scaffold(
       body: _tabs[_selected],
       bottomNavigationBar: BottomNavigationBar(
@@ -106,5 +89,38 @@ class _HomeScreenState extends State<HomeScreen> {
         _skillRepository = SkillRepository(skills: _skillObjects);
       }
     });
+  }
+
+  void _initializeTabs() async{
+    _tabs.add(
+        StreamBuilder(
+            stream: userBloc.skillsStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ProjectScreen(
+                  skillRepository: _skillRepository,
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            }
+        )
+    );
+    _tabs.add(NewProjectScreen());
+    _tabs.add(FutureBuilder(
+      future: _getUserId(),
+      builder: (context, snapshot) {
+        return StreamBuilder(
+            stream: userBloc.skillsStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ResumeScreen(
+                  id: id,
+                  skillRepository: _skillRepository,
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            });
+      },
+    ));
   }
 }
