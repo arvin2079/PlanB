@@ -25,7 +25,7 @@ class Skill {
   }
 }
 
-class SkillRepository{
+class SkillRepository {
   List<Skill> skills;
 
   SkillRepository({this.skills});
@@ -39,29 +39,28 @@ class SkillRepository{
     return null;
   }
 
-  String findSkillNameByCode(code){
-    for(Skill s in skills){
-      if(s.code == code){
+  String findSkillNameByCode(code) {
+    for (Skill s in skills) {
+      if (s.code == code) {
         return s.name;
       }
     }
     return null;
   }
 
-  List<String> getNames(){
+  List<String> getNames() {
     List result = <String>[];
-    for (Skill s in skills){
+    for (Skill s in skills) {
       result.add(s.name);
     }
     return result;
   }
 
-  List<int> getCodes(){
+  List<int> getCodes() {
     List result = <int>[];
-    for (Skill s in skills){
+    for (Skill s in skills) {
       result.add(s.code);
     }
     return result;
   }
-
 }

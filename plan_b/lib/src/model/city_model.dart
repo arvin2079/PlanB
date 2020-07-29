@@ -17,7 +17,7 @@ class City {
   }
 }
 
-class CityRepository{
+class CityRepository {
   List<City> cities;
 
   CityRepository({this.cities});
@@ -31,18 +31,18 @@ class CityRepository{
     return null;
   }
 
-  String findCityTitleByCode(code){
-    for(City c in cities){
-      if(c.code == code){
+  String findCityTitleByCode(code) {
+    for (City c in cities) {
+      if (c.code == code) {
         return c.title;
       }
     }
     return null;
   }
 
-  List<String> getTitles(){
+  List<String> getTitles() {
     List result = <String>[];
-    for (City c in cities){
+    for (City c in cities) {
       result.add(c.title);
     }
     return result;

@@ -81,7 +81,10 @@ class _AbstractProjectCardState extends State<AbstractProjectCard>
             child: ListTile(
               title: Text(
                 widget.title,
-                style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 24),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4
+                    .copyWith(fontSize: 24),
               ),
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 5),

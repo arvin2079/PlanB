@@ -52,7 +52,6 @@ class _CustomTextFieldState extends State<CustomTextField>
             ? Theme.of(context).textTheme.display1
             : Theme.of(context).textTheme.display2,
         onChanged: (value) {
-          print(value);
           setState(() {
             if (hasEnglishChar(value) || value.isEmpty) {
               _isPersian = false;

@@ -68,11 +68,8 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
 }
 
 class ProjectCard extends StatelessWidget {
-  const ProjectCard({
-    @required this.item,
-    @required this.context,
-    this.skillRepository
-  });
+  const ProjectCard(
+      {@required this.item, @required this.context, this.skillRepository});
 
   final Project item;
   final BuildContext context;
@@ -90,24 +87,19 @@ class ProjectCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'مهارت ها',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline3,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Wrap(
-          children: _buildSkillChips(skillCodes: item.skillCodes, skillRepository: skillRepository),
+          children: _buildSkillChips(
+              skillCodes: item.skillCodes, skillRepository: skillRepository),
         ),
         SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'تیم این پروژه',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline3,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         ListView.builder(
@@ -122,10 +114,12 @@ class ProjectCard extends StatelessWidget {
               lastname: (item.users[index]).toString().split(" ").last,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ResumeScreen(id: item.users[index].user.id, skillRepository: skillRepository,)
-                ));
+                    builder: (context) => ResumeScreen(
+                          id: item.users[index].user.id,
+                          skillRepository: skillRepository,
+                        )));
               },
             );
           },
@@ -135,10 +129,7 @@ class ProjectCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'سازنده',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline3,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         CustomButton(
@@ -148,16 +139,19 @@ class ProjectCard extends StatelessWidget {
           lastname: item.creator.lastName,
           trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
           showArrow: true,
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ResumeScreen(id: item.creator.id, skillRepository: skillRepository,)
-            ));
+                builder: (context) => ResumeScreen(
+                      id: item.creator.id,
+                      skillRepository: skillRepository,
+                    )));
           },
         ),
         SizedBox(height: 15),
       ],
     );
   }
+
   _buildSkillChips({List skillCodes, SkillRepository skillRepository}) {
     List<Widget> result = [];
     for (int i in skillCodes) {
@@ -176,8 +170,6 @@ class ProjectCard extends StatelessWidget {
     return result;
   }
 }
-
-
 
 class OthersViewProjectCard extends StatelessWidget {
   const OthersViewProjectCard({

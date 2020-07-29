@@ -47,15 +47,12 @@ class DSDUser {
 
   DSDUser({this.id, this.user});
 
-  factory DSDUser.fromJson(Map<String, dynamic> json){
-    return DSDUser(
-      id: json['id'],
-      user: User.fromJson(json['user_ser'])
-    );
+  factory DSDUser.fromJson(Map<String, dynamic> json) {
+    return DSDUser(id: json['id'], user: User.fromJson(json['user_ser']));
   }
 
-  Map <String, dynamic> toJson(){
-    Map<String , dynamic> data = {};
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {};
 
     data['user_ser'] = this.user.toJson();
     data['id'] = this.id;

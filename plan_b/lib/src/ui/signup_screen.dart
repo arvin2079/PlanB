@@ -44,7 +44,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
               return Center(child: CircularProgressIndicator());
             }
             return NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
                     expandedHeight: 200.0,
@@ -52,14 +53,19 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
                     pinned: true,
                     elevation: 0,
                     flexibleSpace: FlexibleSpaceBar(
-                      title: Text("PlanB",),
+                      title: Text(
+                        "PlanB",
+                      ),
                       centerTitle: true,
                       background: Container(
                         color: backgroundColor,
                         child: ClipRRect(
-                            borderRadius:
-                            BorderRadius.only(bottomLeft: Radius.circular(40)),
-                            child: Image.asset("images/loginBackground.jpg", fit: BoxFit.fitWidth,)),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40)),
+                            child: Image.asset(
+                              "images/loginBackground.jpg",
+                              fit: BoxFit.fitWidth,
+                            )),
                       ),
                     ),
                   ),
@@ -167,7 +173,6 @@ class _SignUpScreenState extends State<SignUpScreen> with SignUpValidator {
                                   decoration: InputDecoration(
                                     hintText: "ایمیل",
                                   ),
-
                                   textAlign: TextAlign.right,
                                   controller: _emailController,
                                   onSaved: (text) {

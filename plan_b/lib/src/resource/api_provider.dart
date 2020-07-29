@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/project_model.dart';
@@ -13,6 +12,7 @@ class APIProvider {
 
   // Header parameters for request
   String _baseUrl = "http://192.168.43.147:8000/";
+
 //  String _baseUrl = "http://192.168.1.7:8000/";
   Map<String, String> headers = {
     "Content-type": "application/json",
@@ -128,15 +128,13 @@ class APIProvider {
     final response = await client.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       List list = map['projects'];
       List<Project> projects = List();
-      for (var p in list){
+      for (var p in list) {
         projects.add(Project.fromJson(p));
       }
       return projects;
-
     } else {
       throw MessagedException("Something went wrong");
     }
@@ -152,43 +150,37 @@ class APIProvider {
     final response = await client.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       List list = map['projects'];
       List<DSDProject> projects = List();
-      for (var p in list){
+      for (var p in list) {
         projects.add(DSDProject.fromJson(p));
       }
       return projects;
-
     } else {
       throw MessagedException("Something went wrong");
     }
   }
 
-  manageUserRequest(int projectId, int cooperId, bool flag) async{
+  manageUserRequest(int projectId, int cooperId, bool flag) async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/dsdproject/$projectId/cooperation";
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // if flag == true requested will be accepted else it will be rejected
-    String body = jsonEncode({
-      "html" : "false",
-      "isState" : "$flag",
-      "cooper_id" : cooperId
-    });
+    String body = jsonEncode(
+        {"html": "false", "isState": "$flag", "cooper_id": cooperId});
     // Sending request
     final response = await client.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
-
     } else {
       throw MessagedException("Something went wrong");
     }
   }
 
-  corporateRequest(int projectId) async{
+  corporateRequest(int projectId) async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/project/$projectId/";
@@ -198,61 +190,58 @@ class APIProvider {
     final response = await client.post(url, headers: headers);
 
     if (response.statusCode == 200) {
-      print(response.body);
     } else {
       throw MessagedException("Something went wrong");
     }
   }
 
-  Future<List> searchProject(List requestedSkills) async{
+  Future<List> searchProject(List requestedSkills) async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String url = _baseUrl + "dashboard/searchproject/?skills=${requestedSkills.toString()}";
+    String url = _baseUrl +
+        "dashboard/searchproject/?skills=${requestedSkills.toString()}";
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
     final response = await client.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       List list = map['projects'];
       List<Project> projects = List();
-      for (var p in list){
+      for (var p in list) {
         projects.add(Project.fromJson(p));
       }
       return projects;
-
     } else {
       throw MessagedException("Something went wrong");
     }
   }
 
-  Future<List> searchUser(List requestedSkills) async{
+  Future<List> searchUser(List requestedSkills) async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String url = _baseUrl + "dashboard/searchperson/?skills=${requestedSkills.toString()}";
+    String url = _baseUrl +
+        "dashboard/searchperson/?skills=${requestedSkills.toString()}";
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
     final response = await client.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       List list = map['username'];
       List<User> users = List();
-      for (var p in list){
+      for (var p in list) {
         users.add(User.fromJson(p));
       }
       return users;
-
     } else {
       throw MessagedException("Something went wrong");
     }
   }
 
-  Future<User> getResume(int id) async{
+  Future<User> getResume(int id) async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/ResumeAndroid/$id/";
@@ -262,13 +251,10 @@ class APIProvider {
     final response = await client.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
       return User.fromJson(map);
-
     } else {
       throw MessagedException("Something went wrong");
     }
   }
-
 }

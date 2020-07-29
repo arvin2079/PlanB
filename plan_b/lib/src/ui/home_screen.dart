@@ -41,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
             stream: userBloc.skillsStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print(_skillRepository.toString() + "++++++++");
                 return ResumeScreen(
                   id: id,
                   skillRepository: _skillRepository,

@@ -3,7 +3,6 @@ import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/resource/api_provider.dart';
 
 class Repository {
-
   APIProvider _provider = APIProvider();
 
   getNewToken(User user) => _provider.signUpNewUser(user);
@@ -27,7 +26,8 @@ class Repository {
 
   getDSDProjects() => _provider.getDSDProjects();
 
-  manageUserRequest(projectId, cooperId, flag) => _provider.manageUserRequest(projectId, cooperId, flag);
+  manageUserRequest(projectId, cooperId, flag) =>
+      _provider.manageUserRequest(projectId, cooperId, flag);
 
   corporateRequest(projectId) => _provider.corporateRequest(projectId);
 }

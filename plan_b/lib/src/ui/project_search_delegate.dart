@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:planb/src/bloc/dsd_project_bloc.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
-import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/resume_screen.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
-import 'package:planb/src/ui/uiComponents/request_user_button.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 
 List requestedSkills;
 List allUserSKills;
 
 class ProjectSearchDelegate extends SearchDelegate {
-
   SkillRepository _skillRepository;
-
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
-
       IconButton(
         icon: Icon(Icons.tune),
         onPressed: () {
@@ -42,10 +36,10 @@ class ProjectSearchDelegate extends SearchDelegate {
                         FlatButton(
                           child: Row(
                             children: <Widget>[
-                              Text('ادامه', style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .headline6,),
+                              Text(
+                                'ادامه',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
                             ],
                           ),
                           onPressed: () {
@@ -70,7 +64,8 @@ class ProjectSearchDelegate extends SearchDelegate {
                           );
                         }
                         return LinearProgressIndicator(
-                          backgroundColor: Colors.transparent,);
+                          backgroundColor: Colors.transparent,
+                        );
                       })));
         },
       ),
@@ -100,11 +95,10 @@ class ProjectSearchDelegate extends SearchDelegate {
         stream: projectBloc.searchedProjectStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data);
             List<Project> projects = snapshot.data;
             return ListView.builder(
                 itemCount: projects.length,
-                itemBuilder: (context, index){
+                itemBuilder: (context, index) {
                   return ProjectCard(
                     item: projects[index],
                     context: context,
@@ -112,12 +106,11 @@ class ProjectSearchDelegate extends SearchDelegate {
                   );
                 });
           }
-          if(requestedSkills == null || requestedSkills.isEmpty){
+          if (requestedSkills == null || requestedSkills.isEmpty) {
             return _buildNoResult(context);
           }
           return LinearProgressIndicator();
-        }
-    );
+        });
   }
 
   @override
@@ -134,19 +127,16 @@ class ProjectSearchDelegate extends SearchDelegate {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset("images/no_result_project.png", fit: BoxFit.fitWidth,),
+            Image.asset(
+              "images/no_result_project.png",
+              fit: BoxFit.fitWidth,
+            ),
             Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
               child: Text(
                 "!نتیجه ای یافت نشد\nاز انتخاب مهارت های مورد نظرت مطمئن شو",
                 textAlign: TextAlign.center,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline1,
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
           ],
@@ -167,12 +157,9 @@ class ProjectSearchDelegate extends SearchDelegate {
       }
     });
   }
-
-
 }
 
 class ChipWrapper extends StatefulWidget {
-
   final SkillRepository skillRepository;
 
   ChipWrapper(this.skillRepository);
@@ -182,7 +169,6 @@ class ChipWrapper extends StatefulWidget {
 }
 
 class _ChipWrapperState extends State<ChipWrapper> {
-
   SkillRepository skillRepository;
   List permanentUserSkills = [];
 
@@ -225,7 +211,8 @@ class _ChipWrapperState extends State<ChipWrapper> {
         backgroundColor: _isDeleted ? Colors.grey : Colors.lightBlue,
         deleteIcon: Icon(
           _isDeleted ? Icons.add_circle_outline : Icons.remove_circle_outline,
-          size: 20,),
+          size: 20,
+        ),
       );
       list.add(ch);
     }
@@ -234,11 +221,8 @@ class _ChipWrapperState extends State<ChipWrapper> {
 }
 
 class ProjectCard extends StatelessWidget {
-  const ProjectCard({
-    @required this.item,
-    @required this.context,
-    this.skillRepository
-  });
+  const ProjectCard(
+      {@required this.item, @required this.context, this.skillRepository});
 
   final Project item;
   final BuildContext context;
@@ -256,24 +240,19 @@ class ProjectCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'مهارت ها',
-            style: Theme
-                .of(context)
-                .textTheme
-                .subtitle,
+            style: Theme.of(context).textTheme.subtitle,
           ),
         ),
         Wrap(
-          children: _buildSkillChips(skillCodes: item.skillCodes, skillRepository: skillRepository),
+          children: _buildSkillChips(
+              skillCodes: item.skillCodes, skillRepository: skillRepository),
         ),
         SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'تیم این پروژه',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline3,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         ListView.builder(
@@ -288,10 +267,12 @@ class ProjectCard extends StatelessWidget {
               lastname: (item.users[index]).toString().split(" ").last,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ResumeScreen(id: item.users[index].user.id, skillRepository: skillRepository,)
-                ));
+                    builder: (context) => ResumeScreen(
+                          id: item.users[index].user.id,
+                          skillRepository: skillRepository,
+                        )));
               },
             );
           },
@@ -301,10 +282,7 @@ class ProjectCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'سازنده',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline3,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         CustomButton(
@@ -314,26 +292,32 @@ class ProjectCard extends StatelessWidget {
           lastname: item.creator.lastName,
           trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
           showArrow: true,
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ResumeScreen(id: item.creator.id, skillRepository: skillRepository,)
-            ));
+                builder: (context) => ResumeScreen(
+                      id: item.creator.id,
+                      skillRepository: skillRepository,
+                    )));
           },
         ),
         SizedBox(height: 15),
         RaisedButton(
-          child: Text('درخواست مشارکت', style: Theme
-              .of(context)
-              .textTheme
-              .button),
+          child:
+              Text('درخواست مشارکت', style: Theme.of(context).textTheme.button),
           onPressed: () {
             projectBloc.corporateRequest(item.id);
-            Scaffold.of(context).showSnackBar(SnackBar(content: Text("...در حال ارسال درخواست", textAlign: TextAlign.right,),));
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(
+                "...در حال ارسال درخواست",
+                textAlign: TextAlign.right,
+              ),
+            ));
           },
         )
       ],
     );
   }
+
   _buildSkillChips({List skillCodes, SkillRepository skillRepository}) {
     List<Widget> result = [];
     for (int i in skillCodes) {
@@ -352,4 +336,3 @@ class ProjectCard extends StatelessWidget {
     return result;
   }
 }
-

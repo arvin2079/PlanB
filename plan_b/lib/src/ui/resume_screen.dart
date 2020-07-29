@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
-import 'package:planb/src/ui/home_screen.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
@@ -29,7 +28,6 @@ class _ResumeScreenState extends State<ResumeScreen> {
 
   @override
   void initState() {
-    print(widget.skillRepository.toString() + "-----");
     userBloc.getResume(id);
     super.initState();
   }
@@ -244,7 +242,6 @@ class _ResumeScreenState extends State<ResumeScreen> {
           ),
         ));
   }
-
 
   _buildSkillChips(List skillCodes) {
     List<Widget> result = [];

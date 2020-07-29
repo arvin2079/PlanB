@@ -101,26 +101,21 @@ class UserBloc extends Bloc {
     }
   }
 
-  getResume(id) async{
-    try{
+  getResume(id) async {
+    try {
       User user = await repository.getResume(id);
-      print(user);
       _resumeStreamController.sink.add(user);
-    }
-    on MessagedException catch (e){
+    } on MessagedException catch (e) {
       _resumeStreamController.addError(e);
     }
   }
 
-  _saveUsersInfoInSharedPreferences(User user) async{
+  _saveUsersInfoInSharedPreferences(User user) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString('firstName', user.firstName);
     sharedPreferences.setString('lastName', user.lastName);
     sharedPreferences.setInt('id', user.id);
   }
-
-
-
 
   @override
   void dispose() {

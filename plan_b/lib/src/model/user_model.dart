@@ -27,9 +27,8 @@ class User {
   String telegram;
 
   User(
-      {
-        this.id,
-        this.studentCode,
+      {this.id,
+      this.studentCode,
       this.username,
       this.password,
       this.email,
@@ -52,26 +51,25 @@ class User {
       this.telegram});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    if (json == null) {print("json null");return null;}
+    if (json == null) {
+      print("json null");
+      return null;
+    }
 
     User user = User(
-      id: json['id'],
+        id: json['id'],
         studentCode: json['student_code'],
         username: json['username'],
         password: json['password'],
         email: json['email'],
         firstName: json['first_name'],
         lastName: json['last_name'],
-        dateJoined: json['date_joined'] != null ? DateTime.parse(json['date_joined']) : null,
+        dateJoined: json['date_joined'] != null
+            ? DateTime.parse(json['date_joined'])
+            : null,
         avatar: json['avatar'],
         gender: json['gender'],
-        skillCodes:
-        json['skills'] != null ? (json['skills'] as List) : null,
-        /*projects: json['projects'] != null
-            ? (json['projects'] as List)
-            .map((i) => Project.fromJson(i))
-            .toList()
-            : null,*/
+        skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
         universityCode: json['university'],
         cityCode: json['city'].toString(),
         phoneNumber: json['phone_number'],

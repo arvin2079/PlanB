@@ -37,7 +37,9 @@ class HomeDrawer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              firstName != null && firstName.isNotEmpty ? firstName : 'first name',
+                              firstName != null && firstName.isNotEmpty
+                                  ? firstName
+                                  : 'first name',
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               style: Theme.of(context).textTheme.headline5,
@@ -46,7 +48,9 @@ class HomeDrawer extends StatelessWidget {
                               height: 10,
                             ),
                             Text(
-                              lastName != null && lastName.isNotEmpty ? lastName : 'last name',
+                              lastName != null && lastName.isNotEmpty
+                                  ? lastName
+                                  : 'last name',
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               style: Theme.of(context).textTheme.headline5,
@@ -60,17 +64,19 @@ class HomeDrawer extends StatelessWidget {
                           radius: 50,
                           child: ClipOval(
                               child: Image.asset(
-                                "images/noImage.png",
-                                fit: BoxFit.cover,
-                                width: 95.0,
-                                height: 95.0,
-                              )),
+                            "images/noImage.png",
+                            fit: BoxFit.cover,
+                            width: 95.0,
+                            height: 95.0,
+                          )),
                         ),
                       ],
                     ),
                   ),
-                  _buildListTile(context,"پروفایل", Icons.person, '/edit_profile'),
-                  _buildListTile(context, "درباره ما", Icons.info_outline, '/home'),
+                  _buildListTile(
+                      context, "پروفایل", Icons.person, '/edit_profile'),
+                  _buildListTile(
+                      context, "درباره ما", Icons.info_outline, '/home'),
                   _buildListTile(context, "خروج", Icons.exit_to_app, '/login'),
                 ],
               ),
@@ -81,7 +87,8 @@ class HomeDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildListTile(BuildContext context, String title, IconData iconData, String destinationPath) {
+  Widget _buildListTile(BuildContext context, String title, IconData iconData,
+      String destinationPath) {
     return Material(
       color: Colors.transparent,
       child: InkWell(

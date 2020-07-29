@@ -8,59 +8,60 @@ import 'package:rxdart/rxdart.dart';
 class ProjectBloc extends Bloc {
   Repository _repository = Repository();
   PublishSubject<List<Project>> _projectStreamController = PublishSubject();
-  PublishSubject<List<Project>> _searchedProjectStreamController = PublishSubject();
+  PublishSubject<List<Project>> _searchedProjectStreamController =
+      PublishSubject();
   PublishSubject<List<User>> _searchedUserStreamController = PublishSubject();
   PublishSubject<List<User>> _corporateRequests = PublishSubject();
 
   Stream<List<Project>> get projectStream => _projectStreamController.stream;
-  Stream<List<Project>> get searchedProjectStream => _searchedProjectStreamController.stream;
-  Stream<List<User>> get searchedUserStream => _searchedUserStreamController.stream;
+
+  Stream<List<Project>> get searchedProjectStream =>
+      _searchedProjectStreamController.stream;
+
+  Stream<List<User>> get searchedUserStream =>
+      _searchedUserStreamController.stream;
+
   Stream<List<User>> get corporateRequestsStream => _corporateRequests.stream;
 
-  createNewProject(Project requestProject) async{
-    try{
+  createNewProject(Project requestProject) async {
+    try {
       Project project = await _repository.createNewProject(requestProject);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _projectStreamController.addError(e);
     }
   }
 
   getProjects() async {
-    try{
+    try {
       List<Project> projects = await _repository.getProjects();
       _projectStreamController.sink.add(projects);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _projectStreamController.addError(e);
     }
   }
 
   searchProject(requestedSkills) async {
-    try{
+    try {
       List<Project> projects = await _repository.searchProject(requestedSkills);
       _searchedProjectStreamController.sink.add(projects);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _searchedProjectStreamController.addError(e);
     }
   }
 
   searchUser(requestedSkills) async {
-    try{
+    try {
       List<User> users = await _repository.searchUser(requestedSkills);
       _searchedUserStreamController.sink.add(users);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _searchedUserStreamController.addError(e);
     }
   }
 
-  corporateRequest(int projectId) async{
-    try{
+  corporateRequest(int projectId) async {
+    try {
       await _repository.corporateRequest(projectId);
-    }
-    on MessagedException catch(e){
+    } on MessagedException catch (e) {
       _corporateRequests.addError(e);
     }
   }

@@ -86,7 +86,6 @@ class UserSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    print(requestedSkills);
     if (requestedSkills == null) {
       return _buildNoResult(context);
     }
@@ -119,7 +118,10 @@ class UserSearchDelegate extends SearchDelegate {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ResumeScreen(id: item.id, skillRepository: _skillRepository,)));
+                                builder: (context) => ResumeScreen(
+                                      id: item.id,
+                                      skillRepository: _skillRepository,
+                                    )));
                       },
                     ),
                   ),
@@ -212,7 +214,6 @@ class _ChipWrapperState extends State<ChipWrapper> {
     List<Widget> list = [];
     for (var item in skillRepository.getCodes()) {
       bool _isDeleted = !requestedSkills.contains(item);
-//      print(skillRepository.findSkillNameByCode(item) + "  " + _isDeleted.toString()  + "\n");
       Chip ch = Chip(
         onDeleted: () {
           setState(() {
@@ -220,7 +221,6 @@ class _ChipWrapperState extends State<ChipWrapper> {
               if (!requestedSkills.contains(item)) {
                 requestedSkills.add(item);
               }
-              print(requestedSkills);
             } else {
               requestedSkills.remove(item);
             }

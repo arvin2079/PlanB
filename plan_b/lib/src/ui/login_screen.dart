@@ -56,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> with LogInValidator {
                               TextFormField(
                                 style: Theme.of(context).textTheme.headline1,
                                 validator: (value) {
-                                  print(usernameValidator.isValid(value));
                                   return usernameValidator.isValid(value)
                                       ? null
                                       : notValidUsernameMessage;
@@ -148,15 +147,6 @@ class _LoginScreenState extends State<LoginScreen> with LogInValidator {
           Navigator.of(context).pushReplacementNamed('/home');
         } else if (value == AuthStatus.signedOut) {
           SnackBar snackBar = SnackBar(
-            //fixme snack bar must show based on response json
-            /*content: StreamBuilder(
-              stream: bloc.errorsStream,
-              builder: (context, AsyncSnapshot<String> snapshot){
-
-                for(String error in snapshot.data){}
-                return Text("");
-              },
-            ),*/
             content: Text(
               "خطا در ورود! دوباره امتخان کن...",
               textDirection: TextDirection.rtl,

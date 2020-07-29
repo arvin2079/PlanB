@@ -28,7 +28,7 @@ class University {
   }
 }
 
-class UniversityRepository{
+class UniversityRepository {
   List<University> universities;
 
   UniversityRepository({this.universities});
@@ -42,18 +42,18 @@ class UniversityRepository{
     return null;
   }
 
-  String findUniversityNameByCode(code){
-    for(University u in universities){
-      if(u.code == code){
+  String findUniversityNameByCode(code) {
+    for (University u in universities) {
+      if (u.code == code) {
         return u.name;
       }
     }
     return null;
   }
 
-  List<String> getNames(){
+  List<String> getNames() {
     List result = <String>[];
-    for (University u in universities){
+    for (University u in universities) {
       result.add(u.name);
     }
     return result;

@@ -19,7 +19,7 @@ class _AvatarState extends State<Avatar> {
 
   @override
   void initState() {
-    // TODO: getting saved image that user choose befor from database
+    // TODO: getting saved image that user choose before from database
     super.initState();
   }
 

@@ -1,10 +1,7 @@
-
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
 
-
-
-class Cooperation{
+class Cooperation {
   int id;
   String situation;
   User user;
@@ -12,7 +9,7 @@ class Cooperation{
 
   Cooperation({this.id, this.situation, this.user, this.project});
 
-  factory Cooperation.fromJson(Map<String, dynamic> map){
+  factory Cooperation.fromJson(Map<String, dynamic> map) {
     return Cooperation(
       id: map['id'],
       situation: map['Situation'],
@@ -21,7 +18,7 @@ class Cooperation{
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
 
     data['id'] = this.id;

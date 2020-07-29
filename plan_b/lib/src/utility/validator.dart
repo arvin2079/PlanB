@@ -29,7 +29,8 @@ class UsernameValidator with LanguageDetector implements StringValidator {
 
   @override
   bool isValid(String value) {
-    return /*value.length >= 5 && */regExp.stringMatch(value.trim()) == value.trim();
+    return /*value.length >= 5 && */ regExp.stringMatch(value.trim()) ==
+        value.trim();
   }
 }
 
@@ -67,21 +68,17 @@ class EnglishValidator with LanguageDetector implements StringValidator {
 class SocialMediaValidator implements StringValidator {
   @override
   bool isValid(String value) {
-    if(value.isEmpty)
-      return true;
-    if(isId(value))
-      return true;
+    if (value.isEmpty) return true;
+    if (isId(value)) return true;
     return false;
   }
 
   bool isId(String string) {
     RegExp reg = RegExp(r'\w');
-    for(int i=0 ; i< string.length ; i++) {
-      String s = string.substring(i, i+1);
-      if(!reg.hasMatch(s) && s != '@')
-        return false;
-      if(i != 0 && s == '@')
-        return false;
+    for (int i = 0; i < string.length; i++) {
+      String s = string.substring(i, i + 1);
+      if (!reg.hasMatch(s) && s != '@') return false;
+      if (i != 0 && s == '@') return false;
     }
     return reg.hasMatch(string);
   }
@@ -97,9 +94,12 @@ class SignUpValidator {
   final String notValidEmailMessage = 'ایمیل نامعتبر';
   final String notValidPasswordMessage = 'رمز عبور غیر مجاز';
   final String notValidUniIdMessage = 'کد دانشجویی غیر مجاز';
-  final String notValidUsernameMessage = 'پر کردن این فیلد به زبان انگلیسی الزامیست';
-  final String notValidFirstnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
-  final String notValidLastnameMessage = 'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidUsernameMessage =
+      'پر کردن این فیلد به زبان انگلیسی الزامیست';
+  final String notValidFirstnameMessage =
+      'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidLastnameMessage =
+      'پر کردن این فیلد به زبان فارسی الزامیست';
 }
 
 class LogInValidator {
@@ -117,14 +117,18 @@ class CompleteProfileValidator {
   final StringValidator phoneNumberValidator = PhoneNumberStringValidator();
   final String notValidUniIdMessage = 'کد دانشجویی غیر مجاز';
   final String notValidEmailMessage = 'ایمیل نامعتبر';
-  final String notValidPhoneNumberErrorMassage = 'شماره همراه صحیح خود را وارد کنید';
+  final String notValidPhoneNumberErrorMassage =
+      'شماره همراه صحیح خود را وارد کنید';
   final String notValidSocialMediaErrorMassage = 'نامعتبر';
-  final String notValidDescriptionErrorMassage = 'پر کردن این فیلد به زبان فارسی الزامیست';
+  final String notValidDescriptionErrorMassage =
+      'پر کردن این فیلد به زبان فارسی الزامیست';
 }
 
 class NewProjectValidator {
   final StringValidator projectNameValidator = NonEmptyStringValidator();
   final StringValidator descriptionValidator = NonEmptyStringValidator();
-  final String notValidDescriptionErrorMassage = 'پر کردن این ققسمت برای پروژه الزامیست';
-  final String notValidProjectNameErrorMassage = 'پر کردن این ققسمت برای پروژه الزامیست';
+  final String notValidDescriptionErrorMassage =
+      'پر کردن این ققسمت برای پروژه الزامیست';
+  final String notValidProjectNameErrorMassage =
+      'پر کردن این ققسمت برای پروژه الزامیست';
 }

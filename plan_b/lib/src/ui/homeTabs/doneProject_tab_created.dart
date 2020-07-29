@@ -18,14 +18,11 @@ class DoneProjectsTabCreated extends StatefulWidget {
 }
 
 class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
-
   @override
   void initState() {
     dsdProjectBloc.getProjects();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,32 +107,37 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        item.users != null && item.users.isNotEmpty ? ListView.builder(
-          shrinkWrap: true,
-          primary: false,
-          itemCount: item.users.length,
-          itemBuilder: (context, index) {
-            return CustomButton(
-              leftColor: button1Color,
-              rightColor: primaryColor,
-              name: item.users[index].user.firstName,
-              lastname: item.users[index].user.lastName,
-              trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
-              showArrow: true,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ResumeScreen(id: item.users[index].user.id, skillRepository: skillRepository,)
-                ));
-              },
-            );
-          },
-        ) : Text(
-          'هیچ کاربری پیدا نشد!',
-          style: Theme.of(context)
-              .textTheme
-              .headline1
-              .copyWith(color: Colors.grey[500]),
-        ),
+        item.users != null && item.users.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: item.users.length,
+                itemBuilder: (context, index) {
+                  return CustomButton(
+                    leftColor: button1Color,
+                    rightColor: primaryColor,
+                    name: item.users[index].user.firstName,
+                    lastname: item.users[index].user.lastName,
+                    trailingIcon:
+                        Icon(Icons.group, color: Colors.white, size: 150),
+                    showArrow: true,
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ResumeScreen(
+                                id: item.users[index].user.id,
+                                skillRepository: skillRepository,
+                              )));
+                    },
+                  );
+                },
+              )
+            : Text(
+                'هیچ کاربری پیدا نشد!',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1
+                    .copyWith(color: Colors.grey[500]),
+              ),
         SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -159,13 +161,15 @@ class CreatorViewProjectCard extends StatelessWidget {
                         Icon(Icons.group, color: Colors.white, size: 150),
                     onReject: () {
                       int projectId = (item.project.id);
-                      int cooperId  = (item.cooperation[index].id);
-                      dsdProjectBloc.manageUserRequest(projectId, cooperId, false);
+                      int cooperId = (item.cooperation[index].id);
+                      dsdProjectBloc.manageUserRequest(
+                          projectId, cooperId, false);
                     },
                     onAccept: () {
                       int projectId = (item.project.id);
-                      int cooperId  = (item.cooperation[index].id);
-                      dsdProjectBloc.manageUserRequest(projectId, cooperId, true);
+                      int cooperId = (item.cooperation[index].id);
+                      dsdProjectBloc.manageUserRequest(
+                          projectId, cooperId, true);
                     },
                   );
                 },
@@ -192,10 +196,12 @@ class CreatorViewProjectCard extends StatelessWidget {
           lastname: item.project.creator.lastName,
           trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
           showArrow: true,
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ResumeScreen(id: item.project.creator.id, skillRepository: skillRepository,)
-            ));
+                builder: (context) => ResumeScreen(
+                      id: item.project.creator.id,
+                      skillRepository: skillRepository,
+                    )));
           },
         ),
         SizedBox(height: 15),

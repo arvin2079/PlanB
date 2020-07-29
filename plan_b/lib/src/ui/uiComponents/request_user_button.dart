@@ -74,15 +74,17 @@ class RequestUserButton extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         name,
-                        style: Theme.of(context).textTheme.headline1.copyWith(
-                          color: Colors.white
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1
+                            .copyWith(color: Colors.white),
                       ),
                       Text(
                         lastname,
-                        style: Theme.of(context).textTheme.headline1.copyWith(
-                          color: Colors.white
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1
+                            .copyWith(color: Colors.white),
                       ),
                     ],
                   ),
@@ -101,7 +103,7 @@ class RequestUserButton extends StatelessWidget {
                 _buildIconShadow(),
                 Positioned(
                   left: 10,
-                    child: _buildDecisionButtons(context),
+                  child: _buildDecisionButtons(context),
                 ),
               ],
             ),
@@ -119,17 +121,20 @@ class RequestUserButton extends StatelessWidget {
           height: 35,
           minWidth: 70,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(radius), topLeft: Radius.circular(radius), bottomRight: Radius.circular(radius)),
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(radius),
+                topLeft: Radius.circular(radius),
+                bottomRight: Radius.circular(radius)),
           ),
           child: RaisedButton(
             elevation: 2,
             child: Text(
               'قبول',
               style: Theme.of(context).textTheme.caption.copyWith(
-                fontSize: 14,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             color: Colors.lightGreen,
             onPressed: onAccept,
@@ -142,17 +147,20 @@ class RequestUserButton extends StatelessWidget {
           height: 35,
           minWidth: 80,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(radius), topLeft: Radius.circular(radius), bottomLeft: Radius.circular(radius)),
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(radius),
+                topLeft: Radius.circular(radius),
+                bottomLeft: Radius.circular(radius)),
           ),
           child: RaisedButton(
             elevation: 2,
             child: Text(
               'رد',
               style: Theme.of(context).textTheme.caption.copyWith(
-                  fontSize: 14,
-                  color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             color: Colors.red,
             onPressed: onReject,
@@ -162,7 +170,7 @@ class RequestUserButton extends StatelessWidget {
     );
   }
 
-  void dispose(){
+  void dispose() {
     dispose();
   }
 
