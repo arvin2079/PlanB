@@ -6,12 +6,14 @@ import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/project_search_delegate.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/user_search_delegate.dart';
+
 import 'constants/constants.dart';
 import 'homeTabs/doneProject_tab_created.dart';
 import 'homeTabs/doneProject_tab_takePart.dart';
 
 class ProjectScreen extends StatefulWidget {
   ProjectScreen({this.onNavButtTab, this.skillRepository});
+
   final Function onNavButtTab;
   final SkillRepository skillRepository;
 
@@ -27,7 +29,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   void initState() {
     userBloc.getCompleteProfileFields();
     _buildSkillRepository();
-    if(_skillRepository == null){
+    if (_skillRepository == null) {
       _skillRepository = widget.skillRepository;
     }
     super.initState();
@@ -35,7 +37,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -50,18 +51,18 @@ class _ProjectScreenState extends State<ProjectScreen> {
           ringDiameter: 400,
           children: <Widget>[
             RaisedButton.icon(
-              label: Text('افراد' , style: Theme.of(context).textTheme.button),
+              label: Text('افراد', style: Theme.of(context).textTheme.button),
               icon: Icon(Icons.perm_identity, color: Colors.white),
-              onPressed: (){
+              onPressed: () {
                 showSearch(context: context, delegate: UserSearchDelegate());
               },
             ),
             RaisedButton.icon(
-              label: Text('پروژه ها', style: Theme.of(context).textTheme.button),
+              label:
+                  Text('پروژه ها', style: Theme.of(context).textTheme.button),
               icon: Icon(Icons.description, color: Colors.white),
-              onPressed: (){
+              onPressed: () {
                 showSearch(context: context, delegate: ProjectSearchDelegate());
-
               },
             ),
           ],
@@ -84,16 +85,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
         ),
         body: TabBarView(
           children: <Widget>[
-            StreamBuilder(
-              stream: userBloc.skillsStream,
-              builder: (context, snapshot){
-                if(snapshot.hasData || _skillRepository!=null){
-                  return DoneProjectsTabCreated(_skillRepository);
-                }
-                return Center(child: CircularProgressIndicator());
-              },
-            ),
-            DoneProjectsTabTakePart(),
+            DoneProjectsTabCreated(_skillRepository),
+            DoneProjectsTabTakePart(_skillRepository),
           ],
         ),
       ),
