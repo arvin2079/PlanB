@@ -93,7 +93,7 @@ class ProjectCard extends StatelessWidget {
             style: Theme
                 .of(context)
                 .textTheme
-                .subtitle,
+                .headline3,
           ),
         ),
         Wrap(
@@ -200,7 +200,7 @@ class OthersViewProjectCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
             'مهارت ها',
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Wrap(

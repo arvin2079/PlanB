@@ -110,7 +110,7 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        ListView.builder(
+        item.users != null && item.users.isNotEmpty ? ListView.builder(
           shrinkWrap: true,
           primary: false,
           itemCount: item.users.length,
@@ -129,6 +129,12 @@ class CreatorViewProjectCard extends StatelessWidget {
               },
             );
           },
+        ) : Text(
+          'هیچ کاربری پیدا نشد!',
+          style: Theme.of(context)
+              .textTheme
+              .headline1
+              .copyWith(color: Colors.grey[500]),
         ),
         SizedBox(height: 20),
         Padding(
