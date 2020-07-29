@@ -26,8 +26,10 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
+    dsdProjectBloc.getProjects();
     return StreamBuilder(
         stream: dsdProjectBloc.projectStream,
         builder: (context, snapshot) {

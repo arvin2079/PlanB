@@ -11,8 +11,9 @@ import 'homeTabs/doneProject_tab_created.dart';
 import 'homeTabs/doneProject_tab_takePart.dart';
 
 class ProjectScreen extends StatefulWidget {
-  ProjectScreen({this.onNavButtTab});
+  ProjectScreen({this.onNavButtTab, this.skillRepository});
   final Function onNavButtTab;
+  final SkillRepository skillRepository;
 
   @override
   _ProjectScreenState createState() => _ProjectScreenState();
@@ -26,6 +27,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
   void initState() {
     userBloc.getCompleteProfileFields();
     _buildSkillRepository();
+    if(_skillRepository == null){
+      _skillRepository = widget.skillRepository;
+    }
     super.initState();
   }
 
@@ -83,7 +87,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
             StreamBuilder(
               stream: userBloc.skillsStream,
               builder: (context, snapshot){
-                if(snapshot.hasData){
+                if(snapshot.hasData || _skillRepository!=null){
                   return DoneProjectsTabCreated(_skillRepository);
                 }
                 return Center(child: CircularProgressIndicator());
