@@ -121,7 +121,7 @@ class APIProvider {
   Future<List> getProjects() async {
     // Load token for place in request
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String url = _baseUrl + "dashboard/projects/";
+    String url = _baseUrl + "dashboard/projectsandroid/";
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
