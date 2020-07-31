@@ -165,6 +165,7 @@ class _NewProjectScreenState extends State<NewProjectScreen>
             stream: projectBloc.projectStream,
             builder: (context, snapshot) {
               bool _hasError = snapshot.hasError;
+              _chipsData = [];
               Widget widget = AlertDialog(
                 content: LinearProgressIndicator(
                   backgroundColor: Colors.transparent,

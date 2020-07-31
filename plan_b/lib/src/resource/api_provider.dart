@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class APIProvider {
   final Client client = Client();
 
+
+  //https://www.getpostman.com/collections/0323b1c9522a874a3904
   // Header parameters for request
   String _baseUrl = "http://192.168.43.147:8000/";
 
@@ -109,8 +111,9 @@ class APIProvider {
     // Sending request
     final response = await client.post(url, headers: headers, body: body);
 
-    if (response.statusCode == 201) {
-      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      var map = jsonDecode(utf8.decode(response.bodyBytes));
       Project project = Project.fromJson(map);
       return project;
     } else {

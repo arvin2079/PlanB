@@ -41,7 +41,7 @@ class Project {
     final Map<String, dynamic> data = Map<String, dynamic>();
 
     data['id'] = this.id;
-    data['creator'] = this.creator.toJson();
+    data['creator'] = this.creator != null ? this.creator.toJson() : null;
     data['Project_name'] = this.name;
     if (this.skillCodes != null) {
       data['skills'] = this.skillCodes.toList();
