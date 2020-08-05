@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planb/src/bloc/dsd_project_bloc.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
@@ -47,12 +48,14 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     List<Widget> _result = [];
 
     for (DSDProject item in items) {
-      CreatorViewProjectCard card = CreatorViewProjectCard(
-        item: item,
-        context: context,
-        skillRepository: widget.skillRepository,
-      );
-      _result.add(card);
+      if(item.project.activation){
+        CreatorViewProjectCard card = CreatorViewProjectCard(
+          item: item,
+          context: context,
+          skillRepository: widget.skillRepository,
+        );
+        _result.add(card);
+      }
     }
     if (_result == null || _result.isEmpty) {
       _result.add(Padding(
@@ -198,10 +201,19 @@ class CreatorViewProjectCard extends StatelessWidget {
         ),
         _buildCoopratorButton(context),
         SizedBox(height: 15),
-        RaisedButton(
-          child: Text('اتمام پروژه', style: Theme.of(context).textTheme.button),
-          onPressed: () {},
-        )
+        item.project.activation
+            ? RaisedButton(
+                child: Text('اتمام پروژه',
+                    style: Theme.of(context).textTheme.button),
+                onPressed: () {
+                  dsdProjectBloc.finishProject(item.project.id);
+                  Scaffold.of(context).showSnackBar(SnackBar(content: Text('درخواست اتمام پروژه ${item.project.name} ارسال شد', textAlign: TextAlign.right,),));
+                },
+              )
+            : RaisedButton(
+                child: Text('پروژه به اتمام رسیده است',
+                    style: Theme.of(context).textTheme.button),
+              )
       ],
     );
   }

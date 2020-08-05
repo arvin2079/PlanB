@@ -33,7 +33,7 @@ class SkillRepository {
   int findSkillCodeByName(name) {
     for (Skill s in skills) {
       if (s.name == name) {
-        return s.code;
+        return s.id;
       }
     }
     return null;
@@ -41,7 +41,7 @@ class SkillRepository {
 
   String findSkillNameByCode(code) {
     for (Skill s in skills) {
-      if (s.code == code) {
+      if (s.id == code) {
         return s.name;
       }
     }
@@ -59,7 +59,7 @@ class SkillRepository {
   List<int> getCodes() {
     List result = <int>[];
     for (Skill s in skills) {
-      result.add(s.code);
+      result.add(s.id);
     }
     return result;
   }

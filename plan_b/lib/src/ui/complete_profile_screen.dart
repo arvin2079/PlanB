@@ -69,7 +69,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                 ? IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/home');
+                      Navigator.of(context).popAndPushNamed('/home');
                     },
                   )
                 : Container()
@@ -406,7 +406,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                     children: <Widget>[
                       FlatButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/home');
+                          Navigator.of(context).pop();
                         },
                         child: Text(_hasError ? "بیخیال" : "ادامه"),
                       ),

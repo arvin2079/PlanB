@@ -28,6 +28,14 @@ class DSDProjectBloc extends Bloc {
     }
   }
 
+  finishProject(int projectId) async{
+    try{
+      await _repository.finishProject(projectId);
+    } on MessagedException catch (e){
+      _subject.addError(e);
+    }
+  }
+
   @override
   void dispose() {
     _projectStreamController.close();

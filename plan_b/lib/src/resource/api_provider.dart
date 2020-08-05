@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
@@ -10,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class APIProvider {
   final Client client = Client();
 
+
+  //https://www.getpostman.com/collections/0323b1c9522a874a3904
   // Header parameters for request
 //  String _baseUrl = "http://192.168.43.147:8000/";
 
@@ -84,6 +87,7 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     String body = jsonEncode(requestUser.toJson());
     // Sending request
+    print(body);
     final response = await client.post(url, headers: headers, body: body);
     if (response.statusCode == 200) {
       // Return data on successful request
@@ -109,8 +113,9 @@ class APIProvider {
     // Sending request
     final response = await client.post(url, headers: headers, body: body);
 
-    if (response.statusCode == 201) {
-      Map map = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      var map = jsonDecode(utf8.decode(response.bodyBytes));
       Project project = Project.fromJson(map);
       return project;
     } else {
@@ -256,5 +261,18 @@ class APIProvider {
     } else {
       throw MessagedException("Something went wrong");
     }
+  }
+
+  finishProject(int projectId) async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/dsdproject/$projectId/skills";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString('token');
+
+    final response = await client.get(url, headers: headers);
+
+    if(response.statusCode == 200){
+
+    }else throw MessagedException("Something went wrong");
   }
 }
