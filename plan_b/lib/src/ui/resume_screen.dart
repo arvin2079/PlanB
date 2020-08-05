@@ -4,6 +4,7 @@ import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
+import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 
@@ -251,18 +252,36 @@ class _ResumeScreenState extends State<ResumeScreen> {
       ),
     ];
     for (Project p in user.projects) {
+      bool isCreated = user.id == p.creator.id;
       Widget c = Card(
-        child: ListTile(
-          leading: Icon(Icons.description),
-          title: TitleText(text: p.name),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                p.descriptions,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-            ],
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(p.name, style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 24, color: isCreated ? primaryColor : secondaryColor),),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Icon(isCreated ? Icons.add_comment : Icons.person_add, color: isCreated ? primaryColor : secondaryColor, size: 28,),
+                ),
+              ],
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  user.id == p.creator.id ? "سازنده" : "مشارکت",
+                    style: Theme.of(context).textTheme.headline1.copyWith(fontSize: 14, fontWeight: FontWeight.normal, color: isCreated ? primaryColor : secondaryColor)
+                ),
+                Divider(color: isCreated ? primaryColor : secondaryColor),
+                Text(
+                  p.descriptions,
+                    style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 18, fontWeight: FontWeight.normal)
+                ),
+              ],
+            ),
           ),
         ),
       );
