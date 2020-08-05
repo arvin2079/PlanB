@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
@@ -259,5 +260,18 @@ class APIProvider {
     } else {
       throw MessagedException("Something went wrong");
     }
+  }
+
+  finishProject(int projectId) async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String url = _baseUrl + "dashboard/$projectId/24/skills";
+    Map<String, String> headers = this.headers;
+    headers['Authorization'] = "Token " + preferences.getString("token");
+
+    final response = await client.get(url, headers: headers);
+
+    if(response.statusCode == 200){
+
+    }else throw MessagedException("Something went wrong");
   }
 }

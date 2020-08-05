@@ -30,4 +30,6 @@ class Repository {
       _provider.manageUserRequest(projectId, cooperId, flag);
 
   corporateRequest(projectId) => _provider.corporateRequest(projectId);
+
+  finishProject(projectId) => _provider.finishProject(projectId);
 }
