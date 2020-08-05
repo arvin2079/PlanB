@@ -96,6 +96,9 @@ class ProjectSearchDelegate extends SearchDelegate {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Project> projects = snapshot.data;
+            if(projects.isEmpty){
+              return _buildNoResult(context);
+            }
             return ListView.builder(
                 itemCount: projects.length,
                 itemBuilder: (context, index) {
@@ -186,9 +189,11 @@ class _ChipWrapperState extends State<ChipWrapper> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
-      child: Wrap(
-        children: _buildChipList(),
-        spacing: 10.0,
+      child: SingleChildScrollView(
+        child: Wrap(
+          children: _buildChipList(),
+          spacing: 10.0,
+        ),
       ),
     );
   }

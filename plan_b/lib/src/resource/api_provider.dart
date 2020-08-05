@@ -87,6 +87,7 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     String body = jsonEncode(requestUser.toJson());
     // Sending request
+    print(body);
     final response = await client.post(url, headers: headers, body: body);
     if (response.statusCode == 200) {
       // Return data on successful request

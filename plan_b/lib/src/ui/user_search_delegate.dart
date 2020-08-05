@@ -203,9 +203,11 @@ class _ChipWrapperState extends State<ChipWrapper> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
-      child: Wrap(
-        children: _buildChipList(),
-        spacing: 10.0,
+      child: SingleChildScrollView(
+        child: Wrap(
+          children: _buildChipList(),
+          spacing: 10.0,
+        ),
       ),
     );
   }

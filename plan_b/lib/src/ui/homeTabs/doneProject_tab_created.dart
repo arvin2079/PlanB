@@ -48,12 +48,14 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     List<Widget> _result = [];
 
     for (DSDProject item in items) {
-      CreatorViewProjectCard card = CreatorViewProjectCard(
-        item: item,
-        context: context,
-        skillRepository: widget.skillRepository,
-      );
-      _result.add(card);
+      if(item.project.activation){
+        CreatorViewProjectCard card = CreatorViewProjectCard(
+          item: item,
+          context: context,
+          skillRepository: widget.skillRepository,
+        );
+        _result.add(card);
+      }
     }
     if (_result == null || _result.isEmpty) {
       _result.add(Padding(
