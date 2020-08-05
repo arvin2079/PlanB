@@ -79,6 +79,9 @@ class CreatorViewProjectCard extends StatelessWidget {
   final BuildContext context;
   final SkillRepository skillRepository;
 
+  final GlobalKey<AnimatedListState> _coopratorsListKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> _requestListKey = GlobalKey<AnimatedListState>();
+
   @override
   Widget build(BuildContext context) {
     return AbstractProjectCard(
@@ -108,11 +111,12 @@ class CreatorViewProjectCard extends StatelessWidget {
           ),
         ),
         item.users != null && item.users.isNotEmpty
-            ? ListView.builder(
+            ? AnimatedList(
                 shrinkWrap: true,
+                key: _coopratorsListKey,
                 primary: false,
-                itemCount: item.users.length,
-                itemBuilder: (context, index) {
+                initialItemCount: item.users.length,
+                itemBuilder: (context, index, animation) {
                   return CustomButton(
                     leftColor: button1Color,
                     rightColor: primaryColor,
@@ -147,30 +151,33 @@ class CreatorViewProjectCard extends StatelessWidget {
           ),
         ),
         item.cooperation != null && item.cooperation.isNotEmpty
-            ? ListView.builder(
+            ? AnimatedList(
                 shrinkWrap: true,
+                key: _coopratorsListKey,
                 primary: false,
-                itemCount: item.cooperation.length,
-                itemBuilder: (context, index) {
-                  return RequestUserButton(
-                    leftColor: green2Color,
-                    rightColor: green1Color,
-                    name: item.cooperation[index].user.firstName,
-                    lastname: item.cooperation[index].user.lastName,
-                    trailingIcon:
-                        Icon(Icons.group, color: Colors.white, size: 150),
-                    onReject: () {
-                      int projectId = (item.project.id);
-                      int cooperId = (item.cooperation[index].id);
-                      dsdProjectBloc.manageUserRequest(
-                          projectId, cooperId, false);
-                    },
-                    onAccept: () {
-                      int projectId = (item.project.id);
-                      int cooperId = (item.cooperation[index].id);
-                      dsdProjectBloc.manageUserRequest(
-                          projectId, cooperId, true);
-                    },
+                initialItemCount: item.cooperation.length,
+                itemBuilder: (context, index, animation) {
+                  return SizeTransition(
+                    sizeFactor: animation,
+                    child: RequestUserButton(
+                      leftColor: green2Color,
+                      rightColor: green1Color,
+                      name: item.cooperation[index].user.firstName,
+                      lastname: item.cooperation[index].user.lastName,
+                      trailingIcon:
+                          Icon(Icons.group, color: Colors.white, size: 150),
+                      onReject: () {
+                        int projectId = (item.project.id);
+                        int cooperId = (item.cooperation[index].id);
+                        dsdProjectBloc.manageUserRequest(projectId, cooperId, false);
+                      },
+                      onAccept: () {
+                        int projectId = (item.project.id);
+                        int cooperId = (item.cooperation[index].id);
+                        dsdProjectBloc.manageUserRequest(
+                            projectId, cooperId, true);
+                      },
+                    ),
                   );
                 },
               )
@@ -189,21 +196,7 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        CustomButton(
-          leftColor: button1Color,
-          rightColor: primaryColor,
-          name: item.project.creator.firstName,
-          lastname: item.project.creator.lastName,
-          trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
-          showArrow: true,
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ResumeScreen(
-                      id: item.project.creator.id,
-                      skillRepository: skillRepository,
-                    )));
-          },
-        ),
+        _buildCoopratorButton(context),
         SizedBox(height: 15),
         RaisedButton(
           child: Text('اتمام پروژه', style: Theme.of(context).textTheme.button),
@@ -211,6 +204,24 @@ class CreatorViewProjectCard extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget _buildCoopratorButton(BuildContext context) {
+    return CustomButton(
+        leftColor: button1Color,
+        rightColor: primaryColor,
+        name: item.project.creator.firstName,
+        lastname: item.project.creator.lastName,
+        trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
+        showArrow: true,
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ResumeScreen(
+                    id: item.project.creator.id,
+                    skillRepository: skillRepository,
+                  )));
+        },
+      );
   }
 
   _buildSkillChips({List skillCodes, SkillRepository skillRepository}) {
