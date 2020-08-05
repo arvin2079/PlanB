@@ -264,9 +264,9 @@ class APIProvider {
 
   finishProject(int projectId) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String url = _baseUrl + "dashboard/$projectId/24/skills";
+    String url = _baseUrl + "dashboard/dsdproject/$projectId/skills";
     Map<String, String> headers = this.headers;
-    headers['Authorization'] = "Token " + preferences.getString("token");
+    headers['Authorization'] = "Token " + preferences.getString('token');
 
     final response = await client.get(url, headers: headers);
 
