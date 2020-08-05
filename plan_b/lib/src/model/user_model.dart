@@ -70,6 +70,9 @@ class User {
         avatar: json['avatar'],
         gender: json['gender'],
         skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
+        projects: json['projects'] != null
+            ? (json['projects'] as List).map((i) => Project.fromJson(i)).toList()
+            : null,
         universityCode: json['university'],
         cityCode: json['city'].toString(),
         phoneNumber: json['phone_number'],

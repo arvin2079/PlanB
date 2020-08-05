@@ -30,7 +30,7 @@ class Project {
         creator: User.fromJson(json['creator']),
         name: json['Project_name'],
         skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
-        startDate: DateTime.parse(json['StartDate']),
+        startDate: json['StartDate'] != null ? DateTime.parse(json['StartDate']) : null,
         image: json['image'],
         descriptions: json['descriptions'],
         activation: json['activation'],

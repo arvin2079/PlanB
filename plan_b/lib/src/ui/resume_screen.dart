@@ -230,10 +230,12 @@ class _ResumeScreenState extends State<ResumeScreen> {
                       child: TitleText(text: 'پروژه ها'),
                     ),
                     Expanded(
-                      child: Container(
-                        color: Colors.black12,
-                        height: 1,
-                      ),
+                      child: ListView.builder(
+                        itemCount: user.projects.length,
+                        itemBuilder: (context, index){
+                          return Text(user.projects[index].name);
+                        },
+                      )
                     ),
                   ],
                 ),
