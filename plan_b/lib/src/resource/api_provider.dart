@@ -129,7 +129,7 @@ class APIProvider {
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
-    final response = await client.get(url, headers: headers);
+    final response = await client.get(url, headers: headers).timeout(Duration(seconds: 2));
 
     if (response.statusCode == 200) {
       Map map = jsonDecode(utf8.decode(response.bodyBytes));

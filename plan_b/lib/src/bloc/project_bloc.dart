@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:planb/src/bloc/bloc.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/user_model.dart';
@@ -36,6 +38,8 @@ class ProjectBloc extends Bloc {
       List<Project> projects = await _repository.getProjects();
       _projectStreamController.sink.add(projects);
     } on MessagedException catch (e) {
+      _projectStreamController.addError(e);
+    } catch (e){
       _projectStreamController.addError(e);
     }
   }

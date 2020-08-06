@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
+import 'package:planb/src/ui/uiComponents/offline_error.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
 
@@ -38,6 +39,12 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
                   children: _buildProjectCards(snapshot.data),
                 ),
               ),
+            );
+          }
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return OfflineError(
+              function: (){projectBloc.getProjects();},
             );
           }
           return Center(
