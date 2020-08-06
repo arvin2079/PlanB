@@ -76,7 +76,7 @@ class HomeDrawer extends StatelessWidget {
                   _buildListTile(
                       context, "پروفایل", Icons.person, '/edit_profile'),
                   _buildListTile(
-                      context, "درباره ما", Icons.info_outline, '/home'),
+                      context, "درباره ما", Icons.info_outline, '/about_us'),
                   _buildListTile(context, "خروج", Icons.exit_to_app, '/login'),
                 ],
               ),
