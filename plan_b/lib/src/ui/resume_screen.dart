@@ -47,6 +47,14 @@ class _ResumeScreenState extends State<ResumeScreen> {
             user = snapshot.data;
             return _buildScreenWidget();
           }
+          if(snapshot.hasError){
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            );
+          }
           return Center(
             child: CircularProgressIndicator(),
           );

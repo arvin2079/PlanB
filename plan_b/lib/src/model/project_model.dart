@@ -12,29 +12,28 @@ class Project {
   bool activation;
   List users;
 
-  Project(
-      {this.id,
-      this.creator,
-      this.name,
-      this.skillCodes,
-      this.startDate,
-      this.image,
-      this.descriptions,
-      this.activation,
-      this.users});
+  Project({this.id,
+    this.creator,
+    this.name,
+    this.skillCodes,
+    this.startDate,
+    this.image,
+    this.descriptions,
+    this.activation,
+    this.users});
 
   factory Project.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
     return Project(
         id: json['id'],
         creator: User.fromJson(json['creator']),
-        name: json['Project_name'],
-        skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
-        startDate: json['StartDate'] != null ? DateTime.parse(json['StartDate']) : null,
-        image: json['image'],
-        descriptions: json['descriptions'],
-        activation: json['activation'],
-        users: json['user_set'] != null ? (json['user_set'] as List) : null);
+    name: json['Project_name'],
+    skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
+    startDate: json['StartDate'] != null ? DateTime.parse(json['StartDate']) : null,
+    image: json['image'],
+    descriptions: json['descriptions'],
+    activation: json['activation'],
+    users: json['user_set'] != null ? (json['user_set'] as List).map((e) => User.fromJson(e)).toList() : null);
   }
 
   Map<String, dynamic> toJson() {

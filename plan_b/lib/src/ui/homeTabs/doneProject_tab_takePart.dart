@@ -117,14 +117,14 @@ class ProjectCard extends StatelessWidget {
             return CustomButton(
               leftColor: button1Color,
               rightColor: primaryColor,
-              name: (item.users[index]).toString().split(" ").first,
-              lastname: (item.users[index]).toString().split(" ").last,
+              name: (item.users[index].firstName),
+              lastname: (item.users[index]).lastName,
               trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
               showArrow: true,
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ResumeScreen(
-                          id: item.users[index].user.id,
+                          id: item.users[index].id,
                           skillRepository: skillRepository,
                         )));
               },
