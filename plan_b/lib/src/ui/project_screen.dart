@@ -37,7 +37,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_skillRepository);
     return DefaultTabController(
       length: 2,
       child: Scaffold(

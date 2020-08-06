@@ -4,6 +4,7 @@ import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/project_screen.dart';
 import 'package:planb/src/ui/resume_screen.dart';
+import 'package:planb/src/ui/uiComponents/offline_error.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'newProject_screen.dart';
@@ -101,6 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   skillRepository: _skillRepository,
                 );
               }
+              if (snapshot.hasError) {
+                return OfflineError(
+                  function: (){userBloc.getCompleteProfileFields();
+                  _buildSkillRepository();
+                  _getUserId();},
+                );
+              }
               return Center(child: CircularProgressIndicator());
             }
         )
@@ -116,6 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 return ResumeScreen(
                   id: id,
                   skillRepository: _skillRepository,
+                );
+              }if (snapshot.hasError) {
+                return OfflineError(
+                  function: (){userBloc.getCompleteProfileFields();
+                  _buildSkillRepository();
+                  _getUserId();},
                 );
               }
               return Center(child: CircularProgressIndicator());

@@ -42,7 +42,6 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
             );
           }
           if (snapshot.hasError) {
-            print(snapshot.error);
             return OfflineError(
               function: (){projectBloc.getProjects();},
             );

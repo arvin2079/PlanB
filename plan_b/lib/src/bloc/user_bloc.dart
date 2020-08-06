@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:planb/src/bloc/bloc.dart';
@@ -90,8 +91,11 @@ class UserBloc extends Bloc {
       list = response['University_name'];
       _universitiesStreamController.sink.add(list);
       _saveUsersInfoInSharedPreferences(User.fromJson(user));
-    } catch (e){
+    } on TimeoutException catch (e){
+      _skillsStreamController.addError(e);
       _userInfoStreamController.addError(e);
+      _citiesStreamController.addError(e);
+      _universitiesStreamController.addError(e);
     }
   }
 

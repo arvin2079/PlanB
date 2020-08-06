@@ -22,7 +22,7 @@ class APIProvider {
     "Accept": "application/json"
   };
 
-  Duration _timeout = Duration(seconds: 5);
+  Duration _timeout = Duration(seconds: 1);
 
   Future<String> signUpNewUser(User user) async {
     // Set request data
@@ -195,7 +195,6 @@ class APIProvider {
     // Sending request
     String body = jsonEncode(
         {"html": "false", 'isSafe': "true"});
-    print(body);
     final response = await client.post(url, headers: headers, body: body).timeout(_timeout);
 
     if (response.statusCode == 200) {
