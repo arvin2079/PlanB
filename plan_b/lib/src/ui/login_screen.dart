@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> with LogInValidator {
         } else if (value == AuthStatus.signedOut) {
           SnackBar snackBar = SnackBar(
             content: Text(
-              "خطا در ورود! دوباره امتخان کن...",
+              "خطا در ورود! دوباره امتحان کن...",
               textDirection: TextDirection.rtl,
             ),
             backgroundColor: Colors.red,

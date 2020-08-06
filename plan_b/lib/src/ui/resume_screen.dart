@@ -6,6 +6,7 @@ import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/uiComponents/drawer.dart';
+import 'package:planb/src/ui/uiComponents/offline_error.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 
 class ResumeScreen extends StatefulWidget {
@@ -47,12 +48,11 @@ class _ResumeScreenState extends State<ResumeScreen> {
             user = snapshot.data;
             return _buildScreenWidget();
           }
-          if(snapshot.hasError){
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
-                style: Theme.of(context).textTheme.headline1,
-              ),
+          if (snapshot.hasError) {
+            return OfflineError(
+              function: () {
+                userBloc.getResume(id);
+              },
             );
           }
           return Center(
@@ -81,9 +81,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
   _buildSkillChips(List skillCodes) {
     List<Widget> result = [];
     for (int i in skillCodes) {
-      result.add(Chip(
-        label: Text(widget.skillRepository.findSkillNameByCode(i)),
-      ));
+      result.add(
+          widget.skillRepository != null ? Chip(
+        label: Text(widget.skillRepository?.findSkillNameByCode(i)),
+      ) : LinearProgressIndicator());
       result.add(SizedBox(
         width: 5,
       ));
