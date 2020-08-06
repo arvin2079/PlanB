@@ -183,6 +183,13 @@ class _CreatorViewProjectCardState extends State<CreatorViewProjectCard> {
                       int cooperId = (widget.item.cooperation[index].id);
                       dsdProjectBloc.manageUserRequest(
                           projectId, cooperId, false);
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          '!درخواست رد شد',
+                          textAlign: TextAlign.right,
+                        ),
+                        duration: Duration(milliseconds: 500),
+                      ));
                       widget.onRebuild();
                     },
                     onAccept: () {
@@ -190,6 +197,13 @@ class _CreatorViewProjectCardState extends State<CreatorViewProjectCard> {
                       int cooperId = (widget.item.cooperation[index].id);
                       dsdProjectBloc.manageUserRequest(
                           projectId, cooperId, true);
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          '!درخواست تایید شد',
+                          textAlign: TextAlign.right,
+                        ),
+                        duration: Duration(milliseconds: 500),
+                      ));
                       widget.onRebuild();
                     },
                   );
@@ -220,9 +234,10 @@ class _CreatorViewProjectCardState extends State<CreatorViewProjectCard> {
                   dsdProjectBloc.finishProject(widget.item.project.id);
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(
-                      'درخواست اتمام پروژه ${widget.item.project.name} ارسال شد',
+                      'درخواست اتمام پروژه ارسال شد',
                       textAlign: TextAlign.right,
                     ),
+                    duration: Duration(milliseconds: 500),
                   ));
                   widget.onRebuild();
                 },
