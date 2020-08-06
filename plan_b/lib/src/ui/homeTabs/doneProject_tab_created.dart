@@ -5,6 +5,7 @@ import 'package:planb/src/model/dsd_project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/constants/constants.dart';
 import 'package:planb/src/ui/resume_screen.dart';
+import 'package:planb/src/ui/uiComponents/offline_error.dart';
 import 'package:planb/src/ui/uiComponents/projectCard.dart';
 import 'package:planb/src/ui/uiComponents/request_user_button.dart';
 import 'package:planb/src/ui/uiComponents/simple_user_button.dart';
@@ -39,6 +40,12 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
                   children: _buildProjectCards(snapshot.data),
                 ),
               ),
+            );
+          } if (snapshot.hasError) {
+            return OfflineError(
+              function: () {
+                dsdProjectBloc.getProjects();
+              },
             );
           }
           return Center(
