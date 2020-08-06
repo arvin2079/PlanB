@@ -32,9 +32,12 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
         stream: dsdProjectBloc.projectStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Column(
-                children: _buildProjectCards(snapshot.data),
+            return RefreshIndicator(
+              onRefresh: _refresh,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: _buildProjectCards(snapshot.data),
+                ),
               ),
             );
           }
@@ -70,6 +73,10 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
       ));
     }
     return _result;
+  }
+
+  Future<void> _refresh() async {
+    await dsdProjectBloc.getProjects();
   }
 }
 

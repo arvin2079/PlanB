@@ -31,9 +31,12 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
         stream: projectBloc.projectStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Column(
-                children: _buildProjectCards(snapshot.data),
+            return RefreshIndicator(
+              onRefresh: _refresh,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: _buildProjectCards(snapshot.data),
+                ),
               ),
             );
           }
@@ -64,6 +67,10 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
       ));
     }
     return _result;
+  }
+
+  Future<void> _refresh() async {
+    await projectBloc.getProjects();
   }
 }
 

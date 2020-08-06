@@ -56,14 +56,18 @@ class _ResumeScreenState extends State<ResumeScreen> {
   }
 
   Widget _buildScreenWidget() {
-    return Directionality(
-        textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: ListView(
-            children: _buildScreenElements(user),
-          ),
-        ));
+    return RefreshIndicator(
+      displacement: 10,
+      onRefresh: _refresh,
+      child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: ListView(
+              children: _buildScreenElements(user),
+            ),
+          )),
+    );
   }
 
   _buildSkillChips(List skillCodes) {
@@ -261,25 +265,36 @@ class _ResumeScreenState extends State<ResumeScreen> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(p.name, style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 24, color: isCreated ? primaryColor : secondaryColor),),
+                Text(
+                  p.name,
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                      fontSize: 24,
+                      color: isCreated ? primaryColor : secondaryColor),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16),
-                  child: Icon(isCreated ? Icons.add_comment : Icons.person_add, color: isCreated ? primaryColor : secondaryColor, size: 28,),
+                  child: Icon(
+                    isCreated ? Icons.add_comment : Icons.person_add,
+                    color: isCreated ? primaryColor : secondaryColor,
+                    size: 28,
+                  ),
                 ),
               ],
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  user.id == p.creator.id ? "سازنده" : "مشارکت",
-                    style: Theme.of(context).textTheme.headline1.copyWith(fontSize: 14, fontWeight: FontWeight.normal, color: isCreated ? primaryColor : secondaryColor)
-                ),
+                Text(user.id == p.creator.id ? "سازنده" : "مشارکت",
+                    style: Theme.of(context).textTheme.headline1.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: isCreated ? primaryColor : secondaryColor)),
                 Divider(color: isCreated ? primaryColor : secondaryColor),
-                Text(
-                  p.descriptions,
-                    style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 18, fontWeight: FontWeight.normal)
-                ),
+                Text(p.descriptions,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        .copyWith(fontSize: 18, fontWeight: FontWeight.normal)),
               ],
             ),
           ),
@@ -288,5 +303,15 @@ class _ResumeScreenState extends State<ResumeScreen> {
       _result.add(c);
     }
     return _result;
+  }
+
+  Future<void> _refresh() async {
+    await userBloc.getResume(id);
+
+    setState(() {
+
+    });
+
+    return null;
   }
 }
