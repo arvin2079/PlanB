@@ -91,7 +91,7 @@ class UserBloc extends Bloc {
       list = response['University_name'];
       _universitiesStreamController.sink.add(list);
       _saveUsersInfoInSharedPreferences(User.fromJson(user));
-    } on TimeoutException catch (e){
+    } on TimeoutException catch (e) {
       _skillsStreamController.addError(e);
       _userInfoStreamController.addError(e);
       _citiesStreamController.addError(e);
@@ -106,7 +106,7 @@ class UserBloc extends Bloc {
       _userInfoStreamController.sink.add(user);
     } on MessagedException catch (e) {
       _errorsStreamController.add([e]);
-    } catch (e){
+    } catch (e) {
       _errorsStreamController.addError(e);
     }
   }
@@ -117,7 +117,7 @@ class UserBloc extends Bloc {
       _resumeStreamController.sink.add(user);
     } on MessagedException catch (e) {
       _resumeStreamController.addError(e);
-    } catch (e){
+    } catch (e) {
       _resumeStreamController.addError(e);
     }
   }

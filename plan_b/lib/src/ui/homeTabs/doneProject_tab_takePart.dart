@@ -43,7 +43,9 @@ class _DoneProjectsTabTakePartState extends State<DoneProjectsTabTakePart> {
           }
           if (snapshot.hasError) {
             return OfflineError(
-              function: (){projectBloc.getProjects();},
+              function: () {
+                projectBloc.getProjects();
+              },
             );
           }
           return Center(

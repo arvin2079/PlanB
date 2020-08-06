@@ -90,7 +90,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return _buildScreenWidget(snapshot.data);
-                        } if (snapshot.hasError) {
+                        }
+                        if (snapshot.hasError) {
                           return OfflineError(
                             function: () {
                               requestUser = User();

@@ -25,8 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     userBloc.getCompleteProfileFields();
     _buildSkillRepository();
     _getUserId();
-    _tabs = [
-    ];
+    _tabs = [];
     super.initState();
   }
 
@@ -92,27 +91,26 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _initializeTabs() async{
-    _tabs.add(
-        StreamBuilder(
-            stream: userBloc.skillsStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ProjectScreen(
-                  skillRepository: _skillRepository,
-                );
-              }
-              if (snapshot.hasError) {
-                return OfflineError(
-                  function: (){userBloc.getCompleteProfileFields();
-                  _buildSkillRepository();
-                  _getUserId();},
-                );
-              }
-              return Center(child: CircularProgressIndicator());
-            }
-        )
-    );
+  void _initializeTabs() async {
+    _tabs.add(StreamBuilder(
+        stream: userBloc.skillsStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ProjectScreen(
+              skillRepository: _skillRepository,
+            );
+          }
+          if (snapshot.hasError) {
+            return OfflineError(
+              function: () {
+                userBloc.getCompleteProfileFields();
+                _buildSkillRepository();
+                _getUserId();
+              },
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        }));
     _tabs.add(NewProjectScreen());
     _tabs.add(FutureBuilder(
       future: _getUserId(),
@@ -125,11 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   id: id,
                   skillRepository: _skillRepository,
                 );
-              }if (snapshot.hasError) {
+              }
+              if (snapshot.hasError) {
                 return OfflineError(
-                  function: (){userBloc.getCompleteProfileFields();
-                  _buildSkillRepository();
-                  _getUserId();},
+                  function: () {
+                    userBloc.getCompleteProfileFields();
+                    _buildSkillRepository();
+                    _getUserId();
+                  },
                 );
               }
               return Center(child: CircularProgressIndicator());

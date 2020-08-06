@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:planb/src/model/dsd_project_model.dart';
@@ -11,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class APIProvider {
   final Client client = Client();
 
-
   //https://www.getpostman.com/collections/0323b1c9522a874a3904
   // Header parameters for request
   String _baseUrl = "http://192.168.43.147:8000/";
@@ -22,7 +20,7 @@ class APIProvider {
     "Accept": "application/json"
   };
 
-  Duration _timeout = Duration(seconds: 1);
+  Duration _timeout = Duration(seconds: 5);
 
   Future<String> signUpNewUser(User user) async {
     // Set request data
@@ -30,7 +28,8 @@ class APIProvider {
     String json = jsonEncode(user.toJson());
 
     // Sending request
-    final response = await client.post(url, headers: headers, body: json).timeout(_timeout);
+    final response =
+        await client.post(url, headers: headers, body: json).timeout(_timeout);
 
     if (response.statusCode == 200) {
       // Return new token on successful request
@@ -49,7 +48,8 @@ class APIProvider {
     String json = jsonEncode(map);
 
     // Sending request
-    final response = await client.post(url, headers: headers, body: json).timeout(_timeout);
+    final response =
+        await client.post(url, headers: headers, body: json).timeout(_timeout);
 
     if (response.statusCode == 200) {
       // Return token on successful request
@@ -89,7 +89,8 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     String body = jsonEncode(requestUser.toJson());
     // Sending request
-    final response = await client.post(url, headers: headers, body: body).timeout(_timeout);
+    final response =
+        await client.post(url, headers: headers, body: body).timeout(_timeout);
     if (response.statusCode == 200) {
       // Return data on successful request
       Map map = jsonDecode(utf8.decode(response.bodyBytes));
@@ -112,8 +113,8 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     String body = jsonEncode(requestProject.toJson());
     // Sending request
-    final response = await client.post(url, headers: headers, body: body).timeout(_timeout);
-
+    final response =
+        await client.post(url, headers: headers, body: body).timeout(_timeout);
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       var map = jsonDecode(utf8.decode(response.bodyBytes));
@@ -178,7 +179,8 @@ class APIProvider {
     String body = jsonEncode(
         {"html": "false", "isState": "$flag", "cooper_id": cooperId});
     // Sending request
-    final response = await client.post(url, headers: headers, body: body).timeout(_timeout);
+    final response =
+        await client.post(url, headers: headers, body: body).timeout(_timeout);
 
     if (response.statusCode == 200) {
     } else {
@@ -193,9 +195,9 @@ class APIProvider {
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
-    String body = jsonEncode(
-        {"html": "false", 'isSafe': "true"});
-    final response = await client.post(url, headers: headers, body: body).timeout(_timeout);
+    String body = jsonEncode({"html": "false", 'isSafe': "true"});
+    final response =
+        await client.post(url, headers: headers, body: body).timeout(_timeout);
 
     if (response.statusCode == 200) {
     } else {
@@ -266,7 +268,7 @@ class APIProvider {
     }
   }
 
-  finishProject(int projectId) async{
+  finishProject(int projectId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String url = _baseUrl + "dashboard/dsdproject/$projectId/skills";
     Map<String, String> headers = this.headers;
@@ -274,8 +276,8 @@ class APIProvider {
 
     final response = await client.get(url, headers: headers).timeout(_timeout);
 
-    if(response.statusCode == 200){
-
-    }else throw MessagedException("Something went wrong");
+    if (response.statusCode == 200) {
+    } else
+      throw MessagedException("Something went wrong");
   }
 }

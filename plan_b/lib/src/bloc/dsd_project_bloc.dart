@@ -17,7 +17,7 @@ class DSDProjectBloc extends Bloc {
       _projectStreamController.sink.add(projects);
     } on MessagedException catch (e) {
       _projectStreamController.addError(e);
-    } catch (e){
+    } catch (e) {
       _projectStreamController.addError(e);
     }
   }
@@ -27,17 +27,17 @@ class DSDProjectBloc extends Bloc {
       await _repository.manageUserRequest(projectId, cooperId, flag);
     } on MessagedException catch (e) {
       _subject.addError(e);
-    }  catch (e){
+    } catch (e) {
       _subject.addError(e);
     }
   }
 
-  finishProject(int projectId) async{
-    try{
+  finishProject(int projectId) async {
+    try {
       await _repository.finishProject(projectId);
-    } on MessagedException catch (e){
+    } on MessagedException catch (e) {
       _subject.addError(e);
-    }  catch (e){
+    } catch (e) {
       _subject.addError(e);
     }
   }

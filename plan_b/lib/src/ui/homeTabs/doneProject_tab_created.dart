@@ -41,7 +41,8 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
                 ),
               ),
             );
-          } if (snapshot.hasError) {
+          }
+          if (snapshot.hasError) {
             return OfflineError(
               function: () {
                 dsdProjectBloc.getProjects();

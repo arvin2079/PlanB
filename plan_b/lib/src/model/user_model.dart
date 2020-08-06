@@ -52,7 +52,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     if (json == null) {
-      print("json null");
       return null;
     }
 
@@ -71,7 +70,9 @@ class User {
         gender: json['gender'],
         skillCodes: json['skills'] != null ? (json['skills'] as List) : null,
         projects: json['projects'] != null
-            ? (json['projects'] as List).map((i) => Project.fromJson(i)).toList()
+            ? (json['projects'] as List)
+                .map((i) => Project.fromJson(i))
+                .toList()
             : null,
         universityCode: json['university'],
         cityCode: json['city'].toString(),

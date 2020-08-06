@@ -96,7 +96,7 @@ class ProjectSearchDelegate extends SearchDelegate {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Project> projects = snapshot.data;
-            if(projects.isEmpty){
+            if (projects.isEmpty) {
               return _buildNoResult(context);
             }
             return ListView.builder(

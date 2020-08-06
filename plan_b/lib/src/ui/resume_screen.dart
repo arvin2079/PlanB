@@ -81,10 +81,11 @@ class _ResumeScreenState extends State<ResumeScreen> {
   _buildSkillChips(List skillCodes) {
     List<Widget> result = [];
     for (int i in skillCodes) {
-      result.add(
-          widget.skillRepository != null ? Chip(
-        label: Text(widget.skillRepository?.findSkillNameByCode(i)),
-      ) : LinearProgressIndicator());
+      result.add(widget.skillRepository != null
+          ? Chip(
+              label: Text(widget.skillRepository?.findSkillNameByCode(i)),
+            )
+          : LinearProgressIndicator());
       result.add(SizedBox(
         width: 5,
       ));
@@ -317,9 +318,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
   Future<void> _refresh() async {
     await userBloc.getResume(id);
 
-    setState(() {
-
-    });
+    setState(() {});
 
     return null;
   }
