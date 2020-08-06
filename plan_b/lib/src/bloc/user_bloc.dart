@@ -54,6 +54,7 @@ class UserBloc extends Bloc {
       _errorsStreamController.sink.add(errorsList);
     } catch (e) {
       _authStatusStreamController.sink.add(AuthStatus.signedOut);
+      _errorsStreamController.addError(e);
     }
   }
 
@@ -73,6 +74,7 @@ class UserBloc extends Bloc {
       _errorsStreamController.sink.add(errorsList);
     } catch (e) {
       _authStatusStreamController.sink.add(AuthStatus.signedOut);
+      _errorsStreamController.addError(e);
     }
   }
 
@@ -88,7 +90,9 @@ class UserBloc extends Bloc {
       list = response['University_name'];
       _universitiesStreamController.sink.add(list);
       _saveUsersInfoInSharedPreferences(User.fromJson(user));
-    } catch (e) {}
+    } catch (e){
+      _userInfoStreamController.addError(e);
+    }
   }
 
   completeProfile(User requestUser) async {
@@ -98,6 +102,8 @@ class UserBloc extends Bloc {
       _userInfoStreamController.sink.add(user);
     } on MessagedException catch (e) {
       _errorsStreamController.add([e]);
+    } catch (e){
+      _errorsStreamController.addError(e);
     }
   }
 
@@ -106,6 +112,8 @@ class UserBloc extends Bloc {
       User user = await repository.getResume(id);
       _resumeStreamController.sink.add(user);
     } on MessagedException catch (e) {
+      _resumeStreamController.addError(e);
+    } catch (e){
       _resumeStreamController.addError(e);
     }
   }
