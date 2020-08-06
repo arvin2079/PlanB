@@ -10,6 +10,7 @@ import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/model/university_model.dart';
 import 'package:planb/src/model/user_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
+import 'package:planb/src/ui/uiComponents/offline_error.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
@@ -89,6 +90,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return _buildScreenWidget(snapshot.data);
+                        } if (snapshot.hasError) {
+                          return OfflineError(
+                            function: () {
+                              requestUser = User();
+                              userBloc.getCompleteProfileFields();
+                              initializeItems();
+                            },
+                          );
                         }
                         return LinearProgressIndicator(
                           backgroundColor: Colors.transparent,
