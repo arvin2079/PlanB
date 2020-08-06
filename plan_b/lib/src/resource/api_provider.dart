@@ -87,7 +87,6 @@ class APIProvider {
     headers['Authorization'] = "Token " + preferences.getString('token');
     String body = jsonEncode(requestUser.toJson());
     // Sending request
-    print(body);
     final response = await client.post(url, headers: headers, body: body);
     if (response.statusCode == 200) {
       // Return data on successful request
@@ -192,7 +191,10 @@ class APIProvider {
     Map<String, String> headers = this.headers;
     headers['Authorization'] = "Token " + preferences.getString('token');
     // Sending request
-    final response = await client.post(url, headers: headers);
+    String body = jsonEncode(
+        {"html": "false", 'isSafe': "true"});
+    print(body);
+    final response = await client.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
     } else {
