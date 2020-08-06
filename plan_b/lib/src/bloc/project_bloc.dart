@@ -30,6 +30,8 @@ class ProjectBloc extends Bloc {
       Project project = await _repository.createNewProject(requestProject);
     } on MessagedException catch (e) {
       _projectStreamController.addError(e);
+    } catch (e){
+      _projectStreamController.addError(e);
     }
   }
 
@@ -50,6 +52,8 @@ class ProjectBloc extends Bloc {
       _searchedProjectStreamController.sink.add(projects);
     } on MessagedException catch (e) {
       _searchedProjectStreamController.addError(e);
+    }  catch (e){
+      _searchedProjectStreamController.addError(e);
     }
   }
 
@@ -59,6 +63,8 @@ class ProjectBloc extends Bloc {
       _searchedUserStreamController.sink.add(users);
     } on MessagedException catch (e) {
       _searchedUserStreamController.addError(e);
+    }  catch (e){
+      _searchedUserStreamController.addError(e);
     }
   }
 
@@ -66,6 +72,8 @@ class ProjectBloc extends Bloc {
     try {
       await _repository.corporateRequest(projectId);
     } on MessagedException catch (e) {
+      _corporateRequests.addError(e);
+    }  catch (e){
       _corporateRequests.addError(e);
     }
   }
