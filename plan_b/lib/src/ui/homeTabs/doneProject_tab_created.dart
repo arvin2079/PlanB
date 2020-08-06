@@ -48,11 +48,14 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
     List<Widget> _result = [];
 
     for (DSDProject item in items) {
-      if(item.project.activation){
+      if (item.project.activation) {
         CreatorViewProjectCard card = CreatorViewProjectCard(
           item: item,
           context: context,
           skillRepository: widget.skillRepository,
+          onRebuild: () {
+            setState(() {});
+          },
         );
         _result.add(card);
       }
@@ -70,23 +73,29 @@ class _DoneProjectsTabCreatedState extends State<DoneProjectsTabCreated> {
   }
 }
 
-class CreatorViewProjectCard extends StatelessWidget {
+class CreatorViewProjectCard extends StatefulWidget {
   CreatorViewProjectCard({
     @required this.item,
     @required this.context,
     @required this.skillRepository,
+    this.onRebuild,
   });
 
   final DSDProject item;
-  final ProjectItem item2 = null;
   final BuildContext context;
   final SkillRepository skillRepository;
+  final Function onRebuild;
 
+  @override
+  _CreatorViewProjectCardState createState() => _CreatorViewProjectCardState();
+}
+
+class _CreatorViewProjectCardState extends State<CreatorViewProjectCard> {
   @override
   Widget build(BuildContext context) {
     return AbstractProjectCard(
-      title: item.project.name,
-      caption: item.project.descriptions,
+      title: widget.item.project.name,
+      caption: widget.item.project.descriptions,
       buttonOpenText: 'جزئیات',
       children: <Widget>[
         SizedBox(height: 20),
@@ -99,8 +108,8 @@ class CreatorViewProjectCard extends StatelessWidget {
         ),
         Wrap(
           children: _buildSkillChips(
-              skillCodes: item.project.skillCodes,
-              skillRepository: skillRepository),
+              skillCodes: widget.item.project.skillCodes,
+              skillRepository: widget.skillRepository),
         ),
         SizedBox(height: 20),
         Padding(
@@ -110,25 +119,25 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        item.users != null && item.users.isNotEmpty
+        widget.item.users != null && widget.item.users.isNotEmpty
             ? ListView.builder(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: item.users.length,
+                itemCount: widget.item.users.length,
                 itemBuilder: (context, index) {
                   return CustomButton(
                     leftColor: button1Color,
                     rightColor: primaryColor,
-                    name: item.users[index].user.firstName,
-                    lastname: item.users[index].user.lastName,
+                    name: widget.item.users[index].user.firstName,
+                    lastname: widget.item.users[index].user.lastName,
                     trailingIcon:
                         Icon(Icons.group, color: Colors.white, size: 150),
                     showArrow: true,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ResumeScreen(
-                                id: item.users[index].user.id,
-                                skillRepository: skillRepository,
+                                id: widget.item.users[index].user.id,
+                                skillRepository: widget.skillRepository,
                               )));
                     },
                   );
@@ -149,30 +158,32 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        item.cooperation != null && item.cooperation.isNotEmpty
+        widget.item.cooperation != null && widget.item.cooperation.isNotEmpty
             ? ListView.builder(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: item.cooperation.length,
+                itemCount: widget.item.cooperation.length,
                 itemBuilder: (context, index) {
                   return RequestUserButton(
                     leftColor: green2Color,
                     rightColor: green1Color,
-                    name: item.cooperation[index].user.firstName,
-                    lastname: item.cooperation[index].user.lastName,
+                    name: widget.item.cooperation[index].user.firstName,
+                    lastname: widget.item.cooperation[index].user.lastName,
                     trailingIcon:
                         Icon(Icons.group, color: Colors.white, size: 150),
                     onReject: () {
-                      int projectId = (item.project.id);
-                      int cooperId = (item.cooperation[index].id);
+                      int projectId = (widget.item.project.id);
+                      int cooperId = (widget.item.cooperation[index].id);
                       dsdProjectBloc.manageUserRequest(
                           projectId, cooperId, false);
+                      widget.onRebuild();
                     },
                     onAccept: () {
-                      int projectId = (item.project.id);
-                      int cooperId = (item.cooperation[index].id);
+                      int projectId = (widget.item.project.id);
+                      int cooperId = (widget.item.cooperation[index].id);
                       dsdProjectBloc.manageUserRequest(
                           projectId, cooperId, true);
+                      widget.onRebuild();
                     },
                   );
                 },
@@ -192,29 +203,21 @@ class CreatorViewProjectCard extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        CustomButton(
-          leftColor: button1Color,
-          rightColor: primaryColor,
-          name: item.project.creator.firstName,
-          lastname: item.project.creator.lastName,
-          trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
-          showArrow: true,
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ResumeScreen(
-                      id: item.project.creator.id,
-                      skillRepository: skillRepository,
-                    )));
-          },
-        ),
+        _buildCoopratorButton(context),
         SizedBox(height: 15),
-        item.project.activation
+        widget.item.project.activation
             ? RaisedButton(
                 child: Text('اتمام پروژه',
                     style: Theme.of(context).textTheme.button),
                 onPressed: () {
-                  dsdProjectBloc.finishProject(item.project.id);
-                  Scaffold.of(context).showSnackBar(SnackBar(content: Text('درخواست اتمام پروژه ${item.project.name} ارسال شد', textAlign: TextAlign.right,),));
+                  dsdProjectBloc.finishProject(widget.item.project.id);
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'درخواست اتمام پروژه ${widget.item.project.name} ارسال شد',
+                      textAlign: TextAlign.right,
+                    ),
+                  ));
+                  widget.onRebuild();
                 },
               )
             : RaisedButton(
@@ -222,6 +225,24 @@ class CreatorViewProjectCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.button),
               )
       ],
+    );
+  }
+
+  Widget _buildCoopratorButton(BuildContext context) {
+    return CustomButton(
+      leftColor: button1Color,
+      rightColor: primaryColor,
+      name: widget.item.project.creator.firstName,
+      lastname: widget.item.project.creator.lastName,
+      trailingIcon: Icon(Icons.group, color: Colors.white, size: 150),
+      showArrow: true,
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ResumeScreen(
+                  id: widget.item.project.creator.id,
+                  skillRepository: widget.skillRepository,
+                )));
+      },
     );
   }
 
