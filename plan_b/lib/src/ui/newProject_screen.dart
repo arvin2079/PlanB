@@ -5,6 +5,7 @@ import 'package:planb/src/bloc/user_bloc.dart';
 import 'package:planb/src/model/project_model.dart';
 import 'package:planb/src/model/skill_model.dart';
 import 'package:planb/src/ui/uiComponents/customTextField.dart';
+import 'package:planb/src/ui/uiComponents/offline_error.dart';
 import 'package:planb/src/ui/uiComponents/titleText.dart';
 import 'package:planb/src/utility/imageCompressor.dart';
 import 'package:planb/src/utility/languageDetector.dart';
@@ -52,6 +53,15 @@ class _NewProjectScreenState extends State<NewProjectScreen>
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildScreenWidget();
+        }
+        if (snapshot.hasError) {
+          return OfflineError(
+            function: () {
+              userBloc.getCompleteProfileFields();
+              userBloc.getCompleteProfileFields();
+              initializeItems();
+            },
+          );
         }
         return Center(
           child: CircularProgressIndicator(),
