@@ -1,8 +1,0 @@
-
-NAME            | NAME IN BOOTSTRAP  |   HEX CODE
-
-primary         : indigo darken-4   -->   #1A237E
-danger	        : red darken-4      -->   #b71c1c
-info		: cyan lighten-2    -->   #4dd0e1
-grey		: grey lighten-3    -->   #eeeeee
-white		: white             -->   #ffffff   
